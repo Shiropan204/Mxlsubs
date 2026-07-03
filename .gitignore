@@ -6,3 +6,20 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Windows-specific files
+Thumbs.db
+desktop.ini
+
+# IDE / Editor
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# TypeScript / Build cache
+*.tsbuildinfo
+.eslintcache
