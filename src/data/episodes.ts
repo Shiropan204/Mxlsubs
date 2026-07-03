@@ -1,5 +1,7 @@
 import { Episode } from '../types';
 
+const base = import.meta.env.BASE_URL;
+
 export const episodes: Episode[] = [
   {
     id: "ikonoijoy-tsunhashigo-pesta-minum",
@@ -10,7 +12,7 @@ export const episodes: Episode[] = [
     members: ["Emiri Otani"],
     tags: [],
     subtitles: [],
-    vttUrl: "/subtitles/ikonoijoy-tsunhashigo-pesta-minum.vtt"
+    vttUrl: `${base}subtitles/ikonoijoy-tsunhashigo-pesta-minum.vtt`
   },
   {
     id: "ikonoijoy-sanamiri-cooking",
@@ -21,7 +23,8 @@ export const episodes: Episode[] = [
     members: ["Emiri Otani", "Sana Morohashi"],
     tags: [],
     subtitles: [],
-    vttUrl: "/subtitles/ikonoijoy-sanamiri-cooking.vtt",
-    thumbnailUrl: "/thumbnails/ikonoijoy-sanamiri-cooking.png"
+    vttUrl: `${base}subtitles/ikonoijoy-sanamiri-cooking.vtt`,
+    thumbnailUrl: `${base}thumbnails/ikonoijoy-sanamiri-cooking.png`
   }
 ];
+
