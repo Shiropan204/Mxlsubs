@@ -10,7 +10,7 @@ export const members: MemberProfile[] = [
     bloodType: 'O',
     zodiac: 'Pisces',
     color: '#D8BFD8', // Purple/White
-    imageUrl: 'https://equal-love.jp/feature/profile/images/otani_emiri.jpg'
+    imageUrl: 'https://equal-love.jp/image/profile/otani_emiri_original.jpg'
   },
   {
     id: 'oba-hana',
@@ -21,7 +21,7 @@ export const members: MemberProfile[] = [
     bloodType: 'A',
     zodiac: 'Aquarius',
     color: '#FF6600', // Orange/Blue
-    imageUrl: 'https://equal-love.jp/feature/profile/images/oba_hana.jpg'
+    imageUrl: 'https://equal-love.jp/image/profile/oba_hana_original.jpg'
   },
   {
     id: 'otoshima-risa',
@@ -32,7 +32,7 @@ export const members: MemberProfile[] = [
     bloodType: 'B',
     zodiac: 'Leo',
     color: '#87CEFA', // Light Blue/Pink
-    imageUrl: 'https://equal-love.jp/feature/profile/images/otoshima_risa.jpg'
+    imageUrl: 'https://equal-love.jp/image/profile/otoshima_risa_original.jpg'
   },
   {
     id: 'saito-kiara',
@@ -43,7 +43,7 @@ export const members: MemberProfile[] = [
     bloodType: 'B',
     zodiac: 'Sagittarius',
     color: '#FFB6C1', // Light Pink
-    imageUrl: 'https://equal-love.jp/feature/profile/images/saito_kiara.jpg'
+    imageUrl: 'https://equal-love.jp/image/profile/saito_kiara_original.jpg'
   },
   {
     id: 'sasaki-maika',
@@ -54,7 +54,7 @@ export const members: MemberProfile[] = [
     bloodType: 'A',
     zodiac: 'Aquarius',
     color: '#FFFFFF', // White
-    imageUrl: 'https://equal-love.jp/feature/profile/images/sasaki_maika.jpg'
+    imageUrl: 'https://equal-love.jp/image/profile/sasaki_maika_original.jpg'
   },
   {
     id: 'takamatsu-hitomi',
@@ -65,7 +65,7 @@ export const members: MemberProfile[] = [
     bloodType: 'AB',
     zodiac: 'Capricorn',
     color: '#FF0000', // Red
-    imageUrl: 'https://equal-love.jp/feature/profile/images/takamatsu_hitomi.jpg'
+    imageUrl: 'https://equal-love.jp/image/profile/takamatsu_hitomi_original.jpg'
   },
   {
     id: 'takiwaki-shoko',
@@ -76,7 +76,7 @@ export const members: MemberProfile[] = [
     bloodType: 'O',
     zodiac: 'Cancer',
     color: '#FFFF00', // Yellow/Orange
-    imageUrl: 'https://equal-love.jp/feature/profile/images/takiwaki_shoko.jpg'
+    imageUrl: 'https://equal-love.jp/image/profile/takiwaki_shoko_original.jpg'
   },
   {
     id: 'noguchi-iori',
@@ -87,7 +87,7 @@ export const members: MemberProfile[] = [
     bloodType: 'O',
     zodiac: 'Taurus',
     color: '#800080', // Purple
-    imageUrl: 'https://equal-love.jp/feature/profile/images/noguchi_iori.jpg'
+    imageUrl: 'https://equal-love.jp/image/profile/noguchi_iori_original.jpg'
   },
   {
     id: 'morohashi-sana',
@@ -98,7 +98,7 @@ export const members: MemberProfile[] = [
     bloodType: 'B',
     zodiac: 'Leo',
     color: '#008000', // Green
-    imageUrl: 'https://equal-love.jp/feature/profile/images/morohashi_sana.jpg'
+    imageUrl: 'https://equal-love.jp/image/profile/morohashi_sana_original.jpg'
   },
   {
     id: 'yamamoto-anna',
@@ -109,6 +109,6 @@ export const members: MemberProfile[] = [
     bloodType: 'A',
     zodiac: 'Sagittarius',
     color: '#FFFF00', // Yellow/Blue
-    imageUrl: 'https://equal-love.jp/feature/profile/images/yamamoto_anna.jpg'
+    imageUrl: 'https://equal-love.jp/image/profile/yamamoto_anna_original.jpg'
   }
 ];

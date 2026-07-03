@@ -1,12 +1,11 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { SubtitleCue } from '../types';
-import { Play, Pause, Volume2, VolumeX, Maximize, RotateCcw, RotateCw } from 'lucide-react';
+import { Play, Pause, Volume2, VolumeX, Maximize, Minimize, RotateCcw, RotateCw, Settings, ChevronUp, ChevronDown, Type } from 'lucide-react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 
 interface YouTubePlayerProps {
   videoId: string;
   subtitles?: SubtitleCue[];
-  subtitleDelay?: number;
   onProgress?: (currentTime: number, duration: number) => void;
   initialTime?: number;
 }
@@ -18,19 +17,39 @@ declare global {
   }
 }
 
-export default function YouTubePlayer({ videoId, subtitles = [], subtitleDelay = 0, onProgress, initialTime = 0 }: YouTubePlayerProps) {
+export default function YouTubePlayer({ videoId, subtitles = [], onProgress, initialTime = 0 }: YouTubePlayerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<any>(null);
+  const hideTimerRef = useRef<number>(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [currentSubtitle, setCurrentSubtitle] = useState<string>('');
   const [showSubtitles, setShowSubtitles] = useLocalStorage('showSubtitles', true);
-  const [subSize, setSubSize] = useLocalStorage('subSize', 24);
+  const [subSize, setSubSize] = useLocalStorage('subSize', 22);
   const [isMuted, setIsMuted] = useState(false);
   const [volume, setVolume] = useState(100);
   const [theaterMode, setTheaterMode] = useState(false);
   const [showControls, setShowControls] = useState(true);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [subtitleDelay, setSubtitleDelay] = useLocalStorage('subtitleDelay', 0);
+  const [buffered, setBuffered] = useState(0);
+  const [hoverTime, setHoverTime] = useState<number | null>(null);
+  const [hoverX, setHoverX] = useState(0);
+  const seekBarRef = useRef<HTMLDivElement>(null);
+
+  // Auto-hide controls
+  const resetHideTimer = useCallback(() => {
+    setShowControls(true);
+    window.clearTimeout(hideTimerRef.current);
+    if (isPlaying) {
+      hideTimerRef.current = window.setTimeout(() => {
+        setShowControls(false);
+        setShowSettings(false);
+      }, 3000);
+    }
+  }, [isPlaying]);
 
   useEffect(() => {
     if (!window.YT) {
@@ -50,6 +69,7 @@ export default function YouTubePlayer({ videoId, subtitles = [], subtitleDelay =
       if (playerRef.current) {
         playerRef.current.destroy();
       }
+      window.clearTimeout(hideTimerRef.current);
     };
   }, [videoId]);
 
@@ -84,6 +104,12 @@ export default function YouTubePlayer({ videoId, subtitles = [], subtitleDelay =
         },
         onStateChange: (event: any) => {
           setIsPlaying(event.data === window.YT.PlayerState.PLAYING);
+          if (event.data === window.YT.PlayerState.PLAYING) {
+            try {
+              event.target.unloadModule('captions');
+              event.target.unloadModule('cc');
+            } catch (e) {}
+          }
         }
       }
     });
@@ -97,6 +123,12 @@ export default function YouTubePlayer({ videoId, subtitles = [], subtitleDelay =
           const time = playerRef.current.getCurrentTime();
           setCurrentTime(time);
           if (onProgress) onProgress(time, duration);
+
+          // Buffered
+          try {
+            const frac = playerRef.current.getVideoLoadedFraction();
+            setBuffered(frac * duration);
+          } catch {}
 
           if (showSubtitles && subtitles.length > 0) {
             const adjustedTime = time - subtitleDelay;
@@ -121,12 +153,23 @@ export default function YouTubePlayer({ videoId, subtitles = [], subtitleDelay =
     }
   }, [isPlaying]);
 
-  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const time = parseFloat(e.target.value);
+  const handleSeekBarClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!seekBarRef.current || !duration) return;
+    const rect = seekBarRef.current.getBoundingClientRect();
+    const fraction = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    const time = fraction * duration;
     setCurrentTime(time);
     if (playerRef.current) {
       playerRef.current.seekTo(time, true);
     }
+  };
+
+  const handleSeekBarHover = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!seekBarRef.current || !duration) return;
+    const rect = seekBarRef.current.getBoundingClientRect();
+    const fraction = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    setHoverTime(fraction * duration);
+    setHoverX(e.clientX - rect.left);
   };
 
   const toggleMute = () => {
@@ -162,6 +205,12 @@ export default function YouTubePlayer({ videoId, subtitles = [], subtitleDelay =
       }
     }
   };
+
+  useEffect(() => {
+    const onFsChange = () => setIsFullscreen(!!document.fullscreenElement);
+    document.addEventListener('fullscreenchange', onFsChange);
+    return () => document.removeEventListener('fullscreenchange', onFsChange);
+  }, []);
 
   const skipBackward = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -208,19 +257,27 @@ export default function YouTubePlayer({ videoId, subtitles = [], subtitleDelay =
   }, [togglePlay, currentTime, setShowSubtitles]);
 
   const formatTime = (time: number) => {
-    const min = Math.floor(time / 60);
+    const hrs = Math.floor(time / 3600);
+    const min = Math.floor((time % 3600) / 60);
     const sec = Math.floor(time % 60);
+    if (hrs > 0) return `${hrs}:${min < 10 ? '0' : ''}${min}:${sec < 10 ? '0' : ''}${sec}`;
     return `${min}:${sec < 10 ? '0' : ''}${sec}`;
   };
 
+  const progressPercent = duration ? (currentTime / duration) * 100 : 0;
+  const bufferedPercent = duration ? (buffered / duration) * 100 : 0;
+
   return (
     <div 
-      className={`relative w-full aspect-video bg-black md:rounded-lg overflow-hidden group ${theaterMode ? 'fixed inset-4 z-50 rounded-xl shadow-2xl transition-all' : ''}`}
+      className={`relative w-full aspect-video bg-black md:rounded-2xl overflow-hidden select-none ${theaterMode ? 'fixed inset-0 md:inset-4 z-50 md:rounded-2xl shadow-2xl transition-all' : ''}`}
       ref={containerRef}
-      onMouseEnter={() => setShowControls(true)}
-      onMouseLeave={() => isPlaying && setShowControls(false)}
-      onMouseMove={() => {
-        setShowControls(true);
+      onMouseMove={resetHideTimer}
+      onTouchStart={resetHideTimer}
+      onMouseLeave={() => {
+        if (isPlaying) {
+          setShowControls(false);
+          setShowSettings(false);
+        }
       }}
     >
       {theaterMode && (
@@ -229,13 +286,15 @@ export default function YouTubePlayer({ videoId, subtitles = [], subtitleDelay =
 
       <div id={`youtube-player-${videoId}`} className="w-full h-full pointer-events-none" />
 
+      {/* Subtitle Display */}
       {showSubtitles && currentSubtitle && (
-        <div className="absolute bottom-16 left-0 right-0 flex justify-center pointer-events-none px-4 z-10 transition-opacity duration-200">
+        <div className="absolute bottom-20 md:bottom-24 left-0 right-0 flex justify-center pointer-events-none px-4 md:px-8 z-10">
           <div 
-            className="bg-black/65 text-white rounded-md px-3 py-1 text-center font-sans"
+            className="bg-black/70 backdrop-blur-sm text-white rounded-lg px-4 py-2 text-center leading-relaxed max-w-[85%]"
             style={{ 
-              fontSize: `${subSize}px`, 
-              textShadow: '1px 1px 2px rgba(0,0,0,0.8), -1px -1px 2px rgba(0,0,0,0.8)' 
+              fontSize: `${subSize}px`,
+              textShadow: '0 1px 4px rgba(0,0,0,0.9)',
+              lineHeight: 1.5,
             }}
           >
             {currentSubtitle}
@@ -243,99 +302,242 @@ export default function YouTubePlayer({ videoId, subtitles = [], subtitleDelay =
         </div>
       )}
 
+      {/* Center Play Overlay - only when paused */}
       <div 
-        className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 transition-opacity duration-300 flex flex-col gap-2 ${showControls || !isPlaying ? 'opacity-100' : 'opacity-0'}`}
+        className="absolute inset-0 z-0 cursor-pointer" 
+        onClick={togglePlay}
+        style={{ height: 'calc(100% - 56px)' }}
       >
-        <div className="flex items-center gap-2">
-          <input 
-            type="range" 
-            min="0" 
-            max={duration || 100} 
-            value={currentTime} 
-            onChange={handleSeek}
-            className="w-full h-1.5 bg-gray-600 rounded-lg appearance-none cursor-pointer accent-brand"
-            style={{
-               background: `linear-gradient(to right, var(--brand-pink) ${(currentTime / duration) * 100}%, #4b5563 ${(currentTime / duration) * 100}%)`
-            }}
-          />
-        </div>
+        {!isPlaying && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/30 backdrop-blur-[1px]">
+            <div className="flex items-center gap-8 md:gap-14">
+              <button 
+                onClick={skipBackward}
+                className="p-3 md:p-4 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all hover:scale-110 active:scale-95 backdrop-blur-md"
+                title="Rewind 10s"
+              >
+                <RotateCcw size={24} className="md:w-7 md:h-7" />
+              </button>
+              
+              <button 
+                onClick={(e) => { e.stopPropagation(); togglePlay(); }}
+                className="p-5 md:p-7 rounded-full bg-white/95 text-black hover:bg-white shadow-2xl shadow-black/30 transition-all hover:scale-110 active:scale-95"
+                title="Play"
+              >
+                <Play size={36} className="ml-1 fill-current" />
+              </button>
+              
+              <button 
+                onClick={skipForward}
+                className="p-3 md:p-4 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all hover:scale-110 active:scale-95 backdrop-blur-md"
+                title="Skip 10s"
+              >
+                <RotateCw size={24} className="md:w-7 md:h-7" />
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
 
-        <div className="flex items-center justify-between text-white">
-          <div className="flex items-center gap-4">
-            <button onClick={togglePlay} className="hover:text-brand transition-colors">
-              {isPlaying ? <Pause size={24} /> : <Play size={24} />}
-            </button>
-            <div className="flex items-center gap-2 group/volume">
-              <button onClick={toggleMute} className="hover:text-brand transition-colors">
-                {isMuted || volume === 0 ? <VolumeX size={20} /> : <Volume2 size={20} />}
+      {/* Bottom Controls */}
+      <div 
+        className={`absolute bottom-0 left-0 right-0 transition-all duration-300 z-20 ${showControls || !isPlaying ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}
+      >
+        {/* Gradient backdrop */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent pointer-events-none" />
+        
+        <div className="relative px-3 md:px-5 pb-3 md:pb-4 pt-8 flex flex-col gap-2">
+          {/* Seek Bar */}
+          <div 
+            ref={seekBarRef}
+            className="group/seek relative h-6 flex items-center cursor-pointer"
+            onClick={handleSeekBarClick}
+            onMouseMove={handleSeekBarHover}
+            onMouseLeave={() => setHoverTime(null)}
+          >
+            {/* Track background */}
+            <div className="absolute left-0 right-0 h-[3px] group-hover/seek:h-[5px] transition-all bg-white/20 rounded-full overflow-hidden">
+              {/* Buffered */}
+              <div 
+                className="absolute top-0 left-0 h-full bg-white/25 rounded-full" 
+                style={{ width: `${bufferedPercent}%` }} 
+              />
+              {/* Progress */}
+              <div 
+                className="absolute top-0 left-0 h-full rounded-full transition-colors"
+                style={{ 
+                  width: `${progressPercent}%`,
+                  background: 'linear-gradient(90deg, var(--brand-pink), #ff6b9d)'
+                }} 
+              />
+            </div>
+            {/* Seek thumb */}
+            <div 
+              className="absolute top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-brand shadow-lg shadow-brand/40 opacity-0 group-hover/seek:opacity-100 transition-opacity scale-0 group-hover/seek:scale-100 pointer-events-none"
+              style={{ left: `calc(${progressPercent}% - 7px)` }}
+            />
+            {/* Hover time tooltip */}
+            {hoverTime !== null && (
+              <div 
+                className="absolute bottom-7 -translate-x-1/2 bg-black/90 text-white text-[11px] font-mono px-2 py-1 rounded-md pointer-events-none opacity-0 group-hover/seek:opacity-100 transition-opacity whitespace-nowrap"
+                style={{ left: `${hoverX}px` }}
+              >
+                {formatTime(hoverTime)}
+              </div>
+            )}
+          </div>
+
+          {/* Control Buttons Row */}
+          <div className="flex items-center justify-between text-white">
+            <div className="flex items-center gap-1 md:gap-3">
+              {/* Play/Pause */}
+              <button onClick={togglePlay} className="p-1.5 hover:bg-white/10 rounded-lg transition-colors" title={isPlaying ? 'Pause (Space)' : 'Play (Space)'}>
+                {isPlaying ? <Pause size={22} className="fill-current" /> : <Play size={22} className="fill-current ml-0.5" />}
+              </button>
+              
+              {/* Skip buttons */}
+              <button onClick={skipBackward} className="p-1.5 hover:bg-white/10 rounded-lg transition-colors hidden md:flex" title="Rewind 10s">
+                <RotateCcw size={18} />
+              </button>
+              <button onClick={skipForward} className="p-1.5 hover:bg-white/10 rounded-lg transition-colors hidden md:flex" title="Forward 10s">
+                <RotateCw size={18} />
+              </button>
+
+              {/* Volume */}
+              <div className="flex items-center gap-2">
+                <button onClick={toggleMute} className="p-1.5 hover:bg-white/10 rounded-lg transition-colors" title={isMuted ? 'Unmute (M)' : 'Mute (M)'}>
+                  {isMuted || volume === 0 ? <VolumeX size={20} /> : <Volume2 size={20} />}
+                </button>
+                <div className="hidden md:block w-20">
+                  <input 
+                    type="range" 
+                    min="0" 
+                    max="100" 
+                    value={isMuted ? 0 : volume} 
+                    onChange={handleVolumeChange}
+                    className="w-20 h-1 bg-white/30 rounded-lg appearance-none cursor-pointer accent-white"
+                  />
+                </div>
+              </div>
+
+              {/* Time */}
+              <span className="text-[11px] md:text-xs font-mono text-white/70 ml-1">
+                {formatTime(currentTime)} <span className="text-white/40">/</span> {formatTime(duration)}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-0.5 md:gap-1">
+              {/* Subtitle toggle */}
+              <button 
+                onClick={() => setShowSubtitles(!showSubtitles)}
+                className={`p-1.5 rounded-lg transition-all ${showSubtitles ? 'bg-white/20 text-brand' : 'hover:bg-white/10 text-white/60'}`}
+                title="Toggle Subtitles (C)"
+              >
+                <Type size={18} />
+              </button>
+
+              {/* Settings */}
+              <button 
+                onClick={(e) => { e.stopPropagation(); setShowSettings(!showSettings); }}
+                className={`p-1.5 rounded-lg transition-all ${showSettings ? 'bg-white/20 text-brand rotate-45' : 'hover:bg-white/10 text-white/80'}`}
+                title="Settings"
+              >
+                <Settings size={18} />
+              </button>
+
+              {/* Theater */}
+              <button 
+                onClick={() => setTheaterMode(!theaterMode)}
+                className="p-1.5 hover:bg-white/10 rounded-lg transition-colors text-white/80 hidden md:flex"
+                title="Theater Mode"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="4" width="20" height="16" rx="2" />
+                </svg>
+              </button>
+
+              {/* Fullscreen */}
+              <button onClick={toggleFullscreen} className="p-1.5 hover:bg-white/10 rounded-lg transition-colors" title="Fullscreen (F)">
+                {isFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Settings Panel */}
+      {showSettings && (showControls || !isPlaying) && (
+        <div 
+          className="absolute bottom-14 md:bottom-16 right-2 md:right-5 z-30 w-[calc(100%-1rem)] md:w-64 max-w-sm bg-black/90 backdrop-blur-xl rounded-xl border border-white/10 shadow-2xl overflow-hidden"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="px-4 py-3 border-b border-white/10">
+            <h4 className="text-xs font-bold text-white/50 uppercase tracking-widest">Settings</h4>
+          </div>
+          
+          {/* Subtitle Delay */}
+          <div className="px-4 py-3 space-y-2.5 border-b border-white/5">
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-white/70 font-medium">Subtitle Delay</span>
+              <span className="text-xs font-mono font-bold text-brand px-2 py-0.5 bg-brand/10 rounded-md">
+                {subtitleDelay > 0 ? `+${subtitleDelay.toFixed(1)}` : subtitleDelay.toFixed(1)}s
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <button 
+                onClick={() => setSubtitleDelay(Math.max(-10, subtitleDelay - 0.1))}
+                className="p-1 hover:bg-white/10 rounded text-white/60 hover:text-white transition-colors"
+              >
+                <ChevronDown size={14} />
               </button>
               <input 
                 type="range" 
-                min="0" 
-                max="100" 
-                value={isMuted ? 0 : volume} 
-                onChange={handleVolumeChange}
-                className="w-20 h-1.5 bg-gray-600 rounded-lg appearance-none cursor-pointer accent-brand opacity-0 group-hover/volume:opacity-100 transition-opacity"
+                min="-10" 
+                max="10" 
+                step="0.1"
+                value={subtitleDelay} 
+                onChange={(e) => setSubtitleDelay(parseFloat(e.target.value))}
+                className="flex-1 h-1 bg-white/20 rounded-lg appearance-none cursor-pointer accent-brand"
               />
+              <button 
+                onClick={() => setSubtitleDelay(Math.min(10, subtitleDelay + 0.1))}
+                className="p-1 hover:bg-white/10 rounded text-white/60 hover:text-white transition-colors"
+              >
+                <ChevronUp size={14} />
+              </button>
+              <button 
+                onClick={() => setSubtitleDelay(0)}
+                className="text-[10px] px-2 py-1 rounded-md bg-white/10 hover:bg-white/20 text-white/60 hover:text-white font-semibold transition-colors"
+              >
+                Reset
+              </button>
             </div>
-            <span className="text-sm font-mono">
-              {formatTime(currentTime)} / {formatTime(duration)}
-            </span>
           </div>
 
-          <div className="flex items-center gap-4">
-            <button 
-              onClick={() => setShowSubtitles(!showSubtitles)}
-              className={`text-sm font-bold px-1 border-b-2 transition-colors ${showSubtitles ? 'border-brand text-brand' : 'border-transparent hover:text-gray-300'}`}
-              title="Toggle Subtitles (C)"
-            >
-              =
-            </button>
-            <button 
-              onClick={() => setTheaterMode(!theaterMode)}
-              className="text-sm hover:text-brand transition-colors font-semibold"
-              title="Theater Mode"
-            >
-              [ ]
-            </button>
-            <button onClick={toggleFullscreen} className="hover:text-brand transition-colors" title="Fullscreen (F)">
-              <Maximize size={20} />
-            </button>
+          {/* Subtitle Size */}
+          <div className="px-4 py-3 space-y-2.5">
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-white/70 font-medium">Subtitle Size</span>
+              <span className="text-xs font-mono font-bold text-white/50 px-2 py-0.5 bg-white/5 rounded-md">
+                {subSize}px
+              </span>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="text-[10px] text-white/40">A</span>
+              <input 
+                type="range" 
+                min="14" 
+                max="36" 
+                step="1"
+                value={subSize} 
+                onChange={(e) => setSubSize(parseInt(e.target.value))}
+                className="flex-1 h-1 bg-white/20 rounded-lg appearance-none cursor-pointer accent-brand"
+              />
+              <span className="text-sm text-white/40 font-bold">A</span>
+            </div>
           </div>
         </div>
-      </div>
-      
-      <div 
-        className="absolute inset-0 z-0 cursor-pointer flex items-center justify-center" 
-        onClick={togglePlay}
-        style={{ height: 'calc(100% - 60px)' }}
-      >
-        <div className={`absolute inset-0 flex items-center justify-center gap-8 md:gap-16 transition-all duration-300 ${showControls || !isPlaying ? 'opacity-100 bg-black/40 backdrop-blur-[1px]' : 'opacity-0'}`}>
-          <button 
-            onClick={skipBackward}
-            className="p-3 md:p-4 rounded-full bg-black/50 text-white hover:bg-brand/80 transition-all transform hover:scale-110 active:scale-95"
-            title="Rewind 10s"
-          >
-            <RotateCcw size={32} className="md:w-10 md:h-10" />
-          </button>
-          
-          <button 
-            onClick={(e) => { e.stopPropagation(); togglePlay(); }}
-            className="p-5 md:p-6 rounded-full bg-brand text-white hover:bg-brand-strong shadow-lg shadow-brand/20 transition-all transform hover:scale-110 active:scale-95"
-            title={isPlaying ? "Pause" : "Play"}
-          >
-            {isPlaying ? <Pause size={40} className="md:w-12 md:h-12 fill-current" /> : <Play size={40} className="md:w-12 md:h-12 fill-current ml-2" />}
-          </button>
-          
-          <button 
-            onClick={skipForward}
-            className="p-3 md:p-4 rounded-full bg-black/50 text-white hover:bg-brand/80 transition-all transform hover:scale-110 active:scale-95"
-            title="Skip 10s"
-          >
-            <RotateCw size={32} className="md:w-10 md:h-10" />
-          </button>
-        </div>
-      </div>
+      )}
     </div>
   );
 }

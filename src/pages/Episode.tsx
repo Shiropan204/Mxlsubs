@@ -67,10 +67,11 @@ export default function Episode() {
   const [showNotes, setShowNotes] = useState(true);
   const [showUploadControls, setShowUploadControls] = useLocalStorage('showUploadControls', false);
   const [isLoading, setIsLoading] = useState(true);
+  const [fetchedSubtitles, setFetchedSubtitles] = useState<SubtitleCue[] | null>(null);
   const vttInputRef = useRef<HTMLInputElement>(null);
   const thumbnailInputRef = useRef<HTMLInputElement>(null);
 
-  const [subtitleDelay, setSubtitleDelay] = useState(0);
+
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -87,6 +88,23 @@ export default function Episode() {
     const timer = setTimeout(() => setIsLoading(false), 600);
     return () => clearTimeout(timer);
   }, [id]);
+
+  useEffect(() => {
+    if (episode && episode.vttUrl) {
+      fetch(episode.vttUrl)
+        .then(res => {
+          if (!res.ok) throw new Error('VTT not found');
+          return res.text();
+        })
+        .then(text => setFetchedSubtitles(parseVTT(text)))
+        .catch(err => {
+          console.warn('Failed to load subtitles from vttUrl', err);
+          setFetchedSubtitles(null);
+        });
+    } else {
+      setFetchedSubtitles(null);
+    }
+  }, [episode?.vttUrl]);
 
   useEffect(() => {
     if (episode) {
@@ -175,166 +193,169 @@ export default function Episode() {
     }
   };
 
-  const activeSubtitles = customSubtitles[episode.id] || episode.subtitles;
+  const activeSubtitles = customSubtitles[episode.id] || fetchedSubtitles || episode.subtitles;
 
   return (
-    <div className="max-w-7xl mx-auto px-0 md:px-4 py-0 md:py-6 flex flex-col lg:flex-row gap-8">
+    <div className="max-w-7xl mx-auto px-0 md:px-4 py-0 md:py-8 flex flex-col lg:flex-row gap-10">
       {/* Main Content */}
-      <div className="flex-1 flex flex-col gap-4 md:gap-6">
-        <div className="w-full">
+      <div className="flex-1 flex flex-col gap-0">
+        {/* Video Player */}
+        <div className="w-full md:rounded-2xl overflow-hidden shadow-2xl shadow-black/20">
           <YouTubePlayer 
             videoId={episode.videoId} 
             subtitles={activeSubtitles}
-            subtitleDelay={subtitleDelay}
             onProgress={handleProgress}
             initialTime={initialTime}
           />
         </div>
         
-        <div className="px-4 md:px-0 space-y-4 md:space-y-6">
-          <div className="flex items-center gap-4 py-4 bg-bg-surface px-4 rounded-lg border border-border-subtle">
-          <label className="text-sm font-medium whitespace-nowrap text-text-muted">Subtitle Delay ({subtitleDelay > 0 ? `+${subtitleDelay.toFixed(1)}s` : `${subtitleDelay.toFixed(1)}s`})</label>
-          <input 
-            type="range" 
-            min="-10" 
-            max="10" 
-            step="0.1"
-            value={subtitleDelay} 
-            onChange={(e) => setSubtitleDelay(parseFloat(e.target.value))}
-            className="flex-1"
-          />
-          <button 
-            onClick={() => setSubtitleDelay(0)}
-            className="text-xs px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-          >
-            Reset
-          </button>
-        </div>
-        
-        <div className="space-y-4">
-          <h1 className="text-xl md:text-3xl font-heading font-bold leading-tight">{episode.title}</h1>
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border-subtle pb-6">
-            <div className="flex flex-wrap items-center gap-3 text-sm text-text-muted">
-              <span>{episode.date}</span>
-              <span className="hidden sm:inline">•</span>
-              <span className="uppercase tracking-wider font-semibold bg-bg-surface px-2 py-1 rounded-md border border-border-subtle sm:border-none sm:p-0 sm:bg-transparent">{episode.type}</span>
-            </div>
+        <div className="px-4 md:px-0 space-y-6 mt-6">
+
+          {/* Title & Info Card */}
+          <div className="space-y-5">
+            <h1 className="text-xl md:text-3xl font-heading font-bold leading-tight tracking-tight">{episode.title}</h1>
             
-            <div className="flex flex-wrap items-center gap-2">
-              {showUploadControls && (
-                <>
-                  <input 
-                    type="file" 
-                    accept=".vtt" 
-                    className="hidden" 
-                    ref={vttInputRef}
-                    onChange={handleVTTUpload}
-                  />
-                  <input 
-                    type="file" 
-                    accept="image/*" 
-                    className="hidden" 
-                    ref={thumbnailInputRef}
-                    onChange={handleThumbnailUpload}
-                  />
-                  <button 
-                    onClick={() => vttInputRef.current?.click()}
-                    className="flex items-center gap-2 px-4 py-2 bg-brand/10 hover:bg-brand/20 text-brand rounded-full text-sm font-medium transition-colors"
-                    title="Upload .vtt file (Persists locally)"
-                  >
-                    <Upload size={16} /> Subtitle
-                  </button>
-                  <button 
-                    onClick={() => thumbnailInputRef.current?.click()}
-                    className="flex items-center gap-2 px-4 py-2 bg-brand/10 hover:bg-brand/20 text-brand rounded-full text-sm font-medium transition-colors"
-                    title="Upload custom thumbnail (Persists locally)"
-                  >
-                    <Upload size={16} /> Thumbnail
-                  </button>
-                </>
-              )}
-              <button className="flex items-center justify-center gap-2 px-4 py-2 bg-bg-surface hover:bg-border-subtle rounded-full text-sm font-medium transition-colors flex-1 sm:flex-none">
-                <Download size={16} /> <span className="hidden sm:inline">Subtitle (.vtt)</span><span className="sm:hidden">Download</span>
-              </button>
-              <button className="flex items-center justify-center gap-2 px-4 py-2 bg-bg-surface hover:bg-border-subtle rounded-full text-sm font-medium transition-colors flex-1 sm:flex-none">
-                <Share2 size={16} /> Share
-              </button>
-            </div>
-          </div>
-          
-          <div className="space-y-4 pt-2">
-            <div className="flex flex-wrap gap-2">
-              <span className="text-sm font-semibold text-text-muted mr-2">Members:</span>
-              {episode.members.map(m => (
-                <Link key={m} to={`/?search=${m}`} className="text-sm text-brand hover:underline">
-                  {m}
-                </Link>
-              ))}
-            </div>
-            
-            <div className="flex flex-wrap gap-2">
-              <span className="text-sm font-semibold text-text-muted mr-2">Tags:</span>
-              {episode.tags.map(t => (
-                <span key={t} className="text-xs bg-bg-surface border border-border-subtle px-2 py-1 rounded">
-                  #{t}
+            {/* Meta Info Row */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border-subtle">
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="inline-flex items-center gap-1.5 text-sm text-text-muted">
+                  <svg className="w-4 h-4 text-brand/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                  {episode.date}
                 </span>
-              ))}
+                <span className="hidden sm:inline text-border-subtle">|</span>
+                <span className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest font-bold text-brand bg-brand/10 px-3 py-1 rounded-full">
+                  {episode.type}
+                </span>
+              </div>
+              
+              {/* Action Buttons */}
+              <div className="flex flex-wrap items-center gap-2">
+                {showUploadControls && (
+                  <>
+                    <input type="file" accept=".vtt" className="hidden" ref={vttInputRef} onChange={handleVTTUpload} />
+                    <input type="file" accept="image/*" className="hidden" ref={thumbnailInputRef} onChange={handleThumbnailUpload} />
+                    <button 
+                      onClick={() => vttInputRef.current?.click()}
+                      className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-brand/15 to-brand/5 hover:from-brand/25 hover:to-brand/15 text-brand rounded-xl text-sm font-semibold transition-all duration-200 border border-brand/20 hover:border-brand/40 hover:shadow-md hover:shadow-brand/10"
+                      title="Upload .vtt file (Persists locally)"
+                    >
+                      <Upload size={15} /> Subtitle
+                    </button>
+                    <button 
+                      onClick={() => thumbnailInputRef.current?.click()}
+                      className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-brand/15 to-brand/5 hover:from-brand/25 hover:to-brand/15 text-brand rounded-xl text-sm font-semibold transition-all duration-200 border border-brand/20 hover:border-brand/40 hover:shadow-md hover:shadow-brand/10"
+                      title="Upload custom thumbnail (Persists locally)"
+                    >
+                      <Upload size={15} /> Thumbnail
+                    </button>
+                  </>
+                )}
+                <button className="flex items-center justify-center gap-2 px-4 py-2.5 bg-bg-surface hover:bg-border-subtle rounded-xl text-sm font-semibold transition-all duration-200 flex-1 sm:flex-none border border-border-subtle hover:border-brand/30 hover:text-brand hover:shadow-md hover:shadow-brand/5">
+                  <Download size={15} /> <span className="hidden sm:inline">Download .vtt</span><span className="sm:hidden">Download</span>
+                </button>
+                <button className="flex items-center justify-center gap-2 px-4 py-2.5 bg-bg-surface hover:bg-border-subtle rounded-xl text-sm font-semibold transition-all duration-200 flex-1 sm:flex-none border border-border-subtle hover:border-brand/30 hover:text-brand hover:shadow-md hover:shadow-brand/5">
+                  <Share2 size={15} /> Share
+                </button>
+              </div>
             </div>
-          </div>
           
-          {/* Translator Notes */}
-          {episode.translatorNotes && (
-            <div className="mt-8 bg-brand/5 border border-brand/20 rounded-xl overflow-hidden">
-              <button 
-                onClick={() => setShowNotes(!showNotes)}
-                className="w-full px-4 py-3 flex items-center justify-between bg-brand/10 text-brand font-medium"
-              >
-                Catatan Penerjemah
-                <span className="text-lg">{showNotes ? '−' : '+'}</span>
-              </button>
-              {showNotes && (
-                <div className="p-4 text-sm text-text-secondary leading-relaxed">
-                  {episode.translatorNotes}
+            {/* Members & Tags */}
+            <div className="space-y-4">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-xs font-bold uppercase tracking-widest text-text-muted mr-1">Members</span>
+                {episode.members.map(m => (
+                  <Link 
+                    key={m} 
+                    to={`/?search=${m}`} 
+                    className="inline-flex items-center gap-1.5 text-sm font-medium text-text-primary bg-bg-surface border border-border-subtle px-3 py-1.5 rounded-full hover:border-brand/40 hover:text-brand hover:bg-brand/5 transition-all duration-200 hover:shadow-sm"
+                  >
+                    <span className="w-5 h-5 rounded-full bg-gradient-to-br from-brand/40 to-brand/20 flex items-center justify-center text-[10px] font-bold text-brand">
+                      {m.charAt(0)}
+                    </span>
+                    {m}
+                  </Link>
+                ))}
+              </div>
+              
+              {episode.tags.length > 0 && (
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-xs font-bold uppercase tracking-widest text-text-muted mr-1">Tags</span>
+                  {episode.tags.map(t => (
+                    <span key={t} className="text-xs font-medium bg-bg-surface border border-border-subtle px-3 py-1.5 rounded-full text-text-muted hover:text-brand hover:border-brand/30 transition-colors cursor-default">
+                      #{t}
+                    </span>
+                  ))}
                 </div>
               )}
             </div>
-          )}
           
-          <div className="pt-8">
-             <a href="mailto:report@mxlsubs.com" className="inline-flex items-center gap-2 text-sm text-text-muted hover:text-brand transition-colors">
-               <AlertCircle size={16} /> Lapor Masalah Subtitle (Typo/Timing)
-             </a>
+            {/* Translator Notes */}
+            {episode.translatorNotes && (
+              <div className="mt-6 rounded-2xl overflow-hidden border border-brand/15 bg-gradient-to-br from-brand/[0.03] to-transparent">
+                <button 
+                  onClick={() => setShowNotes(!showNotes)}
+                  className="w-full px-5 py-4 flex items-center justify-between bg-brand/[0.07] hover:bg-brand/[0.12] transition-colors"
+                >
+                  <span className="flex items-center gap-2 text-brand font-heading font-semibold text-sm">
+                    <MessageCircle size={16} />
+                    Catatan Penerjemah
+                  </span>
+                  <span className={`text-brand transition-transform duration-300 ${showNotes ? 'rotate-180' : ''}`}>
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                  </span>
+                </button>
+                {showNotes && (
+                  <div className="px-5 py-4 text-sm text-text-muted leading-relaxed border-t border-brand/10">
+                    {episode.translatorNotes}
+                  </div>
+                )}
+              </div>
+            )}
+          
+            {/* Report Issue */}
+            <div className="pt-6 pb-4">
+               <a href="mailto:report@mxlsubs.com" className="group inline-flex items-center gap-2 text-sm text-text-muted hover:text-brand transition-all duration-200">
+                 <AlertCircle size={15} className="group-hover:scale-110 transition-transform" /> Lapor Masalah Subtitle (Typo/Timing)
+               </a>
+            </div>
           </div>
         </div>
       </div>
-      </div>
 
       {/* Sidebar */}
-      <div className="w-full lg:w-80 space-y-6 px-4 md:px-0">
-        <h3 className="font-heading font-bold text-lg border-b border-border-subtle pb-2">Episode Terkait</h3>
-        <div className="flex flex-col gap-4">
-          {relatedEpisodes.map(ep => (
-            <Link key={ep.id} to={`/episode/${ep.id}`} className="group flex gap-3">
-              <div className="w-40 aspect-video bg-gray-200 dark:bg-gray-800 rounded-lg overflow-hidden shrink-0 relative">
-                <img 
-                  src={customThumbnails[ep.id] || `https://img.youtube.com/vi/${ep.videoId}/mqdefault.jpg`} 
-                  alt={ep.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors" />
+      <div className="w-full lg:w-80 space-y-5 px-4 md:px-0 lg:pt-0">
+        <div className="lg:sticky lg:top-24 space-y-5">
+          <h3 className="font-heading font-bold text-base uppercase tracking-wider text-text-muted flex items-center gap-2">
+            <span className="w-1 h-5 rounded-full bg-gradient-to-b from-brand to-brand/30" />
+            Episode Terkait
+          </h3>
+          <div className="flex flex-col gap-3">
+            {relatedEpisodes.map(ep => (
+              <Link key={ep.id} to={`/episode/${ep.id}`} className="group flex gap-3 p-2 -mx-2 rounded-xl hover:bg-bg-surface transition-all duration-200">
+                <div className="w-36 aspect-video bg-bg-surface rounded-xl overflow-hidden shrink-0 relative border border-border-subtle group-hover:border-brand/30 transition-colors shadow-sm">
+                  <img 
+                    src={customThumbnails[ep.id] || ep.thumbnailUrl || `https://img.youtube.com/vi/${ep.videoId}/mqdefault.jpg`} 
+                    alt={ep.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </div>
+                <div className="flex flex-col justify-center py-0.5 gap-1.5 min-w-0">
+                  <h4 className="font-heading font-semibold text-sm line-clamp-2 group-hover:text-brand transition-colors leading-snug">
+                    {ep.title}
+                  </h4>
+                  <span className="text-[11px] text-text-muted font-medium">{ep.date}</span>
+                </div>
+              </Link>
+            ))}
+            {relatedEpisodes.length === 0 && (
+              <div className="text-center py-10 rounded-2xl border border-dashed border-border-subtle bg-bg-surface/50">
+                <p className="text-sm text-text-muted">Belum ada episode terkait.</p>
+                <p className="text-xs text-text-muted/60 mt-1">Stay tuned! 🎀</p>
               </div>
-              <div className="flex flex-col py-1">
-                <h4 className="font-semibold text-sm line-clamp-2 group-hover:text-brand transition-colors">
-                  {ep.title}
-                </h4>
-                <span className="text-xs text-text-muted mt-1">{ep.date}</span>
-              </div>
-            </Link>
-          ))}
-          {relatedEpisodes.length === 0 && (
-            <p className="text-sm text-text-muted">Tidak ada episode terkait.</p>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </div>

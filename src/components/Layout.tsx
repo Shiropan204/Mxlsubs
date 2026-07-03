@@ -74,9 +74,17 @@ export default function Layout() {
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 group" onClick={() => setIsMobileMenuOpen(false)}>
             <div className="font-heading font-bold text-xl tracking-tight flex items-center">
-              <span className="text-brand">=</span>
-              <span className="group-hover:text-brand transition-colors">LOVE</span>
-              <span className="ml-2 font-normal text-text-muted text-sm border-l border-border-subtle pl-2 hidden sm:block">MXL Subs</span>
+              {/* Desktop Logo */}
+              <div className="hidden sm:flex items-center">
+                <span className="text-brand">=</span>
+                <span className="group-hover:text-brand transition-colors">LOVE</span>
+                <span className="ml-2 font-normal text-text-muted text-sm border-l border-border-subtle pl-2">MXL Subs</span>
+              </div>
+              {/* Mobile Logo */}
+              <div className="flex sm:hidden items-center group-hover:text-brand transition-colors">
+                <span className="text-brand">MXL</span>
+                <span>Subs</span>
+              </div>
             </div>
           </Link>
           
@@ -98,7 +106,7 @@ export default function Layout() {
             </button>
             <button 
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
-              className="p-2 transition-colors relative w-12 h-12 flex md:hidden items-center justify-center z-50 text-text-primary"
+              className="p-2 transition-colors relative w-12 h-12 flex items-center justify-center z-50 text-text-primary"
             >
               <div className="flex flex-col items-center justify-center gap-[6px] w-8 h-8">
                 <span className={`block h-[1px] transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'w-8 rotate-45 translate-y-[3.5px] bg-current' : 'w-8 bg-current'}`}></span>
@@ -111,7 +119,7 @@ export default function Layout() {
 
       {/* Mobile Menu Fullscreen Overlay */}
       <div 
-        className={`fixed inset-0 z-40 transition-all duration-500 ease-in-out md:hidden ${
+        className={`fixed inset-0 z-40 transition-all duration-500 ease-in-out ${
           isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
       >
@@ -128,7 +136,7 @@ export default function Layout() {
         </div>
 
         <div className="relative z-10 flex flex-col h-full pt-28 px-8 md:px-12 xl:px-14 pb-12 overflow-y-auto pointer-events-none md:ml-auto w-full md:w-[min(42vw,440px)] xl:w-[min(30vw,420px)]">
-          <div className="flex flex-col gap-6 text-[15px] tracking-widest font-heading font-medium text-white pointer-events-auto mt-4">
+          <div className={`flex flex-col gap-6 text-[15px] tracking-widest font-heading font-medium text-white mt-4 ${isMobileMenuOpen ? 'pointer-events-auto' : ''}`}>
             <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="hover:opacity-70 transition-opacity">HOME</Link>
             <Link to="/about" onClick={() => setIsMobileMenuOpen(false)} className="hover:opacity-70 transition-opacity">ABOUT</Link>
             <Link to="/profile" onClick={() => setIsMobileMenuOpen(false)} className="hover:opacity-70 transition-opacity">PROFILE</Link>
@@ -145,7 +153,7 @@ export default function Layout() {
             </div>
           </div>
           
-          <div className="mt-auto pt-8 pointer-events-auto">
+          <div className={`mt-auto pt-8 ${isMobileMenuOpen ? 'pointer-events-auto' : ''}`}>
             <button 
               onClick={() => { toggleTheme(); setIsMobileMenuOpen(false); }} 
               className="flex items-center gap-3 text-xs tracking-widest font-medium text-white/80 hover:text-white transition-colors"
@@ -156,25 +164,27 @@ export default function Layout() {
         </div>
       </div>
       
-      <main className="flex-1 w-full pb-16 md:pb-0">
+      <main className="flex-1 w-full" style={{ paddingBottom: 'calc(6rem + env(safe-area-inset-bottom, 0px))' }}>
         <Outlet />
       </main>
       
-      {/* Bottom Navigation for Mobile */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-bg-surface/90 backdrop-blur-md border-t border-border-subtle safe-area-pb">
-        <div className="flex items-center justify-around h-16 px-2">
-          <Link to="/" className={`flex flex-col items-center justify-center w-full h-full gap-1 transition-colors ${location.pathname === '/' ? 'text-brand' : 'text-text-muted hover:text-text-primary'}`}>
-            <HomeIcon size={22} className={location.pathname === '/' ? 'fill-current' : ''} />
-            <span className="text-[10px] font-medium">Beranda</span>
-          </Link>
-          <Link to="/?search=&type=Music+Video" className={`flex flex-col items-center justify-center w-full h-full gap-1 transition-colors ${location.search.includes('type=Music') ? 'text-brand' : 'text-text-muted hover:text-text-primary'}`}>
-            <Compass size={22} />
-            <span className="text-[10px] font-medium">Eksplor</span>
-          </Link>
-          <Link to="/profile" className={`flex flex-col items-center justify-center w-full h-full gap-1 transition-colors ${location.pathname === '/profile' ? 'text-brand' : 'text-text-muted hover:text-text-primary'}`}>
-            <User size={22} className={location.pathname === '/profile' ? 'fill-current' : ''} />
-            <span className="text-[10px] font-medium">Profil</span>
-          </Link>
+      {/* Bottom Navigation for Mobile - Floating Style */}
+      <nav className="md:hidden fixed left-4 right-4 z-40" style={{ bottom: 'calc(1rem + env(safe-area-inset-bottom, 0px))' }}>
+        <div className="bg-bg-surface/85 backdrop-blur-xl border border-border-subtle rounded-2xl shadow-xl shadow-black/15 dark:shadow-black/40">
+          <div className="flex items-center justify-around h-14 px-2">
+            <Link to="/" className={`flex flex-col items-center justify-center w-full h-full gap-0.5 transition-all ${location.pathname === '/' ? 'text-brand' : 'text-text-muted'}`}>
+              <HomeIcon size={20} className={location.pathname === '/' ? 'fill-current' : ''} />
+              <span className="text-[10px] font-semibold">{location.pathname === '/' ? '•' : 'Beranda'}</span>
+            </Link>
+            <Link to="/?search=&type=Music+Video" className={`flex flex-col items-center justify-center w-full h-full gap-0.5 transition-all ${location.search.includes('type=Music') ? 'text-brand' : 'text-text-muted'}`}>
+              <Compass size={20} />
+              <span className="text-[10px] font-semibold">Eksplor</span>
+            </Link>
+            <Link to="/profile" className={`flex flex-col items-center justify-center w-full h-full gap-0.5 transition-all ${location.pathname === '/profile' ? 'text-brand' : 'text-text-muted'}`}>
+              <User size={20} className={location.pathname === '/profile' ? 'fill-current' : ''} />
+              <span className="text-[10px] font-semibold">Profil</span>
+            </Link>
+          </div>
         </div>
       </nav>
       

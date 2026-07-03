@@ -14,6 +14,8 @@ export interface Episode {
   tags: string[];
   translatorNotes?: string;
   subtitles: SubtitleCue[];
+  vttUrl?: string;
+  thumbnailUrl?: string;
 }
 
 export interface MemberProfile {
