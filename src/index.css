@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Poppins:wght@500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Open Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  
+  --color-brand: var(--brand-pink);
+  --color-brand-strong: #E91E63;
+  --color-bg-primary: var(--bg);
+  --color-bg-surface: var(--surface);
+  --color-text-primary: var(--text-main);
+  --color-text-muted: var(--text-secondary);
+  --color-border-subtle: var(--border-color);
+}
+
+@layer base {
+  :root {
+    --brand-pink: #F48FB1;
+    --bg: #FFFFFF;
+    --surface: #FAFAFA;
+    --text-main: #222222;
+    --text-secondary: #555555;
+    --border-color: #F0F0F0;
+  }
+
+  .dark {
+    --brand-pink: #F9A8C9;
+    --bg: #17141C;
+    --surface: #221F29;
+    --text-main: #F2EDEF;
+    --text-secondary: #B8AEB4;
+    --border-color: #33303B;
+  }
+  
+  body {
+    background-color: var(--bg);
+    color: var(--text-main);
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+}
+
+/* Custom Range Input */
+input[type=range] {
+  -webkit-appearance: none;
+  background: transparent;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  background: var(--brand-pink);
+  cursor: pointer;
+  margin-top: -4px; 
+}
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 4px;
+  cursor: pointer;
+  border-radius: 2px;
+}

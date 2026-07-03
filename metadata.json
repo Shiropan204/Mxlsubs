@@ -1,0 +1,8 @@
+{
+  "name": "MXLSubs",
+  "description": "Fan-subtitle Indonesia non-komersial untuk \u003dLOVE (イコールラブ).",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

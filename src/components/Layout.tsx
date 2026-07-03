@@ -1,0 +1,208 @@
+import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { Moon, Sun, Menu, Search, X, Home as HomeIcon, Compass, User } from 'lucide-react';
+import { useLocalStorage } from '../hooks/useLocalStorage';
+import React, { useEffect, useState, useRef } from 'react';
+
+export default function Layout() {
+  const [theme, setTheme] = useLocalStorage<'light' | 'dark'>('theme', 'light');
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
+  const location = useLocation();
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
+
+  useEffect(() => {
+    if (isSearchOpen && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [isSearchOpen]);
+
+  const toggleTheme = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light');
+  };
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/?search=${encodeURIComponent(searchQuery.trim())}`);
+      setIsSearchOpen(false);
+      setSearchQuery('');
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col bg-bg-primary text-text-primary transition-colors relative">
+      {/* Search Overlay */}
+      {isSearchOpen && (
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-black/60 backdrop-blur-sm transition-opacity" onClick={() => setIsSearchOpen(false)}>
+          <div 
+            className="w-full max-w-2xl bg-bg-surface border border-border-subtle rounded-2xl shadow-2xl p-4 animate-in slide-in-from-top-4 fade-in duration-200"
+            onClick={e => e.stopPropagation()}
+          >
+            <form onSubmit={handleSearch} className="relative flex items-center">
+              <Search className="absolute left-4 text-text-muted" size={24} />
+              <input 
+                ref={searchInputRef}
+                type="text" 
+                placeholder="Cari judul episode, member, atau tag..." 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-transparent pl-14 pr-14 py-4 text-lg font-medium text-text-primary focus:outline-none placeholder:text-text-muted"
+              />
+              <button 
+                type="button" 
+                onClick={() => setIsSearchOpen(false)}
+                className="absolute right-4 p-2 text-text-muted hover:text-brand transition-colors rounded-full hover:bg-border-subtle"
+              >
+                <X size={20} />
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      <header className="border-b border-border-subtle bg-bg-surface/80 backdrop-blur-md sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-2 group" onClick={() => setIsMobileMenuOpen(false)}>
+            <div className="font-heading font-bold text-xl tracking-tight flex items-center">
+              <span className="text-brand">=</span>
+              <span className="group-hover:text-brand transition-colors">LOVE</span>
+              <span className="ml-2 font-normal text-text-muted text-sm border-l border-border-subtle pl-2 hidden sm:block">MXL Subs</span>
+            </div>
+          </Link>
+          
+          <div className="flex items-center gap-2 md:gap-4">
+            <div className="hidden md:flex items-center gap-6 mr-2">
+              <Link to="/" className="hover:text-brand transition-colors font-medium">Home</Link>
+              <Link to="/about" className="hover:text-brand transition-colors font-medium">About</Link>
+            </div>
+            
+            <button 
+              onClick={() => setIsSearchOpen(true)}
+              className="p-2 rounded-full hover:bg-border-subtle transition-colors text-text-muted hover:text-brand"
+              title="Search"
+            >
+              <Search size={20} />
+            </button>
+            <button onClick={toggleTheme} className="hidden md:block p-2 rounded-full hover:bg-border-subtle transition-colors text-text-muted hover:text-brand" title="Toggle Theme">
+              {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
+            <button 
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
+              className="p-2 transition-colors relative w-12 h-12 flex md:hidden items-center justify-center z-50 text-text-primary"
+            >
+              <div className="flex flex-col items-center justify-center gap-[6px] w-8 h-8">
+                <span className={`block h-[1px] transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'w-8 rotate-45 translate-y-[3.5px] bg-current' : 'w-8 bg-current'}`}></span>
+                <span className={`block h-[1px] transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'w-8 -rotate-45 -translate-y-[3.5px] bg-current' : 'w-8 bg-current'}`}></span>
+              </div>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Mobile Menu Fullscreen Overlay */}
+      <div 
+        className={`fixed inset-0 z-40 transition-all duration-500 ease-in-out md:hidden ${
+          isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+      >
+        <div className="absolute inset-0 overflow-hidden" onClick={() => setIsMobileMenuOpen(false)}>
+          <div className="absolute inset-0 bg-bg-primary/40 backdrop-blur-sm"></div>
+          {/* Slanted pink background */}
+          <div 
+            className={`absolute top-0 bottom-0 w-[150%] -right-[50%] md:w-[1000px] md:right-[calc(min(42vw,440px)-1000px)] xl:right-[calc(min(30vw,420px)-1000px)] bg-[#ea6687] transform origin-top-left transition-transform duration-700 ease-in-out ${
+              isMobileMenuOpen 
+                ? 'translate-x-[-40%] md:translate-x-0 -skew-x-[15deg] md:-skew-x-[10deg]' 
+                : 'translate-x-[100%] md:translate-x-full -skew-x-[15deg] md:-skew-x-[10deg]'
+            }`}
+          ></div>
+        </div>
+
+        <div className="relative z-10 flex flex-col h-full pt-28 px-8 md:px-12 xl:px-14 pb-12 overflow-y-auto pointer-events-none md:ml-auto w-full md:w-[min(42vw,440px)] xl:w-[min(30vw,420px)]">
+          <div className="flex flex-col gap-6 text-[15px] tracking-widest font-heading font-medium text-white pointer-events-auto mt-4">
+            <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="hover:opacity-70 transition-opacity">HOME</Link>
+            <Link to="/about" onClick={() => setIsMobileMenuOpen(false)} className="hover:opacity-70 transition-opacity">ABOUT</Link>
+            <Link to="/profile" onClick={() => setIsMobileMenuOpen(false)} className="hover:opacity-70 transition-opacity">PROFILE</Link>
+            
+            <div className="mt-4 pt-4 border-t border-white/20">
+              <h3 className="text-xs text-white/50 mb-4">CATEGORIES</h3>
+              <div className="flex flex-col gap-4">
+                <Link to="/?search=&type=IKONOIJOY+Channel" onClick={() => setIsMobileMenuOpen(false)} className="hover:opacity-70 transition-opacity">IKONOIJOY CHANNEL</Link>
+                <span className="opacity-50 cursor-not-allowed">VARIETY</span>
+                <span className="opacity-50 cursor-not-allowed">MUSIC VIDEO</span>
+                <span className="opacity-50 cursor-not-allowed">CONCERT</span>
+                <span className="opacity-50 cursor-not-allowed">BEHIND THE SCENES</span>
+              </div>
+            </div>
+          </div>
+          
+          <div className="mt-auto pt-8 pointer-events-auto">
+            <button 
+              onClick={() => { toggleTheme(); setIsMobileMenuOpen(false); }} 
+              className="flex items-center gap-3 text-xs tracking-widest font-medium text-white/80 hover:text-white transition-colors"
+            >
+              {theme === 'dark' ? <><Sun size={16} /> LIGHT MODE</> : <><Moon size={16} /> DARK MODE</>}
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <main className="flex-1 w-full pb-16 md:pb-0">
+        <Outlet />
+      </main>
+      
+      {/* Bottom Navigation for Mobile */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-bg-surface/90 backdrop-blur-md border-t border-border-subtle safe-area-pb">
+        <div className="flex items-center justify-around h-16 px-2">
+          <Link to="/" className={`flex flex-col items-center justify-center w-full h-full gap-1 transition-colors ${location.pathname === '/' ? 'text-brand' : 'text-text-muted hover:text-text-primary'}`}>
+            <HomeIcon size={22} className={location.pathname === '/' ? 'fill-current' : ''} />
+            <span className="text-[10px] font-medium">Beranda</span>
+          </Link>
+          <Link to="/?search=&type=Music+Video" className={`flex flex-col items-center justify-center w-full h-full gap-1 transition-colors ${location.search.includes('type=Music') ? 'text-brand' : 'text-text-muted hover:text-text-primary'}`}>
+            <Compass size={22} />
+            <span className="text-[10px] font-medium">Eksplor</span>
+          </Link>
+          <Link to="/profile" className={`flex flex-col items-center justify-center w-full h-full gap-1 transition-colors ${location.pathname === '/profile' ? 'text-brand' : 'text-text-muted hover:text-text-primary'}`}>
+            <User size={22} className={location.pathname === '/profile' ? 'fill-current' : ''} />
+            <span className="text-[10px] font-medium">Profil</span>
+          </Link>
+        </div>
+      </nav>
+      
+      <footer className="hidden md:block border-t border-border-subtle bg-bg-surface py-10 mt-16">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex flex-col items-center md:items-start gap-2">
+            <div className="font-heading font-bold text-xl tracking-tight flex items-center opacity-80">
+              <span className="text-brand">=</span>
+              <span>LOVE</span>
+              <span className="ml-2 font-normal text-text-muted text-sm border-l border-border-subtle pl-2">MXL Subs</span>
+            </div>
+            <p className="text-text-muted text-sm text-center md:text-left max-w-md">
+              Fan-subtitle Indonesia non-komersial untuk video =LOVE (イコールラブ). Tidak berafiliasi dengan pihak resmi.
+            </p>
+          </div>
+          
+          <div className="flex flex-col items-center md:items-end gap-2 text-sm text-text-muted">
+            <div className="flex items-center gap-6">
+              <Link to="/" className="hover:text-brand transition-colors">Home</Link>
+              <Link to="/about" className="hover:text-brand transition-colors">About</Link>
+              <Link to="/about" className="hover:text-brand transition-colors">Disclaimer</Link>
+            </div>
+            <p className="mt-2 text-xs opacity-70">
+              &copy; {new Date().getFullYear()} MXL Subs. All rights reserved.
+            </p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
