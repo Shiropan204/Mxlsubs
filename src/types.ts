@@ -22,6 +22,7 @@ export interface Episode {
   videoId?: string; // legacy
   date: string;
   type: 'Variety' | 'Music Video' | 'Concert' | 'Behind the Scenes' | 'IKONOIJOY Channel';
+  series?: string; // Optional series grouping (e.g. "Equal Love Kokokko!!")
   members: string[];
   tags: string[];
   translatorNotes?: string;

@@ -9,6 +9,7 @@ import Home from './pages/Home';
 import Episode from './pages/Episode';
 import About from './pages/About';
 import Profile from './pages/Profile';
+import Variety from './pages/Variety';
 import NotFound from './pages/NotFound';
 
 export default function App() {
@@ -20,6 +21,7 @@ export default function App() {
           <Route path="episode/:id" element={<Episode />} />
           <Route path="about" element={<About />} />
           <Route path="profile" element={<Profile />} />
+          <Route path="variety" element={<Variety />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

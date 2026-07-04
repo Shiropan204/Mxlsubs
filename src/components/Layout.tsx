@@ -91,6 +91,7 @@ export default function Layout() {
           <div className="flex items-center gap-2 md:gap-4">
             <div className="hidden md:flex items-center gap-6 mr-2">
               <Link to="/" className="hover:text-brand transition-colors font-medium">Home</Link>
+              <Link to="/variety" className="hover:text-brand transition-colors font-medium">Variety</Link>
               <Link to="/about" className="hover:text-brand transition-colors font-medium">About</Link>
             </div>
             
@@ -145,7 +146,7 @@ export default function Layout() {
               <h3 className="text-xs text-white/50 mb-4">CATEGORIES</h3>
               <div className="flex flex-col gap-4">
                 <Link to="/?search=&type=IKONOIJOY+Channel" onClick={() => setIsMobileMenuOpen(false)} className="hover:opacity-70 transition-opacity">IKONOIJOY CHANNEL</Link>
-                <span className="opacity-50 cursor-not-allowed">VARIETY</span>
+                <Link to="/variety" onClick={() => setIsMobileMenuOpen(false)} className="hover:opacity-70 transition-opacity">VARIETY</Link>
                 <span className="opacity-50 cursor-not-allowed">MUSIC VIDEO</span>
                 <span className="opacity-50 cursor-not-allowed">CONCERT</span>
                 <span className="opacity-50 cursor-not-allowed">BEHIND THE SCENES</span>
@@ -176,13 +177,13 @@ export default function Layout() {
               <HomeIcon size={20} className={location.pathname === '/' ? 'fill-current' : ''} />
               <span className="text-[10px] font-semibold">{location.pathname === '/' ? '•' : 'Beranda'}</span>
             </Link>
-            <Link to="/?search=&type=Music+Video" className={`flex flex-col items-center justify-center w-full h-full gap-0.5 transition-all ${location.search.includes('type=Music') ? 'text-brand' : 'text-text-muted'}`}>
-              <Compass size={20} />
-              <span className="text-[10px] font-semibold">Eksplor</span>
+            <Link to="/variety" className={`flex flex-col items-center justify-center w-full h-full gap-0.5 transition-all ${location.pathname === '/variety' ? 'text-brand' : 'text-text-muted'}`}>
+              <Compass size={20} className={location.pathname === '/variety' ? 'fill-current' : ''} />
+              <span className="text-[10px] font-semibold">{location.pathname === '/variety' ? '•' : 'Variety'}</span>
             </Link>
             <Link to="/profile" className={`flex flex-col items-center justify-center w-full h-full gap-0.5 transition-all ${location.pathname === '/profile' ? 'text-brand' : 'text-text-muted'}`}>
               <User size={20} className={location.pathname === '/profile' ? 'fill-current' : ''} />
-              <span className="text-[10px] font-semibold">Profil</span>
+              <span className="text-[10px] font-semibold">{location.pathname === '/profile' ? '•' : 'Profil'}</span>
             </Link>
           </div>
         </div>

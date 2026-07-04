@@ -22,6 +22,14 @@ declare global {
     onYouTubeIframeAPIReady: () => void;
     YT: any;
   }
+  interface HTMLElement {
+    webkitRequestFullscreen?: () => Promise<void>;
+    webkitEnterFullscreen?: () => void;
+  }
+  interface Document {
+    webkitFullscreenElement?: Element | null;
+    webkitExitFullscreen?: () => Promise<void>;
+  }
 }
 
 export default function VideoPlayer({ 
@@ -186,6 +194,19 @@ export default function VideoPlayer({
     }
   };
 
+  const handleSeekBarTouch = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!seekBarRef.current || !duration) return;
+    e.preventDefault();
+    const touch = e.touches[0] || e.changedTouches[0];
+    const rect = seekBarRef.current.getBoundingClientRect();
+    const fraction = Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width));
+    const time = fraction * duration;
+    setCurrentTime(time);
+    if (playerRef.current) {
+      playerRef.current.seekTo(time, true);
+    }
+  };
+
   const handleSeekBarHover = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!seekBarRef.current || !duration) return;
     const rect = seekBarRef.current.getBoundingClientRect();
@@ -219,19 +240,41 @@ export default function VideoPlayer({
   };
 
   const toggleFullscreen = () => {
-    if (containerRef.current) {
-      if (!document.fullscreenElement) {
-        containerRef.current.requestFullscreen();
-      } else {
-        document.exitFullscreen();
+    const el = containerRef.current;
+    if (!el) return;
+    const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+    if (!isFs) {
+      if (el.requestFullscreen) {
+        el.requestFullscreen();
+      } else if (el.webkitRequestFullscreen) {
+        el.webkitRequestFullscreen();
+      } else if (el.webkitEnterFullscreen) {
+        el.webkitEnterFullscreen();
       }
+      // Try to lock orientation to landscape on mobile
+      try {
+        (screen.orientation as any)?.lock?.('landscape');
+      } catch {}
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      }
+      try {
+        (screen.orientation as any)?.unlock?.();
+      } catch {}
     }
   };
 
   useEffect(() => {
-    const onFsChange = () => setIsFullscreen(!!document.fullscreenElement);
+    const onFsChange = () => setIsFullscreen(!!(document.fullscreenElement || document.webkitFullscreenElement));
     document.addEventListener('fullscreenchange', onFsChange);
-    return () => document.removeEventListener('fullscreenchange', onFsChange);
+    document.addEventListener('webkitfullscreenchange', onFsChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', onFsChange);
+      document.removeEventListener('webkitfullscreenchange', onFsChange);
+    };
   }, []);
 
   const skipBackward = (e: React.MouseEvent) => {
@@ -394,13 +437,16 @@ export default function VideoPlayer({
           {/* Seek Bar */}
           <div 
             ref={seekBarRef}
-            className="group/seek relative h-6 flex items-center cursor-pointer"
+            className="group/seek relative h-8 flex items-center cursor-pointer touch-none"
             onClick={handleSeekBarClick}
             onMouseMove={handleSeekBarHover}
             onMouseLeave={() => setHoverTime(null)}
+            onTouchStart={handleSeekBarTouch}
+            onTouchMove={handleSeekBarTouch}
+            onTouchEnd={handleSeekBarTouch}
           >
             {/* Track background */}
-            <div className="absolute left-0 right-0 h-[3px] group-hover/seek:h-[5px] transition-all bg-white/20 rounded-full overflow-hidden">
+            <div className="absolute left-0 right-0 h-[4px] md:h-[3px] group-hover/seek:h-[5px] transition-all bg-white/20 rounded-full overflow-hidden">
               {/* Buffered */}
               <div 
                 className="absolute top-0 left-0 h-full bg-white/25 rounded-full" 
@@ -415,10 +461,10 @@ export default function VideoPlayer({
                 }} 
               />
             </div>
-            {/* Seek thumb */}
+            {/* Seek thumb - always visible on mobile, hover-only on desktop */}
             <div 
-              className="absolute top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-brand shadow-lg shadow-brand/40 opacity-0 group-hover/seek:opacity-100 transition-opacity scale-0 group-hover/seek:scale-100 pointer-events-none"
-              style={{ left: `calc(${progressPercent}% - 7px)` }}
+              className="absolute top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-brand shadow-lg shadow-brand/40 md:opacity-0 md:scale-0 group-hover/seek:opacity-100 group-hover/seek:scale-100 transition-all pointer-events-none"
+              style={{ left: `calc(${progressPercent}% - 8px)` }}
             />
             {/* Hover time tooltip */}
             {hoverTime !== null && (
