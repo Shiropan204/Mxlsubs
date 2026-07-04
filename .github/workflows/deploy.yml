@@ -31,6 +31,27 @@ jobs:
       - name: Build with Vite
         run: npm run build
 
+      - name: Verify build output
+        run: |
+          echo "Repository root:"
+          ls -la
+          echo ""
+          if [ -d dist ]; then
+            echo "dist directory contents:"
+            ls -la dist
+            echo ""
+            if [ -f dist/index.html ]; then
+              echo "dist/index.html (first 50 lines):"
+              head -n 50 dist/index.html
+            else
+              echo "ERROR: dist/index.html not found"
+              exit 1
+            fi
+          else
+            echo "ERROR: dist directory not found"
+            exit 1
+          fi
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
@@ -43,6 +64,24 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages (with retries)
         id: deployment
         uses: actions/deploy-pages@v4
+        continue-on-error: true
+
+      - name: Retry if Pages deployment failed
+        if: steps.deployment.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "Initial deploy failed — retrying once..."
+          n=0
+          until [ $n -ge 2 ]
+          do
+            gh api repos/${{ github.repository }}/pages/builds -X POST || true
+            n=$((n+1))
+            sleep 10
+          done
+          
+          # Force job failure if the deployment step failed
+          exit 1
