@@ -69,6 +69,11 @@ function EpisodeCard({ ep, customThumbnail, progress, size = 'normal' }: {
           <span className="text-[10px] md:text-xs text-text-muted bg-bg-surface border border-border-subtle px-1.5 py-0.5 rounded-md font-medium">
             {ep.type}
           </span>
+          {ep.subtitleTags && ep.subtitleTags.map(tag => (
+            <span key={tag} className="text-[9px] text-white bg-brand/80 border border-brand/50 px-1.5 py-0.5 rounded shadow-sm font-bold uppercase tracking-wide">
+              {tag}
+            </span>
+          ))}
           {ep.members.slice(0, 1).map(m => (
             <span key={m} className="text-[10px] md:text-xs text-text-muted">
               {m}
@@ -326,10 +331,15 @@ export default function Home() {
                     <h3 className="font-heading font-semibold text-xs md:text-sm line-clamp-2 leading-snug group-hover:text-brand transition-colors">
                       {ep.title}
                     </h3>
-                    <div className="flex flex-wrap gap-1 mt-1 hidden sm:flex">
+                    <div className="flex flex-wrap gap-1 mt-1 hidden sm:flex items-center">
                       <span className="text-[10px] md:text-xs text-text-muted bg-bg-surface border border-border-subtle px-1.5 py-0.5 rounded-md">
                         {ep.type}
                       </span>
+                      {ep.subtitleTags && ep.subtitleTags.map(tag => (
+                        <span key={tag} className="text-[9px] text-white bg-brand/80 border border-brand/50 px-1.5 py-0.5 rounded shadow-sm font-bold uppercase tracking-wide">
+                          {tag}
+                        </span>
+                      ))}
                     </div>
                   </div>
                 </Link>
@@ -431,6 +441,16 @@ export default function Home() {
                   <h3 className="font-heading font-semibold text-xs md:text-sm line-clamp-2 leading-snug group-hover:text-brand transition-colors">
                     {ep.title}
                   </h3>
+                  <div className="flex flex-wrap gap-1 mt-1 hidden sm:flex items-center">
+                    <span className="text-[10px] md:text-xs text-text-muted bg-bg-surface border border-border-subtle px-1.5 py-0.5 rounded-md">
+                      {ep.type}
+                    </span>
+                    {ep.subtitleTags && ep.subtitleTags.map(tag => (
+                      <span key={tag} className="text-[9px] text-white bg-brand/80 border border-brand/50 px-1.5 py-0.5 rounded shadow-sm font-bold uppercase tracking-wide">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </Link>
             ))}

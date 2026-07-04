@@ -29,6 +29,7 @@ export interface Episode {
   vttUrl?: string; // legacy
   servers?: VideoServer[];
   subtitleTracks?: SubtitleTrack[];
+  subtitleTags?: string[]; // Display tags for natively hardcoded/embedded subs
   thumbnailUrl?: string;
 }
 

@@ -255,6 +255,11 @@ export default function Episode() {
                 <span className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest font-bold text-brand bg-brand/10 px-3 py-1 rounded-full">
                   {episode.type}
                 </span>
+                {episode.subtitleTags && episode.subtitleTags.map(tag => (
+                  <span key={tag} className="inline-flex items-center gap-1 text-[10px] uppercase font-bold text-white bg-white/10 border border-white/20 px-2 py-1 rounded">
+                    {tag}
+                  </span>
+                ))}
               </div>
               
               {/* Action Buttons */}
