@@ -14,7 +14,10 @@ export const episodes: Episode[] = [
     servers: [
       { id: 'drive', name: 'Google Drive', videoId: '1mrB_IrU6uO-ta-6Z7xGWJg_NuSg14chN' }
     ],
-    subtitleTracks: [],
+    subtitleTracks: [
+      { id: 'id', label: 'Indonesia', url: `${base}subtitles/equallove-kokokko-ep1-id.vtt` },
+      { id: 'en', label: 'English', url: `${base}subtitles/equallove-kokokko-ep1-en.vtt` }
+    ],
     thumbnailUrl: `https://www.ntv.co.jp/equal-love/images/taxy5s5k7h9amf0u11x2io9mjv8iw3.jpg` // Cover khusus buat genre ini
   },
   {
