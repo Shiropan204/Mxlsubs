@@ -1,10 +1,10 @@
 import { useParams, Navigate, Link } from 'react-router-dom';
 import { episodes } from '../data/episodes';
-import YouTubePlayer from '../components/YouTubePlayer';
+import VideoPlayer from '../components/VideoPlayer';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { AlertCircle, Download, Share2, MessageCircle, Upload } from 'lucide-react';
-import React, { useState, useEffect, useRef } from 'react';
-import { SubtitleCue } from '../types';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { SubtitleCue, VideoServer, SubtitleTrack } from '../types';
 
 const parseVTT = (vttString: string): SubtitleCue[] => {
   const lines = vttString.split(/\r?\n/);
@@ -71,7 +71,27 @@ export default function Episode() {
   const vttInputRef = useRef<HTMLInputElement>(null);
   const thumbnailInputRef = useRef<HTMLInputElement>(null);
 
+  // New state for servers and subtitles
+  const [activeServer, setActiveServer] = useState<VideoServer | undefined>();
+  const [activeSubtitleTrack, setActiveSubtitleTrack] = useState<SubtitleTrack | null | undefined>(undefined); // undefined = uninitialized
 
+  useEffect(() => {
+    if (episode) {
+      if (episode.servers && episode.servers.length > 0) {
+        setActiveServer(episode.servers[0]);
+      } else if (episode.videoId) {
+        setActiveServer({ id: 'youtube', name: 'YouTube', videoId: episode.videoId });
+      }
+
+      if (episode.subtitleTracks && episode.subtitleTracks.length > 0) {
+        setActiveSubtitleTrack(episode.subtitleTracks[0]);
+      } else if (episode.vttUrl) {
+        setActiveSubtitleTrack({ id: 'default', label: 'Default', url: episode.vttUrl });
+      } else {
+        setActiveSubtitleTrack(null);
+      }
+    }
+  }, [episode?.id]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -90,8 +110,8 @@ export default function Episode() {
   }, [id]);
 
   useEffect(() => {
-    if (episode && episode.vttUrl) {
-      fetch(episode.vttUrl)
+    if (activeSubtitleTrack && activeSubtitleTrack.url) {
+      fetch(activeSubtitleTrack.url)
         .then(res => {
           if (!res.ok) throw new Error('VTT not found');
           return res.text();
@@ -104,7 +124,7 @@ export default function Episode() {
     } else {
       setFetchedSubtitles(null);
     }
-  }, [episode?.vttUrl]);
+  }, [activeSubtitleTrack?.url]);
 
   useEffect(() => {
     if (episode) {
@@ -194,6 +214,8 @@ export default function Episode() {
   };
 
   const activeSubtitles = customSubtitles[episode.id] || fetchedSubtitles || episode.subtitles;
+  const servers = episode.servers || (episode.videoId ? [{ id: 'youtube', name: 'YouTube', videoId: episode.videoId } as VideoServer] : []);
+  const subtitleTracks = episode.subtitleTracks || (episode.vttUrl ? [{ id: 'default', label: 'Default', url: episode.vttUrl } as SubtitleTrack] : []);
 
   return (
     <div className="max-w-7xl mx-auto px-0 md:px-4 py-0 md:py-8 flex flex-col lg:flex-row gap-10">
@@ -201,8 +223,15 @@ export default function Episode() {
       <div className="flex-1 flex flex-col gap-0">
         {/* Video Player */}
         <div className="w-full md:rounded-2xl overflow-hidden shadow-2xl shadow-black/20">
-          <YouTubePlayer 
-            videoId={episode.videoId} 
+          <VideoPlayer 
+            servers={servers}
+            activeServer={activeServer}
+            onServerChange={setActiveServer}
+            subtitleTracks={subtitleTracks}
+            activeSubtitleTrack={activeSubtitleTrack}
+            onSubtitleChange={setActiveSubtitleTrack}
+            videoId={activeServer?.videoId || episode.videoId || ''} 
+            serverType={activeServer?.id || 'youtube'}
             subtitles={activeSubtitles}
             onProgress={handleProgress}
             initialTime={initialTime}
@@ -334,7 +363,7 @@ export default function Episode() {
               <Link key={ep.id} to={`/episode/${ep.id}`} className="group flex gap-3 p-2 -mx-2 rounded-xl hover:bg-bg-surface transition-all duration-200">
                 <div className="w-36 aspect-video bg-bg-surface rounded-xl overflow-hidden shrink-0 relative border border-border-subtle group-hover:border-brand/30 transition-colors shadow-sm">
                   <img 
-                    src={customThumbnails[ep.id] || ep.thumbnailUrl || `https://img.youtube.com/vi/${ep.videoId}/mqdefault.jpg`} 
+                    src={customThumbnails[ep.id] || ep.thumbnailUrl || (ep.servers?.[0]?.id === 'youtube' ? `https://img.youtube.com/vi/${ep.servers[0].videoId}/mqdefault.jpg` : ep.videoId ? `https://img.youtube.com/vi/${ep.videoId}/mqdefault.jpg` : '')} 
                     alt={ep.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"

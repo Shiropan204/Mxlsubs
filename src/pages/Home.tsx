@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, ReactNode } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { episodes } from '../data/episodes';
 import { Search, Play, Filter, X, Clock, Sparkles } from 'lucide-react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 
 // Reusable horizontal scroll row component
-function ContentRow({ title, icon, children, className = '' }: { title: string; icon?: React.ReactNode; children: React.ReactNode; className?: string }) {
+function ContentRow({ title, icon, children, className = '' }: { title: string; icon?: ReactNode; children: ReactNode; className?: string }) {
   return (
     <section className={`space-y-3 ${className}`}>
       <div className="flex items-center gap-2 px-4">
@@ -22,6 +22,7 @@ function ContentRow({ title, icon, children, className = '' }: { title: string; 
 
 // Episode card for horizontal rows (large, streaming-style)
 function EpisodeCard({ ep, customThumbnail, progress, size = 'normal' }: { 
+  key?: string | number;
   ep: typeof episodes[0]; 
   customThumbnail?: string; 
   progress?: number;

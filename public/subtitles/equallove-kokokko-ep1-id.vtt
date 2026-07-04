@@ -1,0 +1,1194 @@
+﻿WEBVTT
+
+NOTE
+Kind: captions
+Language: id
+
+STYLE
+::cue {
+  font-family: Arial, sans-serif;
+  color: #ffffff;
+  background: rgba(0,0,0,.45);
+}
+::cue(.dialog) { }
+::cue(.title) { font-weight: bold; color: #ffd400; }
+::cue(.member) { font-weight: bold; color: #7ee8fa; }
+::cue(.location) { font-style: italic; color: #b6ffb0; }
+::cue(.rule) { font-weight: bold; color: #ffb84d; }
+::cue(.editor) { font-weight: bold; color: #ffffff; }
+::cue(.editor-red) { font-weight: bold; color: #ff4d4d; }
+::cue(.editor-yellow) { font-weight: bold; color: #ffd93d; }
+::cue(.editor-blue) { font-weight: bold; color: #4da6ff; }
+::cue(.editor-green) { font-weight: bold; color: #6bff6b; }
+::cue(.score) { font-weight: bold; color: #ffd93d; }
+::cue(.ranking) { font-weight: bold; color: #ffb84d; }
+::cue(.timer) { font-family: monospace; font-weight: bold; color: #ffffff; }
+::cue(.warning) { font-weight: bold; color: #ff4d4d; }
+::cue(.result) { font-weight: bold; color: #6bff6b; }
+::cue(.sfx) { font-style: italic; color: #cccccc; }
+::cue(.emphasis) { font-weight: bold; text-decoration: underline; }
+
+00:00:03.200 --> 00:00:05.500
+<c.dialog>"Tokubechu, Shite"</c>
+
+00:00:06.000 --> 00:00:15.500
+<c.dialog>"Tokubechu, Shite" yang rilis tahun lalu tembus
+2,1 miliar penayangan kumulatif di TikTok.</c>
+
+00:00:16.500 --> 00:00:23.000
+<c.dialog>Program utama yang akan mengupas keunikan
+dan sifat asli setiap member mulai malam ini!</c>
+
+00:00:40.000 --> 00:00:42.500
+<c.dialog>IKOLAB KO KO KO!!</c>
+
+00:00:43.500 --> 00:00:47.500
+<c.dialog>Acara ini akan menggali potensi maksimal</c>
+
+00:00:47.500 --> 00:00:51.500
+<c.dialog>dan keunikan dari masing-masing member.</c>
+
+00:00:51.500 --> 00:00:54.000
+<c.dialog>Kami Aiseki Start sebagai MC. Mohon bantuannya!</c>
+
+00:00:54.000 --> 00:00:56.500
+<c.dialog>Mohon bantuannya!</c>
+
+00:00:57.000 --> 00:00:58.500
+<c.dialog>Kei-san, ini pertama kalinya buatmu, 'kan?</c>
+
+00:00:58.500 --> 00:01:02.000
+<c.dialog>- Benar, ini pertemuan pertama kita.
+- Salam kenal.</c>
+
+00:01:02.000 --> 00:01:05.000
+<c.dialog>Semoga ke depannya kita bisa makin akrab,</c>
+
+00:01:05.000 --> 00:01:08.000
+<c.dialog>dan bisa saling panggil pakai nama panggilan, ya.</c>
+
+00:01:08.000 --> 00:01:11.500
+<c.dialog>Di episode perdana ini, member yang akan
+kita bahas keunikannya adalah...</c>
+
+00:01:11.500 --> 00:01:13.500
+<c.dialog>Leader grup kita, Yamamoto Anna!</c>
+
+00:01:14.000 --> 00:01:16.500
+<c.dialog>Mohon bantuannya!</c>
+
+00:01:17.000 --> 00:01:20.500 position:80% line:20%
+<c.editor-yellow>【Keunikan】
+Paling tahu soal member</c>
+
+00:01:17.000 --> 00:01:22.000
+<c.dialog>Leader Ikolab, Yamamoto Anna,
+akan mempresentasikan para member!</c>
+
+00:01:22.000 --> 00:01:24.000
+<c.dialog>Bahkan...</c>
+
+00:01:24.000 --> 00:01:27.500
+<c.dialog>- Ini beneran video dari HP-mu?
+- Iya, betul.</c>
+
+00:01:27.500 --> 00:01:34.000
+<c.dialog>Kami perlihatkan foto dan video harta karun
+para member yang tersimpan di HP Yamamoto!</c>
+
+00:01:34.500 --> 00:01:37.000
+<c.dialog>Ini belum pernah dipublikasikan.</c>
+
+00:01:37.500 --> 00:01:42.000
+<c.dialog>Jangan lewatkan momen langka yang
+baru pertama kali tayang di 30 menit ini!</c>
+
+00:01:43.000 --> 00:01:48.000
+<c.dialog>Bisa tolong kasih tahu kami
+seperti apa sosok Leader Yamamoto itu?</c>
+
+00:01:48.000 --> 00:01:50.000
+<c.dialog>Nama panggilannya "Ankoro Mochiko"!</c>
+
+00:01:50.000 --> 00:01:52.500
+<c.dialog>Aku punya sekitar 10 nama panggilan.</c>
+
+00:01:52.500 --> 00:01:55.000
+<c.dialog>Aku bawa gambar wajahku juga...</c>
+
+00:01:55.000 --> 00:01:58.500
+<c.dialog>Wah, hebat!</c>
+
+00:01:58.500 --> 00:02:00.500
+<c.dialog>Mirip banget, lho.</c>
+
+00:02:00.500 --> 00:02:02.500
+<c.dialog>Kamu sendiri yang menggambarnya?</c>
+
+00:02:02.500 --> 00:02:04.500
+<c.dialog>Iya. Ini gambar diriku sendiri.</c>
+
+00:02:04.500 --> 00:02:09.000
+<c.dialog>"Anya" yang paling atas itu
+nama panggilan resmiku,</c>
+
+00:02:09.000 --> 00:02:13.000
+<c.dialog>lalu dari situ tiap member
+manggil aku dengan sebutan beda-beda.</c>
+
+00:02:13.000 --> 00:02:16.000
+<c.dialog>Panggilanku paling banyak di grup ini.</c>
+
+00:02:16.000 --> 00:02:19.000
+<c.dialog>Berarti status leadermu cuma nama aja,
+kamu lumayan sering diremehkan?</c>
+
+00:02:19.000 --> 00:02:23.000
+<c.dialog>- Aku sering dijahili...
+- Leader yang patut disayangi!</c>
+
+00:02:23.500 --> 00:02:26.500
+<c.dialog>Karena aku juga belum terlalu tahu soal kalian,</c>
+
+00:02:26.500 --> 00:02:29.000
+<c.dialog>aku ingin leader yang memperkenalkan member lainnya.</c>
+
+00:02:29.000 --> 00:02:31.000
+<c.dialog>Serahkan saja padaku!</c>
+
+00:02:31.000 --> 00:02:35.000
+<c.dialog>Baiklah, kita mulai dari Sasaki Maika, ya.</c>
+
+00:02:35.000 --> 00:02:37.000
+<c.dialog>Inilah dia Sasaki Maika! Jeng!</c>
+
+00:02:37.000 --> 00:02:42.500
+<c.dialog>Pertama, dia ini bagaikan sosok ajaib
+ciptaan Tuhan.</c>
+
+00:02:42.500 --> 00:02:48.500
+<c.dialog>Visualnya jadi idaman semua orang,
+dan suaranya sangat stabil saat bernyanyi.</c>
+
+00:02:48.500 --> 00:02:52.500
+<c.dialog>Dia juga perhatian dan
+sangat peduli pada orang lain.</c>
+
+00:02:53.000 --> 00:02:57.000
+<c.dialog>Tapi, sebagai leader,
+aku tidak cuma akan memujinya saja!</c>
+
+00:02:57.000 --> 00:03:01.000
+<c.dialog>- Ada tanda peringatan!
+- Bagian itu bisa dibuka!</c>
+
+00:03:01.000 --> 00:03:05.000
+<c.dialog>Akan aku buka, ya. Tada!</c>
+
+00:03:05.500 --> 00:03:11.500
+<c.dialog>"Paling tidak suka menelpon untuk reservasi makanan,
+jadi tolong pesankan untuknya."</c>
+
+00:03:11.500 --> 00:03:16.500
+<c.dialog>"Orang yang ikut gladi bersih di luar ruangan
+mungkin bukan Maika yang asli."</c>
+
+00:03:16.500 --> 00:03:18.500
+<c.dialog>Dia nggak ikut gladi bersihnya?</c>
+
+00:03:18.500 --> 00:03:20.500
+<c.dialog>Ini ada fotonya...</c>
+
+00:03:20.500 --> 00:03:23.000
+<c.dialog>- Ini sudah pernah disebar, 'kan?
+- Belum pernah!</c>
+
+00:03:23.000 --> 00:03:27.000
+<c.dialog>- Oh!
+- Senjata andalan sang leader!</c>
+
+00:03:27.500 --> 00:03:31.000
+<c.dialog>Untuk pertama kalinya kami perlihatkan!</c>
+
+00:03:31.000 --> 00:03:36.000
+<c.dialog>Foto gladi bersih konser luar ruangan Sasaki
+yang difoto langsung oleh Yamamoto!</c>
+
+00:03:36.500 --> 00:03:39.000
+<c.dialog>Hah? Kok gitu?</c>
+
+00:03:39.000 --> 00:03:44.000
+<c.dialog>Ini saat gladi bersih konser luar ruangan,
+"kayaknya" sih beneran Sasaki Maika.</c>
+
+00:03:44.000 --> 00:03:46.500
+<c.dialog>Wajahnya nggak kelihatan sama sekali, ya.</c>
+
+00:03:46.500 --> 00:03:49.000
+<c.dialog>Bisa dipastikan dari nail art-ku.</c>
+
+00:03:50.000 --> 00:03:57.000
+<c.dialog>Tahun lalu kostumku jauh lebih gelap.
+Di bagian mulut juga warnanya hitam.</c>
+
+00:03:57.000 --> 00:04:00.500
+<c.dialog>Tapi karena terlalu menyeramkan,
+tahun ini aku pakai warna putih.</c>
+
+00:04:00.500 --> 00:04:03.000
+<c.dialog>Lebih mending dari tahun lalu apanya!</c>
+
+00:04:03.000 --> 00:04:04.500
+<c.dialog>Foto yang langka, ya.</c>
+
+00:04:04.500 --> 00:04:08.000
+<c.dialog>Semuanya harus bersiap, ya!
+Siapkan mental kalian.</c>
+
+00:04:09.000 --> 00:04:10.500
+<c.dialog>Ayo, kita lanjut.</c>
+
+00:04:10.500 --> 00:04:13.500
+<c.dialog>Berikutnya adalah Noguchi Iori!</c>
+
+00:04:13.500 --> 00:04:19.500
+<c.dialog>Suaranya lantang, dan gaya bahasanya...
+bisa dibilang nggak terlalu sopan.</c>
+
+00:04:19.500 --> 00:04:23.000
+<c.dialog>Tapi, dia yang paling serius
+dan perfeksionis.</c>
+
+00:04:24.000 --> 00:04:27.500
+<c.dialog>Kayaknya kamu nggak ada cela sama sekali,
+ada sisi burukmu nggak?</c>
+
+00:04:27.500 --> 00:04:29.000
+<c.dialog>Ada, kok.</c>
+
+00:04:29.000 --> 00:04:31.000
+<c.dialog>Aku buka, ya. Tada!</c>
+
+00:04:31.000 --> 00:04:36.500
+<c.dialog>Bukan sebagai "Noguchi Iori", tapi saat jadi "I-chan"
+dia berubah jadi "Bocah Tengil".</c>
+
+00:04:36.500 --> 00:04:39.500
+<c.dialog>- Berisik, ah!
+- Oh, itu kelakuan bocah tengilnya.</c>
+
+00:04:39.500 --> 00:04:46.000
+<c.dialog>Inilah rekaman Noguchi yang berhasil
+membuktikan julukan "Bocah Tengil" dari Yamamoto!</c>
+
+00:04:50.000 --> 00:04:53.000 position:80%
+<c.editor>Bukan Muka
+Idol</c>
+
+00:04:50.000 --> 00:04:53.000
+<c.dialog>Muka idol macam apa itu?
+Kenapa kamu?</c>
+
+00:04:59.000 --> 00:05:01.000
+<c.dialog>Boleh ditayangin, nih?</c>
+
+00:05:01.000 --> 00:05:04.000
+<c.dialog>Kamu kayak habis ngelakuin hal ilegal, deh.</c>
+
+00:05:04.000 --> 00:05:06.000
+<c.dialog>Iya, ya. Ngeri banget.</c>
+
+00:05:06.000 --> 00:05:10.000
+<c.dialog>Jadi waktu itu aku minta dia pegangin HP-ku,</c>
+
+00:05:10.000 --> 00:05:12.500
+<c.dialog>lalu pas dikembalikan, ada video ini di galeri.</c>
+
+00:05:12.500 --> 00:05:16.000
+<c.dialog>Karena dia diam-diam merekam ini,
+aku putuskan untuk menyebarkannya.</c>
+
+00:05:16.000 --> 00:05:19.500
+<c.dialog>Ternyata benar-benar video dari HP leader, ya.</c>
+
+00:05:20.000 --> 00:05:21.500
+<c.dialog>Iya, betul.</c>
+
+00:05:22.000 --> 00:05:24.000
+<c.dialog>Selanjutnya, Takamatsu Hitomi.</c>
+
+00:05:24.000 --> 00:05:30.000
+<c.dialog>Foto langka ini akan mengungkap sisi lainnya
+yang hanya diketahui oleh Yamamoto!</c>
+
+00:05:30.000 --> 00:05:35.000
+<c.dialog>Dia punya senyum secerah matahari,
+dan jiwa yang kuat untuk memimpin grup.</c>
+
+00:05:35.000 --> 00:05:39.000
+<c.dialog>Meskipun termuda ketiga,
+dia punya sisi dewasa layaknya seorang kakak.</c>
+
+00:05:40.000 --> 00:05:44.500
+<c.dialog>Tapi... di balik itu, Hitomi yang asli itu...</c>
+
+00:05:44.500 --> 00:05:48.500
+<c.dialog>Dan sebenarnya, dia itu...</c>
+
+00:05:48.500 --> 00:05:51.500
+<c.dialog>Silakan lihat foto berikut ini.</c>
+
+00:05:52.500 --> 00:05:55.000
+<c.dialog>Wah, fotonya estetik banget.</c>
+
+00:05:55.000 --> 00:05:58.500
+<c.dialog>- Agak sok keren gitu, 'kan?
+- Iya, sok asik.</c>
+
+00:05:58.500 --> 00:06:05.000
+<c.dialog>Bahkan pakai kacamata hitam segala saat jalan-jalan.
+Udah kayak selebriti, 'kan.</c>
+
+00:06:05.000 --> 00:06:07.500
+<c.dialog>Meskipun kelihatannya sangat modis dan elegan...</c>
+
+00:06:07.500 --> 00:06:11.500
+<c.dialog>Beberapa waktu lalu saat kami menginap di hotel luar kota,</c>
+
+00:06:11.500 --> 00:06:17.500
+<c.dialog>dia mengirim pesan, "Anna, boleh ke kamarmu nggak?
+Boleh numpang mandi?"</c>
+
+00:06:17.500 --> 00:06:22.000
+<c.dialog>Imut juga, tuh.
+Memangnya kenapa kok tiba-tiba begitu?</c>
+
+00:06:22.000 --> 00:06:26.500
+<c.dialog>Jadi, dia cuma berani sok keren pas matahari masih ada.</c>
+
+00:06:26.500 --> 00:06:31.500
+<c.dialog>Tapi kalau matahari sudah tenggelam,
+dia bahkan nggak berani mandi sendirian.</c>
+
+00:06:32.500 --> 00:06:34.500
+<c.dialog>Hitomi, kenapa kamu malah ke kamar leader?</c>
+
+00:06:34.500 --> 00:06:38.000
+<c.dialog>Aku ngerasa agak bisa ngerasain "hal itu"...</c>
+
+00:06:38.000 --> 00:06:40.000
+<c.dialog>- Punya indra keenam?
+- Iya.</c>
+
+00:06:40.000 --> 00:06:45.000
+<c.dialog>Karena aku ngerasa hotelnya agak seram,
+dan nggak berani sendirian...</c>
+
+00:06:45.000 --> 00:06:47.000
+<c.dialog>Jadi aku lari ke kamar Anna.</c>
+
+00:06:47.500 --> 00:06:49.500
+<c.dialog>Di saat seperti itu, sosok leader sangat bisa diandalkan, ya?</c>
+
+00:06:49.500 --> 00:06:51.500
+<c.dialog>Iya, 'kan! Senangnya.</c>
+
+00:06:51.500 --> 00:06:54.000
+<c.dialog>Kamu benar-benar diandalkan, lho, Yamamoto.</c>
+
+00:06:54.000 --> 00:06:56.500
+<c.dialog>Benar, kok, dia leader yang sungguhan.</c>
+
+00:06:56.500 --> 00:07:00.000
+<c.dialog>Berikutnya adalah... Jeng! Morohashi Sana.</c>
+
+00:07:00.500 --> 00:07:03.000
+<c.dialog>Hei, siapa itu!?</c>
+
+00:07:03.000 --> 00:07:05.500
+<c.dialog>Giginya besar banget!</c>
+
+00:07:06.000 --> 00:07:09.500
+<c.dialog>Sana memang terkenal dengan senyum giginya, 'kan!</c>
+
+00:07:11.500 --> 00:07:13.500
+<c.dialog>Nama panggilannya "Sanatsun".</c>
+
+00:07:13.500 --> 00:07:20.500
+<c.dialog>Saat MC konser, cukup dia yang bicara,
+suasana langsung ceria, dan semua orang akan tersenyum.</c>
+
+00:07:20.500 --> 00:07:23.000
+<c.dialog>Tapi si Sana ini...</c>
+
+00:07:23.500 --> 00:07:30.500
+<c.dialog>Dia merias wajahnya sampai detik-detik terakhir konser,
+dan selalu... sampai mepet banget.</c>
+
+00:07:31.000 --> 00:07:39.000
+<c.dialog>Inilah video Sana tepat sebelum live dimulai,
+yang direkam dan diedit sendiri oleh Yamamoto!</c>
+
+00:07:39.000 --> 00:07:42.000
+<c.dialog>Tentu saja ini baru tayang perdana!</c>
+
+00:07:42.500 --> 00:07:47.000
+<c.dialog>Sana mulai makan 5 menit sebelum konser.</c>
+
+00:07:47.000 --> 00:07:48.500
+<c.dialog>Gawat banget, deh...</c>
+
+00:07:48.500 --> 00:07:50.000
+<c.dialog>Ayo, naik panggung.</c>
+
+00:07:50.000 --> 00:07:51.500
+<c.dialog>Boleh nambah sekali lagi?</c>
+
+00:07:51.500 --> 00:07:55.500
+<c.dialog>Sudah 8 tahun saya kerja,
+baru kali ini ada yang makan 5 menit sebelum naik panggung.</c>
+
+00:07:55.500 --> 00:07:57.000
+<c.dialog>Mau?</c>
+
+00:07:57.000 --> 00:07:59.000
+<c.dialog>Nggak, lah!</c>
+
+00:07:59.500 --> 00:08:02.000
+<c.dialog>Ini video asli pas kejadian, ya?</c>
+
+00:08:02.000 --> 00:08:05.000
+<c.dialog>Kebetulan aku merekamnya pas tur kemarin...</c>
+
+00:08:05.000 --> 00:08:08.000
+<c.dialog>Padahal waktu sebelum live itu sangat krusial, 'kan...</c>
+
+00:08:08.000 --> 00:08:11.000
+<c.dialog>Betul. Kadang malah saking sibuknya sampai nggak makan.</c>
+
+00:08:11.000 --> 00:08:15.500
+<c.dialog>Tapi pas dengar sorakan penonton,
+perutku malah keroncongan.</c>
+
+00:08:15.500 --> 00:08:18.500
+<c.dialog>Nggak paham aku jalan pikiranmu.
+Pas dengar sorakan malah...</c>
+
+00:08:18.500 --> 00:08:24.500
+<c.dialog>Seharusnya waktu makeup dipersingkat,
+lalu sisanya buat makan... diatur baik-baik gitu, lho.</c>
+
+00:08:24.500 --> 00:08:27.500
+<c.dialog>Pengennya sih gitu...</c>
+
+00:08:28.000 --> 00:08:30.500
+<c.dialog>Mari kita lanjut ke member berikutnya.</c>
+
+00:08:30.500 --> 00:08:33.000
+<c.dialog>Selanjutnya, jeng! Otani Emiri!</c>
+
+00:08:33.000 --> 00:08:35.000
+<c.dialog>Dia itu idaman semua cewek.</c>
+
+00:08:35.000 --> 00:08:40.000
+<c.dialog>Kalau Mirinya bilang itu lucu,
+berarti itu pasti lucu! Dia sangat bisa dipercaya!</c>
+
+00:08:40.500 --> 00:08:42.500
+<c.dialog>Tapi!</c>
+
+00:08:42.500 --> 00:08:47.000
+<c.dialog>Jeng! Kadang dia datang ke lokasi
+dengan rambut yang masih basah kuyup.</c>
+
+00:08:47.000 --> 00:08:48.500
+<c.dialog>Ternyata bener, 'kan!</c>
+
+00:08:48.500 --> 00:08:50.000
+<c.dialog>Hari ini dia juga basah kuyup!</c>
+
+00:08:50.000 --> 00:08:54.500
+<c.dialog>Maksudnya gimana? Ngomong-ngomong,
+soal cerita seram yang terkenal itu,</c>
+
+00:08:54.500 --> 00:09:01.000
+<c.dialog>ada taksi yang mengangkut penumpang wanita, tiba-tiba dia hilang
+dan kursinya basah kuyup, tahu cerita seram itu, 'kan?</c>
+
+00:09:01.000 --> 00:09:05.500
+<c.dialog>Jangan-jangan wanita itu kamu?</c>
+
+00:09:06.000 --> 00:09:10.500
+<c.dialog>Terus, dia selalu pulang dengan tangan kosong
+dan cuma bawa natto di sakunya.</c>
+
+00:09:10.500 --> 00:09:14.000
+<c.dialog>Silakan lihat fotonya.</c>
+
+00:09:14.000 --> 00:09:17.500
+<c.dialog>Ini saat konser baru selesai...</c>
+
+00:09:17.500 --> 00:09:21.000
+<c.dialog>Kalau jadwal konsernya 2 hari,
+kami bisa meninggalkan barang bawaan di sana.</c>
+
+00:09:21.000 --> 00:09:25.000
+<c.dialog>Tapi saat yang lain bawa tas kecil
+atau kantong kertas saat pulang...</c>
+
+00:09:25.000 --> 00:09:28.000
+<c.dialog>Gadis ini bilang "Terima kasih kerja kerasnya"
+lalu pulang dengan dandanan begini.</c>
+
+00:09:28.000 --> 00:09:35.000
+<c.dialog>Dari fotonya, kayak preman
+yang suka naik mobil ugal-ugalan.</c>
+
+00:09:35.000 --> 00:09:43.000
+<c.dialog>Saat sudah dandan imut dengan yang belum dandan,
+beda jauh banget, ya.</c>
+
+00:09:43.000 --> 00:09:46.500
+<c.dialog>Iya, aku bener-bener cuek dan berantakan banget orangnya.</c>
+
+00:09:47.000 --> 00:09:50.000
+<c.dialog>Member berikutnya, Otoshima Risa.</c>
+
+00:09:50.000 --> 00:09:54.000
+<c.dialog>Yamamoto punya sesuatu
+yang benar-benar ingin ia sampaikan hari ini...</c>
+
+00:09:54.000 --> 00:09:59.000
+<c.dialog>Kala dance-nya tersorot kamera, wink-nya
+berhasil mencuri hati semua orang.</c>
+
+00:09:59.000 --> 00:10:04.000
+<c.dialog>Gayanya mantap, dia ini idol yang sesungguhnya.</c>
+
+00:10:04.000 --> 00:10:10.000
+<c.dialog>Tetapi! Sudah saatnya kamu mewarisi gelar itu.</c>
+
+00:10:10.500 --> 00:10:14.000
+<c.dialog>Silakan lihat foto ini.</c>
+
+00:10:14.500 --> 00:10:18.500
+<c.dialog>Fotonya lucu banget. Bawa tas cantik juga, 'kan.</c>
+
+00:10:19.000 --> 00:10:25.500
+<c.dialog>Di grup, entah sejak kapan aku mulai
+dipanggil dengan julukan "Wanita High Brand".</c>
+
+00:10:25.500 --> 00:10:35.000
+<c.dialog>Tapi jujur dari sudut pandang leader,
+Wanita High Brand sejati itu sebenarnya si Otoshima Risa!</c>
+
+00:10:35.500 --> 00:10:41.000
+<c.dialog>Ternyata leader merahasiakan ini selama ini!
+Dia rela jadi kambing hitam sendirian.</c>
+
+00:10:41.000 --> 00:10:46.500
+<c.dialog>Coba lihat foto ini!
+Ini tas lucu dari merek ternama, 'kan...</c>
+
+00:10:46.500 --> 00:10:49.500
+<c.dialog>Tapi harganya sama sekali nggak lucu!</c>
+
+00:10:50.000 --> 00:10:56.500
+<c.dialog>Itu sangat berharga buatku, soalnya kubeli
+tepat di Hari Keberuntungan dan Hari Taian.</c>
+
+00:10:56.500 --> 00:11:01.000
+<c.dialog>Alasan adat kuno kayak gitu
+nggak bakal menebus harganya yang selangit!</c>
+
+00:11:01.000 --> 00:11:05.000
+<c.dialog>Memangnya aku dibilang suka barang branded?
+Koleksiku nggak sebanyak itu, kok...</c>
+
+00:11:05.000 --> 00:11:08.500
+<c.dialog>Yang paling sering beli barang branded
+itu pasti leader!</c>
+
+00:11:08.500 --> 00:11:11.000
+<c.dialog>Ah, percikannya udah kerasa, nih!</c>
+
+00:11:11.000 --> 00:11:14.000
+<c.dialog>Tolong semuanya tutup mata.</c>
+
+00:11:14.500 --> 00:11:19.000 line:20%
+<c.rule>Ratu High Brand =LOVE</c>
+
+00:11:14.500 --> 00:11:19.500
+<c.dialog>Mari kita adakan voting untuk menentukan
+siapa Ratu High Brand Ikolab!</c>
+
+00:11:19.500 --> 00:11:23.000
+<c.dialog>Siapakah yang akan menjadi
+Ratu High Brand yang sesungguhnya?</c>
+
+00:11:23.000 --> 00:11:29.000
+<c.dialog>Yang setuju kalau Yamamoto adalah Ratu High Brand,
+silakan angkat tangan.</c>
+
+00:11:29.500 --> 00:11:34.000
+<c.dialog>Ya, ya. Boleh turunkan tangan kalian.</c>
+
+00:11:36.000 --> 00:11:41.000
+<c.dialog>Yang setuju kalau Ratu High Brand Ikolab itu
+Otoshima, silakan angkat tangan.</c>
+
+00:11:41.500 --> 00:11:47.000
+<c.dialog>Oke, keputusannya sudah bulat.
+Semuanya silakan buka mata.</c>
+
+00:11:48.000 --> 00:11:51.000
+<c.dialog>Ratu High Brand itu ya sang leader!</c>
+
+00:11:51.000 --> 00:11:52.500
+<c.dialog>Apaan sih!?</c>
+
+00:11:52.500 --> 00:11:55.000
+<c.dialog>Bohong, 'kan!?</c>
+
+00:11:55.000 --> 00:11:58.500
+<c.dialog>Mayoritas mutlak. Selisihnya jauh banget, lho.</c>
+
+00:11:58.500 --> 00:12:00.500
+<c.dialog>Udah pasti kamu, lah!</c>
+
+00:12:00.500 --> 00:12:06.500
+<c.dialog>Padahal hari ini aku udah bilang ke manajer,
+"Hari ini gelar Ratu High Brand bakal aku kasih ke Risa!"</c>
+
+00:12:06.500 --> 00:12:09.500
+<c.dialog>Nggak mungkin!</c>
+
+00:12:09.500 --> 00:12:15.500
+<c.dialog>Kamu ini memang jago masuk TV, ya!
+Kelihatan aslinya.</c>
+
+00:12:15.500 --> 00:12:18.500
+<c.dialog>Kayaknya masih terlalu cepat
+buat Risa mewarisi gelar ini.</c>
+
+00:12:18.500 --> 00:12:20.500
+<c.dialog>Iya, gelar itu biar kamu yang pegang saja!</c>
+
+00:12:20.500 --> 00:12:22.500
+<c.dialog>Sudah aku kembalikan, nih.</c>
+
+00:12:23.000 --> 00:12:28.000
+<c.dialog>- Kita lanjut?
+- Iya. Berikutnya adalah Takiwaki Shoko!</c>
+
+00:12:28.000 --> 00:12:31.000
+<c.dialog>Wah, lucunya!</c>
+
+00:12:31.000 --> 00:12:36.500
+<c.dialog>Belakangan ini dia sering ikut les dance
+dan berkembang sangat pesat!</c>
+
+00:12:36.500 --> 00:12:40.000
+<c.dialog>Aku juga paling lemah sama air mata Shoko...</c>
+
+00:12:40.000 --> 00:12:42.000
+<c.dialog>Dia gampang menangis?</c>
+
+00:12:42.000 --> 00:12:46.000
+<c.dialog>Nggak juga, dia bukan tipe orang
+yang gampang menangis dalam kesehariannya.</c>
+
+00:12:46.000 --> 00:12:51.500
+<c.dialog>Makanya pas dia menangis, rasanya menyentuh hati
+dan bikin aku ingin melindunginya...</c>
+
+00:12:52.000 --> 00:12:54.000
+<c.dialog>Si Shoko ini ternyata...</c>
+
+00:12:54.000 --> 00:12:59.000
+<c.dialog>"Pesan 'Kamu lagi apa?' di malam hari
+harus segera dibalas."</c>
+
+00:12:59.000 --> 00:13:03.000
+<c.dialog>Baru-baru ini, aku nemenin dia teleponan sampai 4 jam!</c>
+
+00:13:03.000 --> 00:13:07.000
+<c.dialog>Dari jam 12 malam sampai jam 4 pagi.</c>
+
+00:13:08.000 --> 00:13:12.500
+<c.dialog>Jam 12 malam itu rasanya udah
+waktunya tidur, 'kan?</c>
+
+00:13:12.500 --> 00:13:18.500
+<c.dialog>Waktu aku lihat jadwal dia besok,
+"Oh, Anna kayaknya lagi kosong, nih."</c>
+
+00:13:19.000 --> 00:13:21.000
+<c.dialog>Ribet banget!</c>
+
+00:13:24.000 --> 00:13:27.000
+<c.dialog>Sudah, ah. Puas kamu sekarang?</c>
+
+00:13:27.500 --> 00:13:35.000
+<c.dialog>Yamamoto mengabadikan momen saat si manja Takiwaki
+bertingkah manja pada member lain!</c>
+
+00:13:36.000 --> 00:13:42.000
+<c.dialog>Manja banget, 'kan.
+Ini waktu dia lagi manja sama Sana.</c>
+
+00:13:42.500 --> 00:13:45.000
+<c.dialog>Momen ini sangat jarang? Kayak berpelukan...</c>
+
+00:13:45.000 --> 00:13:55.000
+<c.dialog>Biasanya dia sama sekali nggak manja.
+Cuma pas malam hari aja baru muncul sifat manjaku...</c>
+
+00:13:56.000 --> 00:13:59.000
+<c.dialog>Waktu itu aku juga ditelepon olehnya,</c>
+
+00:13:59.000 --> 00:14:04.000
+<c.dialog>tapi pas aku mau matikan, dia bilang,
+"Kumohon jangan dimatikan! Jangan dimatikan!"</c>
+
+00:14:04.000 --> 00:14:08.500
+<c.dialog>Karena waktu itu aku harus bangun jam 5 pagi,</c>
+
+00:14:08.500 --> 00:14:14.000
+<c.dialog>aku bilang, "Maaf, tapi tolong telpon Anna aja!"
+Jadi aku limpahkan tanggung jawabnya ke Anna.</c>
+
+00:14:14.000 --> 00:14:19.500
+<c.dialog>Kalian dekat banget, ya.
+Benar-benar bukti kedekatan kalian.</c>
+
+00:14:19.500 --> 00:14:23.000
+<c.dialog>Berikutnya... Jeng! Oba Hana!</c>
+
+00:14:23.000 --> 00:14:29.000
+<c.dialog>Suaranya, dance-nya, gaya bicaranya, semuanya!
+Dia bisa membuat semua orang tersenyum.</c>
+
+00:14:29.000 --> 00:14:34.500
+<c.dialog>Tentang Hana... aku juga punya sesuatu.
+Tada!</c>
+
+00:14:34.500 --> 00:14:43.000
+<c.dialog>"Karena terlalu asyik fanservice ke penonton,
+dia sampai telat kembali ke panggung, lalu diomeli kru."</c>
+
+00:14:43.000 --> 00:14:49.000
+<c.dialog>Pas sampai di panggung,
+Sana datang sambil marah-marah.</c>
+
+00:14:49.000 --> 00:14:58.500
+<c.dialog>Waktu aku lagi asyik nari, Sana bilang
+"Kamu nggak sadar waktu, ya!" gitu.</c>
+
+00:15:04.000 --> 00:15:10.500
+<c.dialog>Aku agak terpuruk waktu itu.
+Ngerasa bersalah banget gara-gara nggak bisa balik...</c>
+
+00:15:10.500 --> 00:15:16.500
+<c.dialog>Akhirnya sisa lagunya kubawakan
+dengan penuh rasa bersalah.</c>
+
+00:15:17.000 --> 00:15:19.500
+<c.dialog>Kamu pasti nyesal banget, ya.</c>
+
+00:15:19.500 --> 00:15:25.500
+<c.dialog>Ceritamu bikin kami ingin nonton konser kalian secara langsung.
+Biar bisa lihat momen begitu.</c>
+
+00:15:26.500 --> 00:15:33.500
+<c.dialog>Karena aku sudah membahas kekurangannya,
+aku mau membagikan video tidurnya yang langka di ruang tunggu,</c>
+
+00:15:33.500 --> 00:15:36.500
+<c.dialog>yang imut seperti bayi.</c>
+
+00:15:37.000 --> 00:15:44.000
+<c.dialog>Inilah rekaman rahasia Yamamoto,
+wajah tidur Oba yang selalu ceria itu jarang terlihat!</c>
+
+00:15:44.000 --> 00:15:48.000
+<c.dialog>Video langka yang cuma berdurasi 4 detik!</c>
+
+00:15:49.000 --> 00:15:54.000
+<c.dialog>Jarang banget lihat Hana tidur
+di ruang tunggu... Singkat banget!</c>
+
+00:15:54.000 --> 00:15:57.000
+<c.dialog>Sengaja kamu rekam diam-diam, 'kan?</c>
+
+00:15:57.000 --> 00:16:01.000
+<c.dialog>Hari itu aku tiba-tiba ngantuk berat,
+jadi langsung ketiduran.</c>
+
+00:16:01.000 --> 00:16:05.000
+<c.dialog>Berarti kamu lagi kecapekan.
+Makanya bisa direkam diem-diem gitu.</c>
+
+00:16:05.000 --> 00:16:11.000
+<c.dialog>Karena tadi sudah membongkar cerita saat dimarahi,
+mungkin aku harus menetralkan situasinya di sini.</c>
+
+00:16:11.000 --> 00:16:12.500
+<c.dialog>Berikutnya yang terakhir, ya?</c>
+
+00:16:12.500 --> 00:16:16.000
+<c.dialog>Member terakhir adalah Saito Kiara!</c>
+
+00:16:16.000 --> 00:16:18.500
+<c.dialog>Member termuda kami.</c>
+
+00:16:18.500 --> 00:16:23.000
+<c.dialog>Dulu dia seperti adik imut bagi kami semua,
+tapi sekarang dia adalah idol kuat yang bisa diandalkan.</c>
+
+00:16:23.000 --> 00:16:25.500
+<c.dialog>Tetapi!</c>
+
+00:16:26.000 --> 00:16:28.500
+<c.dialog>Dia itu pusat dari kelucuan di grup ini.</c>
+
+00:16:28.500 --> 00:16:33.000
+<c.dialog>Kami punya banyak koleksi foto dan video kocak Kiara.</c>
+
+00:16:33.000 --> 00:16:37.000
+<c.dialog>99%-nya adalah video yang tidak layak disiarkan publik.</c>
+
+00:16:37.000 --> 00:16:44.000
+<c.dialog>Tapi... di antara semua itu, ada video kocaknya
+yang masih batas wajar untuk diperlihatkan.</c>
+
+00:16:44.000 --> 00:16:45.500
+<c.dialog>Video apa?</c>
+
+00:16:45.500 --> 00:16:50.000
+<c.dialog>Tantangan: "Bangun tanpa bantuan tangan!"</c>
+
+00:16:53.000 --> 00:16:55.000
+<c.dialog>Apaan nih?</c>
+
+00:16:56.500 --> 00:16:58.500
+<c.dialog>Aduh!</c>
+
+00:17:00.000 --> 00:17:02.500
+<c.dialog>Itu lagi di mana dan ngapain?</c>
+
+00:17:03.000 --> 00:17:07.500
+<c.dialog>Ini pas lagi senggang,
+kebetulan di ruangannya ada kasur,</c>
+
+00:17:07.500 --> 00:17:11.000
+<c.dialog>lalu aku tantang dia,
+"Kiara, coba bangun tanpa tangan!"</c>
+
+00:17:11.000 --> 00:17:14.500
+<c.dialog>Lalu dengan polosnya dia coba terus-menerus...</c>
+
+00:17:14.500 --> 00:17:21.000
+<c.dialog>Aku ngerasa harus berhasil, karena kalau berhasil
+pasti videonya bakal keren banget!</c>
+
+00:17:21.000 --> 00:17:28.000
+<c.dialog>Sudah berusaha pun, tetap aja aku nggak bisa...
+Nanti cobain sendiri, deh, di rumah.</c>
+
+00:17:28.000 --> 00:17:34.000
+<c.dialog>Nggak minat aku. Ini yang "batas wajar" itu?
+Berarti kamu banyak hal nggak wajarnya, ya.</c>
+
+00:17:34.000 --> 00:17:36.000
+<c.dialog>Ini masih sangat mending, 'kan?</c>
+
+00:17:36.000 --> 00:17:40.000
+<c.dialog>Kalau kalian menantangku begitu,
+aku pasti bakal ngelakuin apa aja, kok.</c>
+
+00:17:41.000 --> 00:17:46.500
+<c.dialog>Wah, memang beda ya kalau sang leader...
+Hebat banget, hampir semuanya video langka.</c>
+
+00:17:46.500 --> 00:17:50.000
+<c.dialog>Padahal dia mengenalkan dirinya
+cuma lewat nama panggilan aja.</c>
+
+00:17:50.000 --> 00:17:55.500
+<c.dialog>Ujung-ujungnya, gelar Ratu High Brand
+malah terbang padanya layaknya bumerang.</c>
+
+00:17:55.500 --> 00:18:01.000
+<c.dialog>Iya, 'kan! Sekarang julukanku cuma
+sekadar nama panggilan dan Ratu High Brand!</c>
+
+00:18:01.500 --> 00:18:05.500
+<c.dialog>Semuanya sangat menghargaimu,
+itu sudah tersampaikan dengan jelas, kok.</c>
+
+00:18:05.500 --> 00:18:09.500
+<c.dialog>Lalu! Urutan tampil Ikolab
+yang kubuat adalah ini!</c>
+
+00:18:09.500 --> 00:18:16.500
+<c.dialog>Urutan tampil Ikolab buatan Yamamoto Anna
+akan kami unggah di akun medsos acara kami!</c>
+
+00:18:24.000 --> 00:18:31.000
+<c.dialog>Setelah ini, penampilan lagu dengan center Yamamoto
+yang penuh dengan keunikan dari tiap member Ikolab!</c>
+
+00:18:33.500 --> 00:18:35.293
+<c.dialog>♪ Berpelukan, lalu menjadi cantik ♪</c>
+
+00:18:35.293 --> 00:18:36.293
+<c.dialog>♪ (Oh yeah!) ♪</c>
+
+00:18:36.293 --> 00:18:38.307
+<c.dialog>♪ Harus menjadi yang nomor satu ♪</c>
+
+00:18:38.307 --> 00:18:39.089
+<c.dialog>♪ (Oh yeah!) ♪</c>
+
+00:18:39.089 --> 00:18:41.001
+<c.dialog>♪ Tanda L dengan tangan kanan, =LOVE ♪</c>
+
+00:18:41.001 --> 00:18:41.584
+<c.dialog>♪ (Oh yeah!) ♪</c>
+
+00:18:41.584 --> 00:18:44.209
+<c.dialog>♪ Uuu... Yeah! ♪</c>
+
+00:18:44.209 --> 00:18:45.667
+<c.dialog>♪ Putri duyung yang menawan dan cantik ♪</c>
+
+00:18:45.667 --> 00:18:47.126
+<c.dialog>♪ Suara - wajah - warna - cinta sempurna ♪</c>
+
+00:18:47.126 --> 00:18:50.074
+<c.dialog>♪ Dia akan menaklukkan seluruh umat manusia ♪</c>
+
+00:18:50.074 --> 00:18:55.293
+<c.dialog>♪ L-O-V-E, Sasaki Maika ♪</c>
+
+00:18:55.293 --> 00:18:57.659
+<c.dialog>♪ "Tetaplah berada di sisiku" ♪</c>
+
+00:18:57.659 --> 00:19:00.625
+<c.dialog>♪ Kekasih resmi dari =LOVE ♪</c>
+
+00:19:00.625 --> 00:19:03.584
+<c.dialog>♪ Katanya datang dari negeri para tuan putri ♪</c>
+
+00:19:03.584 --> 00:19:08.375
+<c.dialog>♪ L-O-V-E, Otoshima Risa ♪</c>
+
+00:19:08.375 --> 00:19:10.959
+<c.dialog>♪ "Datanglah untuk menjemputku" ♪</c>
+
+00:19:10.959 --> 00:19:17.084
+<c.dialog>♪ Berhiaskan nada tinggi, dipenuhi senyuman
+Ah, akan mengajakmu ke waktu pertunjukan yang indah ♪</c>
+
+00:19:17.084 --> 00:19:22.227
+<c.dialog>♪ L-O-V-E, Oba Hana ♪</c>
+
+00:19:22.227 --> 00:19:24.625
+<c.dialog>♪ "Ayo, datanglah ke sini" ♪</c>
+
+00:19:24.625 --> 00:19:27.491
+<c.dialog>♪ Ayo pergi! O-o-ta-ni dari =LOVE ♪</c>
+
+00:19:27.491 --> 00:19:29.889
+<c.dialog>♪ Penampil jenius yang berusaha keras ♪</c>
+
+00:19:29.889 --> 00:19:33.001
+<c.dialog>♪ Tapi ternyata manja, semua orang mengagumi dirinya ♪</c>
+
+00:19:33.001 --> 00:19:38.459
+<c.dialog>♪ L-O-V-E, Noguchi Iori ♪</c>
+
+00:19:38.459 --> 00:19:41.126
+<c.dialog>♪ "Apakah kau menyukai I-chan?" ♪</c>
+
+00:19:41.126 --> 00:19:43.234
+<c.dialog>♪ Menerima tantangan apapun, si gadis aktif ♪</c>
+
+00:19:43.234 --> 00:19:46.459
+<c.dialog>♪ Sosok yang berusaha dengan BPM meningkat ♪</c>
+
+00:19:46.459 --> 00:19:51.667
+<c.dialog>♪ L-O-V-E, Takiwaki Shoko ♪</c>
+
+00:19:51.667 --> 00:19:54.626
+<c.dialog>♪ "=LOVE terbaik! Mari kita menikmatinya!" ♪</c>
+
+00:19:54.626 --> 00:19:57.417
+<c.dialog>♪ Siapapun yang dipilih, ♪</c>
+
+00:19:57.417 --> 00:19:59.232
+<c.dialog>♪ pasti berakhir bahagia ♪</c>
+
+00:19:59.232 --> 00:20:00.540
+<c.dialog>♪ Kau dan aku! ♪</c>
+
+00:20:00.540 --> 00:20:02.834
+<c.dialog>♪ Ke manakah arah dari cinta ini? ♪</c>
+
+00:20:02.834 --> 00:20:05.354
+<c.dialog>♪ Setelah iklan ♪</c>
+
+00:20:05.354 --> 00:20:10.461
+<c.dialog>♪ =LOVE datang untuk menemuimu! (Yeah!) ♪</c>
+
+00:20:10.461 --> 00:20:14.695
+<c.dialog>♪ Lambaikan tangan, lambaikan tangan lagi!! ♪</c>
+
+00:20:14.695 --> 00:20:16.168
+<c.dialog>♪ (Aku hanya kau!) ♪</c>
+
+00:20:16.168 --> 00:20:20.500
+<c.dialog>♪ Bahkan penonton, biarkan suaramu bergema ♪</c>
+
+00:20:20.500 --> 00:20:21.459
+<c.dialog>♪ Karena ♪</c>
+
+00:20:21.459 --> 00:20:26.001
+<c.dialog>♪ Aku hanya memilikimu saja ♪</c>
+
+00:20:26.001 --> 00:20:28.202
+<c.dialog>♪ [=LOVE] ♪</c>
+
+00:20:28.202 --> 00:20:30.188
+<c.dialog>♪ Ketika mata bertemu, hati pun berdebar ♪</c>
+
+00:20:30.188 --> 00:20:33.827
+<c.dialog>♪ Si mudah tersenyum, matahari kami
+Kau sendiri adalah Idol ♪</c>
+
+00:20:33.827 --> 00:20:39.084
+<c.dialog>♪ L-O-V-E, Takamatsu Hitomi ♪</c>
+
+00:20:39.084 --> 00:20:41.391
+<c.dialog>♪ "Aku akan menyinari semuanya!" ♪</c>
+
+00:20:41.391 --> 00:20:44.287
+<c.dialog>♪ Malaikat yang manis dengan godaan iblis ♪</c>
+
+00:20:44.287 --> 00:20:47.224
+<c.dialog>♪ Menaruh cinta dalam suaranya seperti permen ♪</c>
+
+00:20:47.224 --> 00:20:52.606
+<c.dialog>♪ L-O-V-E, Saito Kiara ♪</c>
+
+00:20:52.606 --> 00:20:55.084
+<c.dialog>♪ "Dyukushi!" untuk hati semuanya ♪</c>
+
+00:20:55.084 --> 00:20:57.375
+<c.dialog>♪ Nah, ini dia! Pemimpin kita ♪</c>
+
+00:20:57.375 --> 00:21:01.003
+<c.dialog>♪ Si gadis kecil, tapi pandai menari ♪</c>
+
+00:21:01.003 --> 00:21:06.023
+<c.dialog>♪ L-O-V-E, Yamamoto Anna ♪</c>
+
+00:21:06.023 --> 00:21:08.758
+<c.dialog>♪ "Homerun untuk hatimu" ♪</c>
+
+00:21:08.758 --> 00:21:11.177
+<c.dialog>♪ Tuan putri, tuan putri, di mana? ♪</c>
+
+00:21:11.177 --> 00:21:13.772
+<c.dialog>♪ Membuat semua terpesona dengan suaranya ♪</c>
+
+00:21:13.772 --> 00:21:17.110
+<c.dialog>♪ Penyuka warna hijau dan akan benyanyi untukmu ♪</c>
+
+00:21:17.110 --> 00:21:22.105
+<c.dialog>♪ L-O-V-E, Morohashi Sana ♪</c>
+
+00:21:22.105 --> 00:21:24.599
+<c.dialog>♪ "Aku ingin menjadi suara favoritmu" ♪</c>
+
+00:21:24.599 --> 00:21:27.091
+<c.dialog>♪ Memiliki daya tarik mode dalam riasannya ♪</c>
+
+00:21:27.091 --> 00:21:30.333
+<c.dialog>♪ Mirinya, idola para perempuan, si gadis manis ♪</c>
+
+00:21:30.333 --> 00:21:36.203
+<c.dialog>♪ L-O-V-E, Otani Emiri ♪</c>
+
+00:21:36.203 --> 00:21:38.269
+<c.dialog>♪ "Bolehkah kalau tak pulang malam ini" ♪</c>
+
+00:21:38.269 --> 00:21:40.498
+<c.dialog>♪ Pemeran utamanya adalah semua! ♪</c>
+
+00:21:40.498 --> 00:21:43.450
+<c.dialog>♪ Jangan merasa malu-malu ♪</c>
+
+00:21:43.450 --> 00:21:46.060
+<c.dialog>♪ Aku ingin bertemu denganmu ♪</c>
+
+00:21:46.060 --> 00:21:48.981
+<c.dialog>♪ Aku selalu menunggu hari ini ♪</c>
+
+00:22:02.709 --> 00:22:06.651
+<c.dialog>Semua orang di Arena, bagaimana?</c>
+
+00:22:07.625 --> 00:22:12.001
+<c.dialog>♪ Terima kasih karena telah menjadi modis ♪</c>
+
+00:22:12.001 --> 00:22:13.501
+<c.dialog>♪ (Aku hanya kau!) ♪</c>
+
+00:22:13.501 --> 00:22:17.834
+<c.dialog>♪ Meskipun jauh, aku bisa merasakan cinta ♪</c>
+
+00:22:17.834 --> 00:22:18.334
+<c.dialog>♪ Karena... ♪</c>
+
+00:22:18.334 --> 00:22:23.417
+<c.dialog>♪ Satu-satunya pemeran utama wanita bagimu!? ♪</c>
+
+00:22:23.417 --> 00:22:25.375
+<c.dialog>♪ Adalah [=LOVE] ♪</c>
+
+00:22:25.375 --> 00:22:27.042
+<c.dialog>♪ Berpelukan, lalu menjadi cantik ♪</c>
+
+00:22:27.042 --> 00:22:28.251
+<c.dialog>♪ (Oh yeah!) ♪</c>
+
+00:22:28.251 --> 00:22:29.584
+<c.dialog>♪ Harus menjadi yang nomor satu ♪</c>
+
+00:22:29.585 --> 00:22:30.918
+<c.dialog>♪ (Oh yeah!) ♪</c>
+
+00:22:30.918 --> 00:22:32.897
+<c.dialog>♪ Tanda L dengan tangan kanan, =LOVE ♪</c>
+
+00:22:32.897 --> 00:22:33.542
+<c.dialog>♪ (Oh yeah!) ♪</c>
+
+00:22:33.542 --> 00:22:36.561
+<c.dialog>♪ Uuu... Yeah! ♪</c>
+
+00:22:45.000 --> 00:22:51.000
+<c.dialog>Episode depan, yang akan memamerkan
+keunikannya adalah Oba Hana!</c>
+
+00:22:51.000 --> 00:22:57.000
+<c.dialog>Audisi pengisi suara untuk animasi dengan karakter
+orisinal yang digambar oleh Oba!</c>
+
+00:22:57.000 --> 00:23:00.000
+<c.dialog>Pilih aku!</c>
+
+00:23:00.000 --> 00:23:05.000
+<c.dialog>Bagi yang ingin menonton ulang tayangan ini,
+silakan buka TVer atau Hulu!</c>

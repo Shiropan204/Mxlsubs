@@ -1,0 +1,1194 @@
+WEBVTT
+
+NOTE
+Kind: captions
+Language: en
+
+STYLE
+::cue {
+  font-family: Arial, sans-serif;
+  color: #ffffff;
+  background: rgba(0,0,0,.45);
+}
+::cue(.dialog) { }
+::cue(.title) { font-weight: bold; color: #ffd400; }
+::cue(.member) { font-weight: bold; color: #7ee8fa; }
+::cue(.location) { font-style: italic; color: #b6ffb0; }
+::cue(.rule) { font-weight: bold; color: #ffb84d; }
+::cue(.editor) { font-weight: bold; color: #ffffff; }
+::cue(.editor-red) { font-weight: bold; color: #ff4d4d; }
+::cue(.editor-yellow) { font-weight: bold; color: #ffd93d; }
+::cue(.editor-blue) { font-weight: bold; color: #4da6ff; }
+::cue(.editor-green) { font-weight: bold; color: #6bff6b; }
+::cue(.score) { font-weight: bold; color: #ffd93d; }
+::cue(.ranking) { font-weight: bold; color: #ffb84d; }
+::cue(.timer) { font-family: monospace; font-weight: bold; color: #ffffff; }
+::cue(.warning) { font-weight: bold; color: #ff4d4d; }
+::cue(.result) { font-weight: bold; color: #6bff6b; }
+::cue(.sfx) { font-style: italic; color: #cccccc; }
+::cue(.emphasis) { font-weight: bold; text-decoration: underline; }
+
+00:00:03.200 --> 00:00:05.500
+<c.dialog>"Tokubechu, Shite"</c>
+
+00:00:06.000 --> 00:00:15.500
+<c.dialog>"Tokubechu, Shite", released last year, has surpassed
+2.1 billion cumulative views on TikTok.</c>
+
+00:00:16.500 --> 00:00:23.000
+<c.dialog>The brand-new show that will uncover the uniqueness
+and true nature of each member starts tonight!</c>
+
+00:00:40.000 --> 00:00:42.500
+<c.dialog>=LOVE KO KO KO!!</c>
+
+00:00:43.500 --> 00:00:47.500
+<c.dialog>This show will bring out the maximum potential</c>
+
+00:00:47.500 --> 00:00:51.500
+<c.dialog>and uniqueness of each member.</c>
+
+00:00:51.500 --> 00:00:54.000
+<c.dialog>We are Aiseki Start, your MCs. Nice to meet you!</c>
+
+00:00:54.000 --> 00:00:56.500
+<c.dialog>Nice to meet you!</c>
+
+00:00:57.000 --> 00:00:58.500
+<c.dialog>Kei-san, this is your first time meeting them, right?</c>
+
+00:00:58.500 --> 00:01:02.000
+<c.dialog>- Yes, this is our first time meeting.
+- Nice to meet you.</c>
+
+00:01:02.000 --> 00:01:05.000
+<c.dialog>I hope we can get closer from now on,</c>
+
+00:01:05.000 --> 00:01:08.000
+<c.dialog>and be able to call each other by nicknames.</c>
+
+00:01:08.000 --> 00:01:11.500
+<c.dialog>In this premiere episode, the member whose
+uniqueness we will uncover is...</c>
+
+00:01:11.500 --> 00:01:13.500
+<c.dialog>Our group's leader, Yamamoto Anna!</c>
+
+00:01:14.000 --> 00:01:16.500
+<c.dialog>Please take care of me!</c>
+
+00:01:17.000 --> 00:01:20.500 position:80% line:20%
+<c.editor-yellow>【Uniqueness】
+Knows the most about the members</c>
+
+00:01:17.000 --> 00:01:22.000
+<c.dialog>=LOVE's leader, Yamamoto Anna,
+will give a presentation about the members!</c>
+
+00:01:22.000 --> 00:01:24.000
+<c.dialog>Moreover...</c>
+
+00:01:24.000 --> 00:01:27.500
+<c.dialog>- Are these videos really from your phone?
+- Yes, they are.</c>
+
+00:01:27.500 --> 00:01:34.000
+<c.dialog>We will show treasure-like photos and videos
+of the members saved on Yamamoto's phone!</c>
+
+00:01:34.500 --> 00:01:37.000
+<c.dialog>These have never been published before.</c>
+
+00:01:37.500 --> 00:01:42.000
+<c.dialog>Don't miss these rare moments shown
+for the first time in this 30-minute episode!</c>
+
+00:01:43.000 --> 00:01:48.000
+<c.dialog>Could you tell us
+what kind of person Leader Yamamoto is?</c>
+
+00:01:48.000 --> 00:01:50.000
+<c.dialog>Her nickname is "Ankoro Mochiko"!</c>
+
+00:01:50.000 --> 00:01:52.500
+<c.dialog>I have about 10 nicknames.</c>
+
+00:01:52.500 --> 00:01:55.000
+<c.dialog>I also brought a drawing of my face...</c>
+
+00:01:55.000 --> 00:01:58.500
+<c.dialog>Wow, amazing!</c>
+
+00:01:58.500 --> 00:02:00.500
+<c.dialog>It looks just like you.</c>
+
+00:02:00.500 --> 00:02:02.500
+<c.dialog>Did you draw it yourself?</c>
+
+00:02:02.500 --> 00:02:04.500
+<c.dialog>Yes. It's a self-portrait.</c>
+
+00:02:04.500 --> 00:02:09.000
+<c.dialog>"Anya" at the very top is
+my official nickname,</c>
+
+00:02:09.000 --> 00:02:13.000
+<c.dialog>and from there, each member
+calls me by different names.</c>
+
+00:02:13.000 --> 00:02:16.000
+<c.dialog>I have the most nicknames in this group.</c>
+
+00:02:16.000 --> 00:02:19.000
+<c.dialog>So your leader status is just in name,
+and you're actually underestimated quite a bit?</c>
+
+00:02:19.000 --> 00:02:23.000
+<c.dialog>- I get teased a lot...
+- A loveable leader!</c>
+
+00:02:23.500 --> 00:02:26.500
+<c.dialog>Since I also don't know much about you guys yet,</c>
+
+00:02:26.500 --> 00:02:29.000
+<c.dialog>I'd like the leader to introduce the other members.</c>
+
+00:02:29.000 --> 00:02:31.000
+<c.dialog>Leave it to me!</c>
+
+00:02:31.000 --> 00:02:35.000
+<c.dialog>Alright, let's start with Sasaki Maika.</c>
+
+00:02:35.000 --> 00:02:37.000
+<c.dialog>Here is Sasaki Maika! Ta-da!</c>
+
+00:02:37.000 --> 00:02:42.500
+<c.dialog>First, she is like a miraculous being
+created by God.</c>
+
+00:02:42.500 --> 00:02:48.500
+<c.dialog>Her visual is everyone's dream,
+and her voice is very stable when singing.</c>
+
+00:02:48.500 --> 00:02:52.500
+<c.dialog>She is also thoughtful and
+cares a lot about others.</c>
+
+00:02:53.000 --> 00:02:57.000
+<c.dialog>But, as the leader,
+I won't just praise her!</c>
+
+00:02:57.000 --> 00:03:01.000
+<c.dialog>- There's a warning sign!
+- That part can be peeled off!</c>
+
+00:03:01.000 --> 00:03:05.000
+<c.dialog>I'll reveal it. Ta-da!</c>
+
+00:03:05.500 --> 00:03:11.500
+<c.dialog>"She hates calling to make food reservations,
+so please order for her."</c>
+
+00:03:11.500 --> 00:03:16.500
+<c.dialog>"The person attending the outdoor rehearsal
+might not be the real Maika."</c>
+
+00:03:16.500 --> 00:03:18.500
+<c.dialog>She doesn't participate in the rehearsal?</c>
+
+00:03:18.500 --> 00:03:20.500
+<c.dialog>I have a photo...</c>
+
+00:03:20.500 --> 00:03:23.000
+<c.dialog>- This has been published before, right?
+- Never!</c>
+
+00:03:23.000 --> 00:03:27.000
+<c.dialog>- Oh!
+- From the leader's personal collection!</c>
+
+00:03:27.500 --> 00:03:31.000
+<c.dialog>We are showing this for the first time!</c>
+
+00:03:31.000 --> 00:03:36.000
+<c.dialog>A photo of Sasaki's outdoor concert rehearsal
+taken by Yamamoto herself!</c>
+
+00:03:36.500 --> 00:03:39.000
+<c.dialog>Huh? What's with that?</c>
+
+00:03:39.000 --> 00:03:44.000
+<c.dialog>This was during the outdoor concert rehearsal,
+"probably" the real Sasaki Maika.</c>
+
+00:03:44.000 --> 00:03:46.500
+<c.dialog>We can't see her face at all.</c>
+
+00:03:46.500 --> 00:03:49.000
+<c.dialog>You can verify it's me from my nail art.</c>
+
+00:03:50.000 --> 00:03:57.000
+<c.dialog>Last year, my outfit was much darker.
+The mouth area was also black.</c>
+
+00:03:57.000 --> 00:04:00.500
+<c.dialog>But because it was too scary,
+I used white this year.</c>
+
+00:04:00.500 --> 00:04:03.000
+<c.dialog>How is this any better than last year!</c>
+
+00:04:03.000 --> 00:04:04.500
+<c.dialog>Such a rare photo.</c>
+
+00:04:04.500 --> 00:04:08.000
+<c.dialog>Everyone better be prepared!
+Brace yourselves.</c>
+
+00:04:09.000 --> 00:04:10.500
+<c.dialog>Let's move on.</c>
+
+00:04:10.500 --> 00:04:13.500
+<c.dialog>Next is Noguchi Iori!</c>
+
+00:04:13.500 --> 00:04:19.500
+<c.dialog>She has a loud voice, and her way of speaking...
+let's just say it's not very polite.</c>
+
+00:04:19.500 --> 00:04:23.000
+<c.dialog>However, she is the most serious
+and a perfectionist.</c>
+
+00:04:24.000 --> 00:04:27.500
+<c.dialog>It seems like you have no flaws,
+do you have any bad sides?</c>
+
+00:04:27.500 --> 00:04:29.000
+<c.dialog>Yes, there is.</c>
+
+00:04:29.000 --> 00:04:31.000
+<c.dialog>I'll reveal it. Ta-da!</c>
+
+00:04:31.000 --> 00:04:36.500
+<c.dialog>Not as "Noguchi Iori", but when she becomes "I-chan"
+she turns into a "Bratty Kid".</c>
+
+00:04:36.500 --> 00:04:39.500
+<c.dialog>- Shut up!
+- Oh, that's her bratty behavior.</c>
+
+00:04:39.500 --> 00:04:46.000
+<c.dialog>Here is the footage of Noguchi that successfully
+proves Yamamoto's "Bratty Kid" nickname!</c>
+
+00:04:50.000 --> 00:04:53.000 position:80%
+<c.editor>Not an
+Idol's Face</c>
+
+00:04:50.000 --> 00:04:53.000
+<c.dialog>What kind of idol face is that?
+What's wrong with you?</c>
+
+00:04:59.000 --> 00:05:01.000
+<c.dialog>Is it okay to air this?</c>
+
+00:05:01.000 --> 00:05:04.000
+<c.dialog>You look like you're involved in something illegal.</c>
+
+00:05:04.000 --> 00:05:06.000
+<c.dialog>Yeah. It's really scary.</c>
+
+00:05:06.000 --> 00:05:10.000
+<c.dialog>So at that time, I asked her to hold my phone,</c>
+
+00:05:10.000 --> 00:05:12.500
+<c.dialog>and when she returned it, this video was in my gallery.</c>
+
+00:05:12.500 --> 00:05:16.000
+<c.dialog>Since she secretly recorded this,
+I decided to expose her.</c>
+
+00:05:16.000 --> 00:05:19.500
+<c.dialog>It really is a video from the leader's phone.</c>
+
+00:05:20.000 --> 00:05:21.500
+<c.dialog>Yes, it is.</c>
+
+00:05:22.000 --> 00:05:24.000
+<c.dialog>Next is Takamatsu Hitomi.</c>
+
+00:05:24.000 --> 00:05:30.000
+<c.dialog>This rare photo will reveal her other side
+that only Yamamoto knows!</c>
+
+00:05:30.000 --> 00:05:35.000
+<c.dialog>She has a smile as bright as the sun,
+and a strong spirit to lead the group.</c>
+
+00:05:35.000 --> 00:05:39.000
+<c.dialog>Even though she's the third youngest,
+she has a mature side like an older sister.</c>
+
+00:05:40.000 --> 00:05:44.500
+<c.dialog>But... behind that, the real Hitomi is...</c>
+
+00:05:44.500 --> 00:05:48.500
+<c.dialog>And actually, she is...</c>
+
+00:05:48.500 --> 00:05:51.500
+<c.dialog>Please take a look at this photo.</c>
+
+00:05:52.500 --> 00:05:55.000
+<c.dialog>Wow, the photo is so aesthetic.</c>
+
+00:05:55.000 --> 00:05:58.500
+<c.dialog>- Looking a bit pretentious, right?
+- Yeah, acting cool.</c>
+
+00:05:58.500 --> 00:06:05.000
+<c.dialog>She even wears sunglasses while strolling around.
+Just like a celebrity.</c>
+
+00:06:05.000 --> 00:06:07.500
+<c.dialog>Even though she looks very fashionable and elegant...</c>
+
+00:06:07.500 --> 00:06:11.500
+<c.dialog>A while ago, when we were staying at a hotel out of town,</c>
+
+00:06:11.500 --> 00:06:17.500
+<c.dialog>she sent a message, "Anna, can I come to your room?
+Can I use your shower?"</c>
+
+00:06:17.500 --> 00:06:22.000
+<c.dialog>That's kinda cute.
+But why so suddenly?</c>
+
+00:06:22.000 --> 00:06:26.500
+<c.dialog>So, she only dares to act cool while the sun is still up.</c>
+
+00:06:26.500 --> 00:06:31.500
+<c.dialog>But once the sun goes down,
+she doesn't even dare to shower alone.</c>
+
+00:06:32.500 --> 00:06:34.500
+<c.dialog>Hitomi, why did you go to the leader's room?</c>
+
+00:06:34.500 --> 00:06:38.000
+<c.dialog>I felt like I could somewhat sense "that thing"...</c>
+
+00:06:38.000 --> 00:06:40.000
+<c.dialog>- You have a sixth sense?
+- Yes.</c>
+
+00:06:40.000 --> 00:06:45.000
+<c.dialog>Since I felt the hotel was a bit creepy,
+and I couldn't bear to be alone...</c>
+
+00:06:45.000 --> 00:06:47.000
+<c.dialog>I ran to Anna's room.</c>
+
+00:06:47.500 --> 00:06:49.500
+<c.dialog>At times like that, the leader is very reliable, huh?</c>
+
+00:06:49.500 --> 00:06:51.500
+<c.dialog>Right! I'm so happy.</c>
+
+00:06:51.500 --> 00:06:54.000
+<c.dialog>You are really relied upon, Yamamoto.</c>
+
+00:06:54.000 --> 00:06:56.500
+<c.dialog>Yes, she's a true leader.</c>
+
+00:06:56.500 --> 00:07:00.000
+<c.dialog>Next is... Ta-da! Morohashi Sana.</c>
+
+00:07:00.500 --> 00:07:03.000
+<c.dialog>Hey, who is that!?</c>
+
+00:07:03.000 --> 00:07:05.500
+<c.dialog>The teeth are huge!</c>
+
+00:07:06.000 --> 00:07:09.500
+<c.dialog>Sana is known for her toothy smile, right!</c>
+
+00:07:11.500 --> 00:07:13.500
+<c.dialog>Her nickname is "Sanatsun".</c>
+
+00:07:13.500 --> 00:07:20.500
+<c.dialog>During MC breaks at concerts, just her talking
+brightens up the mood and makes everyone smile.</c>
+
+00:07:20.500 --> 00:07:23.000
+<c.dialog>But this Sana...</c>
+
+00:07:23.500 --> 00:07:30.500
+<c.dialog>She does her makeup until the very last minute before a concert,
+and always... cuts it super close.</c>
+
+00:07:31.000 --> 00:07:39.000
+<c.dialog>Here is a video of Sana right before a live performance,
+recorded and edited by Yamamoto herself!</c>
+
+00:07:39.000 --> 00:07:42.000
+<c.dialog>Of course, this is a world premiere!</c>
+
+00:07:42.500 --> 00:07:47.000
+<c.dialog>Sana started eating 5 minutes before the concert.</c>
+
+00:07:47.000 --> 00:07:48.500
+<c.dialog>This is really bad...</c>
+
+00:07:48.500 --> 00:07:50.000
+<c.dialog>Let's go, to the stage.</c>
+
+00:07:50.000 --> 00:07:51.500
+<c.dialog>Can I get one more serving?</c>
+
+00:07:51.500 --> 00:07:55.500
+<c.dialog>I've worked for 8 years,
+and this is the first time someone eats 5 minutes before going on stage.</c>
+
+00:07:55.500 --> 00:07:57.000
+<c.dialog>Want some?</c>
+
+00:07:57.000 --> 00:07:59.000
+<c.dialog>Hell no!</c>
+
+00:07:59.500 --> 00:08:02.000
+<c.dialog>This is an actual video of the incident?</c>
+
+00:08:02.000 --> 00:08:05.000
+<c.dialog>I happened to record it during the recent tour...</c>
+
+00:08:05.000 --> 00:08:08.000
+<c.dialog>Even though the time right before a live is crucial...</c>
+
+00:08:08.000 --> 00:08:11.000
+<c.dialog>Right. Sometimes we are so busy we don't even eat.</c>
+
+00:08:11.000 --> 00:08:15.500
+<c.dialog>But when I hear the audience's cheers,
+my stomach starts growling.</c>
+
+00:08:15.500 --> 00:08:18.500
+<c.dialog>I don't understand your thought process.
+Hearing cheers makes you...</c>
+
+00:08:18.500 --> 00:08:24.500
+<c.dialog>You should shorten your makeup time,
+and use the rest to eat... manage your time better.</c>
+
+00:08:24.500 --> 00:08:27.500
+<c.dialog>I wish I could...</c>
+
+00:08:28.000 --> 00:08:30.500
+<c.dialog>Let's move on to the next member.</c>
+
+00:08:30.500 --> 00:08:33.000
+<c.dialog>Next is, ta-da! Otani Emiri!</c>
+
+00:08:33.000 --> 00:08:35.000
+<c.dialog>She is every girl's dream.</c>
+
+00:08:35.000 --> 00:08:40.000
+<c.dialog>If Mirinya says it's cute,
+it must be cute! She is very reliable!</c>
+
+00:08:40.500 --> 00:08:42.500
+<c.dialog>But!</c>
+
+00:08:42.500 --> 00:08:47.000
+<c.dialog>Ta-da! Sometimes she arrives at the venue
+with soaking wet hair.</c>
+
+00:08:47.000 --> 00:08:48.500
+<c.dialog>It's true!</c>
+
+00:08:48.500 --> 00:08:50.000
+<c.dialog>She's soaking wet today too!</c>
+
+00:08:50.000 --> 00:08:54.500
+<c.dialog>What do you mean? By the way,
+speaking of that famous scary story,</c>
+
+00:08:54.500 --> 00:09:01.000
+<c.dialog>about a taxi picking up a female passenger, suddenly she disappears
+and the seat is soaking wet. You know that scary story, right?</c>
+
+00:09:01.000 --> 00:09:05.500
+<c.dialog>Could that woman be you?</c>
+
+00:09:06.000 --> 00:09:10.500
+<c.dialog>Also, she always goes home empty-handed,
+carrying only natto in her pocket.</c>
+
+00:09:10.500 --> 00:09:14.000
+<c.dialog>Please take a look at the photo.</c>
+
+00:09:14.000 --> 00:09:17.500
+<c.dialog>This was right after a concert ended...</c>
+
+00:09:17.500 --> 00:09:21.000
+<c.dialog>If it's a 2-day concert schedule,
+we can leave our belongings there.</c>
+
+00:09:21.000 --> 00:09:25.000
+<c.dialog>But while others carry small bags
+or paper bags when going home...</c>
+
+00:09:25.000 --> 00:09:28.000
+<c.dialog>This girl says "Thanks for your hard work"
+and goes home looking like this.</c>
+
+00:09:28.000 --> 00:09:35.000
+<c.dialog>From the photo, she looks like a thug
+who would ride shotgun in a recklessly driven car.</c>
+
+00:09:35.000 --> 00:09:43.000
+<c.dialog>The difference between when she's dolled up cute
+and when she's not is huge.</c>
+
+00:09:43.000 --> 00:09:46.500
+<c.dialog>Yeah, I'm really a sloppy and messy person.</c>
+
+00:09:47.000 --> 00:09:50.000
+<c.dialog>Next member, Otoshima Risa.</c>
+
+00:09:50.000 --> 00:09:54.000
+<c.dialog>Yamamoto has something
+she really wants to say today...</c>
+
+00:09:54.000 --> 00:09:59.000
+<c.dialog>When her dance is caught on camera, her wink
+successfully steals everyone's heart.</c>
+
+00:09:59.000 --> 00:10:04.000
+<c.dialog>Her style is amazing, she is a true idol.</c>
+
+00:10:04.000 --> 00:10:10.000
+<c.dialog>But! It's about time you inherited that title.</c>
+
+00:10:10.500 --> 00:10:14.000
+<c.dialog>Please look at this photo.</c>
+
+00:10:14.500 --> 00:10:18.500
+<c.dialog>It's a very cute photo. Carrying a beautiful bag too.</c>
+
+00:10:19.000 --> 00:10:25.500
+<c.dialog>In the group, I don't know since when
+I started being called "High Brand Woman".</c>
+
+00:10:25.500 --> 00:10:35.000
+<c.dialog>But honestly, from the leader's perspective,
+the true High Brand Woman is actually Otoshima Risa!</c>
+
+00:10:35.500 --> 00:10:41.000
+<c.dialog>So the leader kept this a secret all this time!
+She willingly became the sole scapegoat.</c>
+
+00:10:41.000 --> 00:10:46.500
+<c.dialog>Look at this photo!
+It's a cute bag from a famous brand...</c>
+
+00:10:46.500 --> 00:10:49.500
+<c.dialog>But the price is not cute at all!</c>
+
+00:10:50.000 --> 00:10:56.500
+<c.dialog>It's very precious to me, because I bought it
+exactly on Ichiryumanbaibi (a lucky day) and Taian (the most auspicious day).</c>
+
+00:10:56.500 --> 00:11:01.000
+<c.dialog>Such old-fashioned customs
+won't justify its exorbitant price!</c>
+
+00:11:01.000 --> 00:11:05.000
+<c.dialog>Am I really seen as someone who loves branded goods?
+My collection isn't even that big...</c>
+
+00:11:05.000 --> 00:11:08.500
+<c.dialog>The one who buys branded goods the most
+is definitely the leader!</c>
+
+00:11:08.500 --> 00:11:11.000
+<c.dialog>Ah, I can feel the sparks flying!</c>
+
+00:11:11.000 --> 00:11:14.000
+<c.dialog>Everyone, please close your eyes.</c>
+
+00:11:14.500 --> 00:11:19.000 line:20%
+<c.rule>=LOVE's High Brand Queen</c>
+
+00:11:14.500 --> 00:11:19.500
+<c.dialog>Let's hold a vote to determine
+who the =LOVE High Brand Queen is!</c>
+
+00:11:19.500 --> 00:11:23.000
+<c.dialog>Who will be
+the true High Brand Queen?</c>
+
+00:11:23.000 --> 00:11:29.000
+<c.dialog>Those who agree that Yamamoto is the High Brand Queen,
+please raise your hand.</c>
+
+00:11:29.500 --> 00:11:34.000
+<c.dialog>Yes, yes. You may lower your hands.</c>
+
+00:11:36.000 --> 00:11:41.000
+<c.dialog>Those who agree that the =LOVE High Brand Queen is
+Otoshima, please raise your hand.</c>
+
+00:11:41.500 --> 00:11:47.000
+<c.dialog>Okay, the decision is unanimous.
+Everyone, please open your eyes.</c>
+
+00:11:48.000 --> 00:11:51.000
+<c.dialog>The High Brand Queen is the leader!</c>
+
+00:11:51.000 --> 00:11:52.500
+<c.dialog>What the heck!?</c>
+
+00:11:52.500 --> 00:11:55.000
+<c.dialog>You're kidding, right!?</c>
+
+00:11:55.000 --> 00:11:58.500
+<c.dialog>Absolute majority. It's a huge margin.</c>
+
+00:11:58.500 --> 00:12:00.500
+<c.dialog>It's definitely you!</c>
+
+00:12:00.500 --> 00:12:06.500
+<c.dialog>Even though I told the manager today,
+"Today I'm passing the High Brand Queen title to Risa!"</c>
+
+00:12:06.500 --> 00:12:09.500
+<c.dialog>Impossible!</c>
+
+00:12:09.500 --> 00:12:15.500
+<c.dialog>You really know how to do variety shows!
+Your true colors are showing.</c>
+
+00:12:15.500 --> 00:12:18.500
+<c.dialog>It seems it's still too early
+for Risa to inherit this title.</c>
+
+00:12:18.500 --> 00:12:20.500
+<c.dialog>Yeah, you just keep that title!</c>
+
+00:12:20.500 --> 00:12:22.500
+<c.dialog>I've returned it to you.</c>
+
+00:12:23.000 --> 00:12:28.000
+<c.dialog>- Shall we continue?
+- Yes. Next is Takiwaki Shoko!</c>
+
+00:12:28.000 --> 00:12:31.000
+<c.dialog>Wow, so cute!</c>
+
+00:12:31.000 --> 00:12:36.500
+<c.dialog>Lately she's been taking a lot of dance lessons
+and has grown tremendously!</c>
+
+00:12:36.500 --> 00:12:40.000
+<c.dialog>I'm also the weakest to Shoko's tears...</c>
+
+00:12:40.000 --> 00:12:42.000
+<c.dialog>Does she cry easily?</c>
+
+00:12:42.000 --> 00:12:46.000
+<c.dialog>Not really, she's not the type
+to cry easily in her daily life.</c>
+
+00:12:46.000 --> 00:12:51.500
+<c.dialog>That's why when she does cry, it touches my heart
+and makes me want to protect her...</c>
+
+00:12:52.000 --> 00:12:54.000
+<c.dialog>This Shoko turns out to...</c>
+
+00:12:54.000 --> 00:12:59.000
+<c.dialog>"Messages asking 'What are you doing?' at night
+must be replied to immediately."</c>
+
+00:12:59.000 --> 00:13:03.000
+<c.dialog>Recently, I kept her company on a call for 4 hours!</c>
+
+00:13:03.000 --> 00:13:07.000
+<c.dialog>From 12 AM to 4 AM.</c>
+
+00:13:08.000 --> 00:13:12.500
+<c.dialog>12 AM is usually
+bedtime, right?</c>
+
+00:13:12.500 --> 00:13:18.500
+<c.dialog>When I look at her schedule for tomorrow,
+"Oh, Anna seems to be free."</c>
+
+00:13:19.000 --> 00:13:21.000
+<c.dialog>Such a hassle!</c>
+
+00:13:24.000 --> 00:13:27.000
+<c.dialog>Enough already. Are you satisfied now?</c>
+
+00:13:27.500 --> 00:13:35.000
+<c.dialog>Yamamoto captured the moment the clingy Takiwaki
+was being clingy to another member!</c>
+
+00:13:36.000 --> 00:13:42.000
+<c.dialog>So clingy, right.
+This is when she was acting clingy with Sana.</c>
+
+00:13:42.500 --> 00:13:45.000
+<c.dialog>Is this moment very rare? Like hugging...</c>
+
+00:13:45.000 --> 00:13:55.000
+<c.dialog>Usually I'm not clingy at all.
+My clingy side only comes out at night...</c>
+
+00:13:56.000 --> 00:13:59.000
+<c.dialog>I was also called by her at that time,</c>
+
+00:13:59.000 --> 00:14:04.000
+<c.dialog>but when I was about to hang up, she said,
+"Please don't hang up! Don't hang up!"</c>
+
+00:14:04.000 --> 00:14:08.500
+<c.dialog>Because I had to wake up at 5 AM then,</c>
+
+00:14:08.500 --> 00:14:14.000
+<c.dialog>I said, "Sorry, but please call Anna instead!"
+So I passed the buck to Anna.</c>
+
+00:14:14.000 --> 00:14:19.500
+<c.dialog>You guys are really close.
+Truly proof of your closeness.</c>
+
+00:14:19.500 --> 00:14:23.000
+<c.dialog>Next... Ta-da! Oba Hana!</c>
+
+00:14:23.000 --> 00:14:29.000
+<c.dialog>Her voice, her dance, her way of talking, everything!
+She can make everyone smile.</c>
+
+00:14:29.000 --> 00:14:34.500
+<c.dialog>About Hana... I also have something.
+Ta-da!</c>
+
+00:14:34.500 --> 00:14:43.000
+<c.dialog>"Because she was too absorbed in giving fanservice to the audience,
+she was late returning to the stage, and got scolded by the staff."</c>
+
+00:14:43.000 --> 00:14:49.000
+<c.dialog>When I arrived on stage,
+Sana came up to me angrily.</c>
+
+00:14:49.000 --> 00:14:58.500
+<c.dialog>While I was dancing happily, Sana said
+"You don't realize the time, do you!" like that.</c>
+
+00:15:04.000 --> 00:15:10.500
+<c.dialog>I was quite down at that time.
+Felt really guilty because I couldn't get back...</c>
+
+00:15:10.500 --> 00:15:16.500
+<c.dialog>In the end, I performed the rest of the song
+full of guilt.</c>
+
+00:15:17.000 --> 00:15:19.500
+<c.dialog>You must have regretted it a lot.</c>
+
+00:15:19.500 --> 00:15:25.500
+<c.dialog>Your story makes us want to watch your concert live.
+To see moments like that.</c>
+
+00:15:26.500 --> 00:15:33.500
+<c.dialog>Since I've already talked about her flaws,
+I want to share a rare video of her sleeping in the dressing room,</c>
+
+00:15:33.500 --> 00:15:36.500
+<c.dialog>sleeping cutely like a baby.</c>
+
+00:15:37.000 --> 00:15:44.000
+<c.dialog>Here is Yamamoto's secret recording,
+the sleeping face of the always-cheerful Oba is rarely seen!</c>
+
+00:15:44.000 --> 00:15:48.000
+<c.dialog>A rare video that's only 4 seconds long!</c>
+
+00:15:49.000 --> 00:15:54.000
+<c.dialog>It's so rare to see Hana sleeping
+in the dressing room... So short!</c>
+
+00:15:54.000 --> 00:15:57.000
+<c.dialog>You intentionally recorded it secretly, right?</c>
+
+00:15:57.000 --> 00:16:01.000
+<c.dialog>That day I suddenly felt so sleepy,
+so I just fell asleep.</c>
+
+00:16:01.000 --> 00:16:05.000
+<c.dialog>It means you were exhausted.
+That's why you could be recorded secretly like that.</c>
+
+00:16:05.000 --> 00:16:11.000
+<c.dialog>Since I exposed the story of her getting scolded earlier,
+maybe I should neutralize the situation here.</c>
+
+00:16:11.000 --> 00:16:12.500
+<c.dialog>Next is the last one, right?</c>
+
+00:16:12.500 --> 00:16:16.000
+<c.dialog>The last member is Saito Kiara!</c>
+
+00:16:16.000 --> 00:16:18.500
+<c.dialog>Our youngest member.</c>
+
+00:16:18.500 --> 00:16:23.000
+<c.dialog>She used to be like a cute little sister to all of us,
+but now she's a strong, reliable idol.</c>
+
+00:16:23.000 --> 00:16:25.500
+<c.dialog>But!</c>
+
+00:16:26.000 --> 00:16:28.500
+<c.dialog>She is the center of comedy in this group.</c>
+
+00:16:28.500 --> 00:16:33.000
+<c.dialog>We have a large collection of hilarious photos and videos of Kiara.</c>
+
+00:16:33.000 --> 00:16:37.000
+<c.dialog>99% of them are videos not suitable for public broadcast.</c>
+
+00:16:37.000 --> 00:16:44.000
+<c.dialog>But... among all of those, there is a hilarious video of her
+that's still within acceptable limits to be shown.</c>
+
+00:16:44.000 --> 00:16:45.500
+<c.dialog>What video?</c>
+
+00:16:45.500 --> 00:16:50.000
+<c.dialog>Challenge: "Get up without using your hands!"</c>
+
+00:16:53.000 --> 00:16:55.000
+<c.dialog>What is this?</c>
+
+00:16:56.500 --> 00:16:58.500
+<c.dialog>Ouch!</c>
+
+00:17:00.000 --> 00:17:02.500
+<c.dialog>Where was that and what were you doing?</c>
+
+00:17:03.000 --> 00:17:07.500
+<c.dialog>This was during our free time,
+there happened to be a bed in the room,</c>
+
+00:17:07.500 --> 00:17:11.000
+<c.dialog>so I challenged her,
+"Kiara, try getting up without using your hands!"</c>
+
+00:17:11.000 --> 00:17:14.500
+<c.dialog>And then she innocently kept trying...</c>
+
+00:17:14.500 --> 00:17:21.000
+<c.dialog>I felt like I had to succeed, because if I did
+the video would be super cool!</c>
+
+00:17:21.000 --> 00:17:28.000
+<c.dialog>Even though I tried so hard, I still couldn't do it...
+You should try it yourself at home.</c>
+
+00:17:28.000 --> 00:17:34.000
+<c.dialog>I'm not interested. This is the one within "acceptable limits"?
+It means you have a lot of unacceptable things going on.</c>
+
+00:17:34.000 --> 00:17:36.000
+<c.dialog>This is still much better, right?</c>
+
+00:17:36.000 --> 00:17:40.000
+<c.dialog>If you challenge me like that,
+I'd definitely do anything.</c>
+
+00:17:41.000 --> 00:17:46.500
+<c.dialog>Wow, it's really different when it's the leader...
+Amazing, almost all of them are rare videos.</c>
+
+00:17:46.500 --> 00:17:50.000
+<c.dialog>Even though she only introduced herself
+through her nicknames.</c>
+
+00:17:50.000 --> 00:17:55.500
+<c.dialog>In the end, the High Brand Queen title
+flew right back at her like a boomerang.</c>
+
+00:17:55.500 --> 00:18:01.000
+<c.dialog>Right! Now my titles are just
+nicknames and High Brand Queen!</c>
+
+00:18:01.500 --> 00:18:05.500
+<c.dialog>Everyone respects you a lot,
+that has been conveyed clearly.</c>
+
+00:18:05.500 --> 00:18:09.500
+<c.dialog>And! The =LOVE lineup order
+that I created is this!</c>
+
+00:18:09.500 --> 00:18:16.500
+<c.dialog>The =LOVE lineup order created by Yamamoto Anna
+will be uploaded on our show's social media accounts!</c>
+
+00:18:24.000 --> 00:18:31.000
+<c.dialog>Up next, a song performance with Yamamoto as the center
+that is full of the uniqueness of each =LOVE member!</c>
+
+00:18:33.500 --> 00:18:35.293
+<c.dialog>♪ Hugging tight, then becoming cute ♪</c>
+
+00:18:35.293 --> 00:18:36.293
+<c.dialog>♪ (Oh yeah!) ♪</c>
+
+00:18:36.293 --> 00:18:38.307
+<c.dialog>♪ Gotta be number one ♪</c>
+
+00:18:38.307 --> 00:18:39.089
+<c.dialog>♪ (Oh yeah!) ♪</c>
+
+00:18:39.089 --> 00:18:41.001
+<c.dialog>♪ An L sign with the right hand, =LOVE ♪</c>
+
+00:18:41.001 --> 00:18:41.584
+<c.dialog>♪ (Oh yeah!) ♪</c>
+
+00:18:41.584 --> 00:18:44.209
+<c.dialog>♪ Ooh... Yeah! ♪</c>
+
+00:18:44.209 --> 00:18:45.667
+<c.dialog>♪ A cute and charming mermaid ♪</c>
+
+00:18:45.667 --> 00:18:47.126
+<c.dialog>♪ Voice, face, color, love are perfect ♪</c>
+
+00:18:47.126 --> 00:18:50.074
+<c.dialog>♪ She will captivate all of humanity ♪</c>
+
+00:18:50.074 --> 00:18:55.293
+<c.dialog>♪ L-O-V-E, Sasaki Maika ♪</c>
+
+00:18:55.293 --> 00:18:57.659
+<c.dialog>♪ "Stay by my side forever" ♪</c>
+
+00:18:57.659 --> 00:19:00.625
+<c.dialog>♪ The official girlfriend of =LOVE ♪</c>
+
+00:19:00.625 --> 00:19:03.584
+<c.dialog>♪ They say she flew in from the land of princesses ♪</c>
+
+00:19:03.584 --> 00:19:08.375
+<c.dialog>♪ L-O-V-E, Otoshima Risa ♪</c>
+
+00:19:08.375 --> 00:19:10.959
+<c.dialog>♪ "Come and pick me up" ♪</c>
+
+00:19:10.959 --> 00:19:17.084
+<c.dialog>♪ Adorned with high tones, overflowing with smiles
+Ah, inviting you to a gorgeous showtime ♪</c>
+
+00:19:17.084 --> 00:19:22.227
+<c.dialog>♪ L-O-V-E, Oba Hana ♪</c>
+
+00:19:22.227 --> 00:19:24.625
+<c.dialog>♪ "Come on, over here" ♪</c>
+
+00:19:24.625 --> 00:19:27.491
+<c.dialog>♪ Let's go! =LOVE's O-o-ta-ni! ♪</c>
+
+00:19:27.491 --> 00:19:29.889
+<c.dialog>♪ A hardworking genius performer ♪</c>
+
+00:19:29.889 --> 00:19:33.001
+<c.dialog>♪ A spoiled gap, an unfair person everyone falls for ♪</c>
+
+00:19:33.001 --> 00:19:38.459
+<c.dialog>♪ L-O-V-E, Noguchi Iori ♪</c>
+
+00:19:38.459 --> 00:19:41.126
+<c.dialog>♪ "Do you like I-chan?" ♪</c>
+
+00:19:41.126 --> 00:19:43.234
+<c.dialog>♪ Taking on any challenge, an active Girl ♪</c>
+
+00:19:43.234 --> 00:19:46.459
+<c.dialog>♪ A hardworking figure, BPM up ♪</c>
+
+00:19:46.459 --> 00:19:51.667
+<c.dialog>♪ L-O-V-E, Takiwaki Shoko ♪</c>
+
+00:19:51.667 --> 00:19:54.626
+<c.dialog>♪ "=LOVE is the best! Let's enjoy it!" ♪</c>
+
+00:19:54.626 --> 00:19:57.417
+<c.dialog>♪ No matter who you choose, ♪</c>
+
+00:19:57.417 --> 00:19:59.232
+<c.dialog>♪ it's a happy ending ♪</c>
+
+00:19:59.232 --> 00:20:00.540
+<c.dialog>♪ You and I! ♪</c>
+
+00:20:00.540 --> 00:20:02.834
+<c.dialog>♪ Where is this love heading? ♪</c>
+
+00:20:02.834 --> 00:20:05.354
+<c.dialog>♪ After the commercial ♪</c>
+
+00:20:05.354 --> 00:20:10.461
+<c.dialog>♪ =LOVE came to see you! (Yeah!) ♪</c>
+
+00:20:10.461 --> 00:20:14.695
+<c.dialog>♪ Wave your hands, wave your hands more!! ♪</c>
+
+00:20:14.695 --> 00:20:16.168
+<c.dialog>♪ (I just you!) ♪</c>
+
+00:20:16.168 --> 00:20:20.500
+<c.dialog>♪ Even the stands, let your voices echo ♪</c>
+
+00:20:20.500 --> 00:20:21.459
+<c.dialog>♪ Because... ♪</c>
+
+00:20:21.459 --> 00:20:26.001
+<c.dialog>♪ I only have you ♪</c>
+
+00:20:26.001 --> 00:20:28.202
+<c.dialog>♪ [=LOVE] ♪</c>
+
+00:20:28.202 --> 00:20:30.188
+<c.dialog>♪ When our eyes meet, my heart pounds ♪</c>
+
+00:20:30.188 --> 00:20:33.827
+<c.dialog>♪ Full of smiles, our sun
+You are the Idol ♪</c>
+
+00:20:33.827 --> 00:20:39.084
+<c.dialog>♪ L-O-V-E, Takamatsu Hitomi ♪</c>
+
+00:20:39.084 --> 00:20:41.391
+<c.dialog>♪ "I'll light up everyone!" ♪</c>
+
+00:20:41.391 --> 00:20:44.287
+<c.dialog>♪ A sweet angel's devilish temptation ♪</c>
+
+00:20:44.287 --> 00:20:47.224
+<c.dialog>♪ Packing love into her candy voice ♪</c>
+
+00:20:47.224 --> 00:20:52.606
+<c.dialog>♪ L-O-V-E, Saito Kiara ♪</c>
+
+00:20:52.606 --> 00:20:55.084
+<c.dialog>♪ "Dyukushi!" into everyone's hearts ♪</c>
+
+00:20:55.084 --> 00:20:57.375
+<c.dialog>♪ Here we are! Our leader ♪</c>
+
+00:20:57.375 --> 00:21:01.003
+<c.dialog>♪ Lil lil girl, yet, ill ill dancing ♪</c>
+
+00:21:01.003 --> 00:21:06.023
+<c.dialog>♪ L-O-V-E, Yamamoto Anna ♪</c>
+
+00:21:06.023 --> 00:21:08.758
+<c.dialog>♪ "A homerun into your heart" ♪</c>
+
+00:21:08.758 --> 00:21:11.177
+<c.dialog>♪ Princess, princess, where are you? ♪</c>
+
+00:21:11.177 --> 00:21:13.772
+<c.dialog>♪ Captivating everyone with her enchanting voice ♪</c>
+
+00:21:13.772 --> 00:21:17.110
+<c.dialog>♪ In charge of green, she will sing for you ♪</c>
+
+00:21:17.110 --> 00:21:22.105
+<c.dialog>♪ L-O-V-E, Morohashi Sana ♪</c>
+
+00:21:22.105 --> 00:21:24.599
+<c.dialog>♪ "I want to be your favorite voice" ♪</c>
+
+00:21:24.599 --> 00:21:27.091
+<c.dialog>♪ Has flair in makeup and fashion ♪</c>
+
+00:21:27.091 --> 00:21:30.333
+<c.dialog>♪ Mirinya, girls' idol, Sweetie Girl ♪</c>
+
+00:21:30.333 --> 00:21:36.203
+<c.dialog>♪ L-O-V-E, Otani Emiri ♪</c>
+
+00:21:36.203 --> 00:21:38.269
+<c.dialog>♪ "Is it okay if I don't go home tonight?" ♪</c>
+
+00:21:38.269 --> 00:21:40.498
+<c.dialog>♪ The main characters are everyone! ♪</c>
+
+00:21:40.498 --> 00:21:43.450
+<c.dialog>♪ Don't be shy ♪</c>
+
+00:21:43.450 --> 00:21:46.060
+<c.dialog>♪ I wanted to see you ♪</c>
+
+00:21:46.060 --> 00:21:48.981
+<c.dialog>♪ I've been waiting for today all along ♪</c>
+
+00:22:02.709 --> 00:22:06.651
+<c.dialog>Everyone in the Arena, how are you doing? (Yeah!)</c>
+
+00:22:07.625 --> 00:22:12.001
+<c.dialog>♪ Thank you for dressing up nicely ♪</c>
+
+00:22:12.001 --> 00:22:13.501
+<c.dialog>♪ (I just you!) ♪</c>
+
+00:22:13.501 --> 00:22:17.834
+<c.dialog>♪ Even from afar, I can feel the love ♪</c>
+
+00:22:17.834 --> 00:22:18.334
+<c.dialog>♪ Because... ♪</c>
+
+00:22:18.334 --> 00:22:23.417
+<c.dialog>♪ Your one and only heroine is!? ♪</c>
+
+00:22:23.417 --> 00:22:25.375
+<c.dialog>♪ [=LOVE] ♪</c>
+
+00:22:25.375 --> 00:22:27.042
+<c.dialog>♪ Hugging tight, then becoming cute ♪</c>
+
+00:22:27.042 --> 00:22:28.251
+<c.dialog>♪ (Oh yeah!) ♪</c>
+
+00:22:28.251 --> 00:22:29.584
+<c.dialog>♪ Gotta be number one ♪</c>
+
+00:22:29.585 --> 00:22:30.918
+<c.dialog>♪ (Oh yeah!) ♪</c>
+
+00:22:30.918 --> 00:22:32.897
+<c.dialog>♪ An L sign with the right hand, =LOVE ♪</c>
+
+00:22:32.897 --> 00:22:33.542
+<c.dialog>♪ (Oh yeah!) ♪</c>
+
+00:22:33.542 --> 00:22:36.561
+<c.dialog>♪ Ooh... Yeah! ♪</c>
+
+00:22:45.000 --> 00:22:51.000
+<c.dialog>In the next episode, the one who will show off
+her uniqueness is Oba Hana!</c>
+
+00:22:51.000 --> 00:22:57.000
+<c.dialog>A voice acting audition for an animation featuring
+original characters drawn by Oba!</c>
+
+00:22:57.000 --> 00:23:00.000
+<c.dialog>Pick me!</c>
+
+00:23:00.000 --> 00:23:05.000
+<c.dialog>For those who want to watch this broadcast again,
+please go to TVer or Hulu!</c>
