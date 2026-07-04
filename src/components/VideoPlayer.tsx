@@ -59,6 +59,7 @@ export default function VideoPlayer({
   const [theaterMode, setTheaterMode] = useState(false);
   const [showControls, setShowControls] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isCssFullscreen, setIsCssFullscreen] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [settingsTab, setSettingsTab] = useState<'main' | 'subtitles' | 'servers'>('main');
   const [subtitleDelay, setSubtitleDelay] = useLocalStorage('subtitleDelay', 0);
@@ -242,24 +243,47 @@ export default function VideoPlayer({
   const toggleFullscreen = () => {
     const el = containerRef.current;
     if (!el) return;
-    const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
-    if (!isFs) {
+    const isNativeFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+    
+    if (!isNativeFs && !isCssFullscreen) {
+      let nativeRequested = false;
       if (el.requestFullscreen) {
-        el.requestFullscreen();
+        el.requestFullscreen().catch(() => setIsCssFullscreen(true));
+        nativeRequested = true;
       } else if (el.webkitRequestFullscreen) {
         el.webkitRequestFullscreen();
-      } else if (el.webkitEnterFullscreen) {
-        el.webkitEnterFullscreen();
+        nativeRequested = true;
       }
+      
+      if (!nativeRequested) {
+        setIsCssFullscreen(true);
+        setIsFullscreen(true);
+      }
+
       // Try to lock orientation to landscape on mobile
       try {
         (screen.orientation as any)?.lock?.('landscape');
       } catch {}
+
+      // Check if native failed silently (iOS iPhone)
+      if (nativeRequested) {
+        setTimeout(() => {
+          if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+            setIsCssFullscreen(true);
+            setIsFullscreen(true);
+          }
+        }, 200);
+      }
     } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      } else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen();
+      if (isCssFullscreen) {
+        setIsCssFullscreen(false);
+        setIsFullscreen(false);
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        }
       }
       try {
         (screen.orientation as any)?.unlock?.();
@@ -268,14 +292,22 @@ export default function VideoPlayer({
   };
 
   useEffect(() => {
-    const onFsChange = () => setIsFullscreen(!!(document.fullscreenElement || document.webkitFullscreenElement));
+    const onFsChange = () => {
+      const isNativeFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+      if (isNativeFs) {
+        setIsFullscreen(true);
+        setIsCssFullscreen(false);
+      } else {
+        setIsFullscreen(isCssFullscreen); // keep css fullscreen state if active
+      }
+    };
     document.addEventListener('fullscreenchange', onFsChange);
     document.addEventListener('webkitfullscreenchange', onFsChange);
     return () => {
       document.removeEventListener('fullscreenchange', onFsChange);
       document.removeEventListener('webkitfullscreenchange', onFsChange);
     };
-  }, []);
+  }, [isCssFullscreen]);
 
   const skipBackward = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -334,7 +366,10 @@ export default function VideoPlayer({
 
   return (
     <div 
-      className={`relative w-full aspect-video bg-black md:rounded-2xl overflow-hidden select-none ${theaterMode ? 'fixed inset-0 md:inset-4 z-50 md:rounded-2xl shadow-2xl transition-all' : ''}`}
+      className={isCssFullscreen 
+        ? `fixed inset-0 z-[100] w-full h-[100dvh] bg-black flex flex-col items-center justify-center select-none`
+        : `relative w-full aspect-video bg-black md:rounded-2xl overflow-hidden select-none ${theaterMode ? 'fixed inset-0 md:inset-4 z-50 md:rounded-2xl shadow-2xl transition-all' : ''}`
+      }
       ref={containerRef}
       onMouseMove={resetHideTimer}
       onTouchStart={resetHideTimer}
@@ -552,7 +587,7 @@ export default function VideoPlayer({
 
               {/* Fullscreen */}
               <button onClick={toggleFullscreen} className="p-1.5 hover:bg-white/10 rounded-lg transition-colors" title="Fullscreen (F)">
-                {isFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
+                {isFullscreen || isCssFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
               </button>
             </div>
           </div>
@@ -560,20 +595,33 @@ export default function VideoPlayer({
       </div>
       )}
 
-      {/* Persistent Settings Button for Drive/Dailymotion */}
-      {serverType !== 'youtube' && (servers.length > 1 || subtitleTracks.length > 0) && (
-        <div className={`absolute top-4 right-4 z-20 transition-opacity duration-300 ${showControls ? 'opacity-100' : 'opacity-0'}`}>
+      {/* Persistent Buttons for Drive/Dailymotion */}
+      {serverType !== 'youtube' && (
+        <div className={`absolute top-4 right-4 z-20 flex gap-2 transition-opacity duration-300 ${showControls ? 'opacity-100' : 'opacity-0'}`}>
           <button 
-            onClick={(e) => { 
-              e.stopPropagation(); 
-              setShowSettings(!showSettings);
-              if (!showSettings) setSettingsTab('main'); 
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleFullscreen();
             }}
-            className={`p-2 rounded-xl backdrop-blur-md transition-all shadow-lg border ${showSettings ? 'bg-black/80 text-brand border-brand/30 rotate-45' : 'bg-black/50 hover:bg-black/70 text-white border-white/10'}`}
-            title="Settings"
+            className="p-2 rounded-xl backdrop-blur-md transition-all shadow-lg border bg-black/50 hover:bg-black/70 text-white border-white/10"
+            title="Fullscreen"
           >
-            <Settings size={20} />
+            {isFullscreen || isCssFullscreen ? <Minimize size={20} /> : <Maximize size={20} />}
           </button>
+
+          {(servers.length > 1 || subtitleTracks.length > 0) && (
+            <button 
+              onClick={(e) => { 
+                e.stopPropagation(); 
+                setShowSettings(!showSettings);
+                if (!showSettings) setSettingsTab('main'); 
+              }}
+              className={`p-2 rounded-xl backdrop-blur-md transition-all shadow-lg border ${showSettings ? 'bg-black/80 text-brand border-brand/30 rotate-45' : 'bg-black/50 hover:bg-black/70 text-white border-white/10'}`}
+              title="Settings"
+            >
+              <Settings size={20} />
+            </button>
+          )}
         </div>
       )}
 

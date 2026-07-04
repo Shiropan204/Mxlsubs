@@ -16,7 +16,7 @@ export const episodes: Episode[] = [
       { id: 'drive', name: 'Google Drive', videoId: '1mrB_IrU6uO-ta-6Z7xGWJg_NuSg14chN' }
     ],
     subtitleTracks: [],
-    subtitleTags: ["Indo"],
+    subtitleTags: ["Indo", "Eng"],
     thumbnailUrl: `https://www.ntv.co.jp/equal-love/images/taxy5s5k7h9amf0u11x2io9mjv8iw3.jpg`
   },
   {
