@@ -515,7 +515,7 @@ export default function VideoPlayer({
       )}
 
       {/* Persistent Settings Button for Drive/Dailymotion */}
-      {serverType !== 'youtube' && servers.length > 1 && (
+      {serverType !== 'youtube' && (servers.length > 1 || subtitleTracks.length > 0) && (
         <div className={`absolute top-4 right-4 z-20 transition-opacity duration-300 ${showControls ? 'opacity-100' : 'opacity-0'}`}>
           <button 
             onClick={(e) => { 
