@@ -27,6 +27,10 @@ const parseVTT = (vttString: string): SubtitleCue[] => {
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
+    if (line.startsWith('WEBVTT') || line.startsWith('Region:') || line.startsWith('Style:')) {
+      continue;
+    }
+    
     if (line.includes('-->')) {
       const times = line.split('-->');
       currentCue = {

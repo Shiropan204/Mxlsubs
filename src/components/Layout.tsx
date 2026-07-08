@@ -73,19 +73,11 @@ export default function Layout() {
       <header className="border-b border-border-subtle bg-bg-surface/80 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 group" onClick={() => setIsMobileMenuOpen(false)}>
-            <div className="font-heading font-bold text-xl tracking-tight flex items-center">
-              {/* Desktop Logo */}
-              <div className="hidden sm:flex items-center">
-                <span className="text-brand">=</span>
-                <span className="group-hover:text-brand transition-colors">LOVE</span>
-                <span className="ml-2 font-normal text-text-muted text-sm border-l border-border-subtle pl-2">MXL Subs</span>
-              </div>
-              {/* Mobile Logo */}
-              <div className="flex sm:hidden items-center group-hover:text-brand transition-colors">
-                <span className="text-brand">MXL</span>
-                <span>Subs</span>
-              </div>
-            </div>
+            <img 
+              src={theme === 'dark' ? 'https://drive.google.com/uc?export=view&id=1xIgKGnDJKTN9UiEi6AgpF7M0hCH2IFsX' : 'https://drive.google.com/uc?export=view&id=1dUSXcJ9c5tr8pnB7SefxFemkKsfCZLkO'} 
+              alt="MXL Subs Logo" 
+              className="h-8 sm:h-10 w-auto object-contain transition-transform group-hover:scale-105"
+            />
           </Link>
           
           <div className="flex items-center gap-2 md:gap-4">
@@ -166,7 +158,13 @@ export default function Layout() {
       </div>
       
       <main className="flex-1 w-full" style={{ paddingBottom: 'calc(6rem + env(safe-area-inset-bottom, 0px))' }}>
-        <Outlet />
+        <React.Suspense fallback={
+          <div className="flex items-center justify-center min-h-[50vh]">
+            <div className="w-8 h-8 border-4 border-brand border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        }>
+          <Outlet />
+        </React.Suspense>
       </main>
       
       {/* Bottom Navigation for Mobile - Floating Style */}
@@ -192,11 +190,11 @@ export default function Layout() {
       <footer className="hidden md:block border-t border-border-subtle bg-bg-surface py-10 mt-16">
         <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex flex-col items-center md:items-start gap-2">
-            <div className="font-heading font-bold text-xl tracking-tight flex items-center opacity-80">
-              <span className="text-brand">=</span>
-              <span>LOVE</span>
-              <span className="ml-2 font-normal text-text-muted text-sm border-l border-border-subtle pl-2">MXL Subs</span>
-            </div>
+            <img 
+              src={theme === 'dark' ? 'https://drive.google.com/uc?export=view&id=1xIgKGnDJKTN9UiEi6AgpF7M0hCH2IFsX' : 'https://drive.google.com/uc?export=view&id=1dUSXcJ9c5tr8pnB7SefxFemkKsfCZLkO'} 
+              alt="MXL Subs Logo" 
+              className="h-8 md:h-10 w-auto object-contain opacity-80 grayscale hover:grayscale-0 transition-all duration-300"
+            />
             <p className="text-text-muted text-sm text-center md:text-left max-w-md">
               Fan-subtitle Indonesia non-komersial untuk video =LOVE (イコールラブ). Tidak berafiliasi dengan pihak resmi.
             </p>

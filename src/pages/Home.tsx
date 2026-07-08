@@ -167,6 +167,11 @@ export default function Home() {
           <Link to={`/episode/${featured.id}`} className="block relative aspect-[16/9] overflow-hidden">
             <img 
               src={customThumbnails[featured.id] || featured.thumbnailUrl || `https://img.youtube.com/vi/${featured.videoId}/maxresdefault.jpg`} 
+              onError={(e) => {
+                if (e.currentTarget.src.includes('maxresdefault.jpg')) {
+                  e.currentTarget.src = `https://img.youtube.com/vi/${featured.videoId}/hqdefault.jpg`;
+                }
+              }}
               alt={featured.title}
               className="w-full h-full object-cover"
             />
@@ -225,6 +230,11 @@ export default function Home() {
               <Link to={`/episode/${featured.id}`}>
                 <img 
                   src={customThumbnails[featured.id] || featured.thumbnailUrl || `https://img.youtube.com/vi/${featured.videoId}/maxresdefault.jpg`} 
+                  onError={(e) => {
+                    if (e.currentTarget.src.includes('maxresdefault.jpg')) {
+                      e.currentTarget.src = `https://img.youtube.com/vi/${featured.videoId}/hqdefault.jpg`;
+                    }
+                  }}
                   alt={featured.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />

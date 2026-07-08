@@ -34,6 +34,7 @@ export default function Profile() {
               <img 
                 src={member.imageUrl} 
                 alt={member.name}
+                loading="lazy"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 relative z-10"
                 onError={(e) => {
                   (e.target as HTMLImageElement).style.opacity = '0';

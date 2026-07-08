@@ -3,14 +3,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { lazy } from 'react';
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
-import Home from './pages/Home';
-import Episode from './pages/Episode';
-import About from './pages/About';
-import Profile from './pages/Profile';
-import Variety from './pages/Variety';
-import NotFound from './pages/NotFound';
+
+const Home = lazy(() => import('./pages/Home'));
+const Episode = lazy(() => import('./pages/Episode'));
+const About = lazy(() => import('./pages/About'));
+const Profile = lazy(() => import('./pages/Profile'));
+const Variety = lazy(() => import('./pages/Variety'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
 export default function App() {
   return (
