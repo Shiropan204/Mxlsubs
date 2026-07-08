@@ -76,7 +76,7 @@ export default function Layout() {
             <img 
               src={`${import.meta.env.BASE_URL}logo-${theme === 'dark' ? 'dark' : 'light'}.png`} 
               alt="MXL Subs Logo" 
-              className="h-8 sm:h-10 w-auto object-contain transition-transform group-hover:scale-105"
+              className="h-12 sm:h-16 w-auto object-contain transition-transform group-hover:scale-105"
             />
           </Link>
           
@@ -193,7 +193,7 @@ export default function Layout() {
             <img 
               src={`${import.meta.env.BASE_URL}logo-${theme === 'dark' ? 'dark' : 'light'}.png`} 
               alt="MXL Subs Logo" 
-              className="h-8 md:h-10 w-auto object-contain opacity-80 grayscale hover:grayscale-0 transition-all duration-300"
+              className="h-12 md:h-16 w-auto object-contain opacity-80 grayscale hover:grayscale-0 transition-all duration-300"
             />
             <p className="text-text-muted text-sm text-center md:text-left max-w-md">
               Fan-subtitle Indonesia non-komersial untuk video =LOVE (イコールラブ). Tidak berafiliasi dengan pihak resmi.
