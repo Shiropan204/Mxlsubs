@@ -348,8 +348,8 @@ export default function Episode() {
           
             {/* Report Issue */}
             <div className="pt-6 pb-4">
-               <a href="mailto:report@mxlsubs.com" className="group inline-flex items-center gap-2 text-sm text-text-muted hover:text-brand transition-all duration-200">
-                 <AlertCircle size={15} className="group-hover:scale-110 transition-transform" /> Lapor Masalah Subtitle (Typo/Timing)
+               <a href="https://x.com/Mxlsubs" target="_blank" rel="noopener noreferrer" className="group inline-flex items-center gap-2 text-sm text-text-muted hover:text-brand transition-all duration-200">
+                 <AlertCircle size={15} className="group-hover:scale-110 transition-transform" /> Lapor Masalah Subtitle (Typo/Timing) via X/Twitter
                </a>
             </div>
           </div>

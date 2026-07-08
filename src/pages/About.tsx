@@ -45,7 +45,9 @@ export default function About() {
             berdiskusi dan mengambil langkah penyesuaian yang diperlukan, termasuk menghapus tautan dari katalog kami.
           </p>
           <a 
-            href="mailto:takedown@mxlsubs.com"
+            href="https://x.com/Mxlsubs"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-block mt-2 bg-text-primary text-bg-primary px-6 py-2 rounded-full font-medium hover:opacity-90 transition-opacity"
           >
             Hubungi Kami
@@ -55,12 +57,10 @@ export default function About() {
         <section className="space-y-4">
           <h2 className="text-2xl font-heading font-semibold text-brand">Bergabung dengan Komunitas</h2>
           <p>
-            Ikuti diskusi seputar =LOVE, dapatkan update terbaru, dan sapa sesama fans di server Discord komunitas kami!
+            Ikuti diskusi seputar =LOVE dan dapatkan update terbaru melalui Twitter / X kami!
           </p>
           <div className="flex gap-4 pt-2">
-            <a href="#" className="text-brand hover:underline font-medium">Discord Server</a>
-            <span className="text-border-subtle">|</span>
-            <a href="#" className="text-brand hover:underline font-medium">Twitter / X</a>
+            <a href="https://x.com/Mxlsubs" target="_blank" rel="noopener noreferrer" className="text-brand hover:underline font-medium">Twitter / X</a>
           </div>
         </section>
       </div>
