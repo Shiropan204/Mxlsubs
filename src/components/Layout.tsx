@@ -74,7 +74,7 @@ export default function Layout() {
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 group" onClick={() => setIsMobileMenuOpen(false)}>
             <img 
-              src={theme === 'dark' ? 'https://drive.google.com/uc?export=view&id=1xIgKGnDJKTN9UiEi6AgpF7M0hCH2IFsX' : 'https://drive.google.com/uc?export=view&id=1dUSXcJ9c5tr8pnB7SefxFemkKsfCZLkO'} 
+              src={`${import.meta.env.BASE_URL}logo-${theme === 'dark' ? 'dark' : 'light'}.png`} 
               alt="MXL Subs Logo" 
               className="h-8 sm:h-10 w-auto object-contain transition-transform group-hover:scale-105"
             />
@@ -191,7 +191,7 @@ export default function Layout() {
         <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex flex-col items-center md:items-start gap-2">
             <img 
-              src={theme === 'dark' ? 'https://drive.google.com/uc?export=view&id=1xIgKGnDJKTN9UiEi6AgpF7M0hCH2IFsX' : 'https://drive.google.com/uc?export=view&id=1dUSXcJ9c5tr8pnB7SefxFemkKsfCZLkO'} 
+              src={`${import.meta.env.BASE_URL}logo-${theme === 'dark' ? 'dark' : 'light'}.png`} 
               alt="MXL Subs Logo" 
               className="h-8 md:h-10 w-auto object-contain opacity-80 grayscale hover:grayscale-0 transition-all duration-300"
             />
