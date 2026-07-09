@@ -133,6 +133,7 @@ export default function Layout() {
             <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="hover:opacity-70 transition-opacity">HOME</Link>
             <Link to="/about" onClick={() => setIsMobileMenuOpen(false)} className="hover:opacity-70 transition-opacity">ABOUT</Link>
             <Link to="/profile" onClick={() => setIsMobileMenuOpen(false)} className="hover:opacity-70 transition-opacity">PROFILE</Link>
+            <Link to="/partners" onClick={() => setIsMobileMenuOpen(false)} className="hover:opacity-70 transition-opacity">PARTNERS</Link>
             
             <div className="mt-4 pt-4 border-t border-white/20">
               <h3 className="text-xs text-white/50 mb-4">CATEGORIES</h3>
