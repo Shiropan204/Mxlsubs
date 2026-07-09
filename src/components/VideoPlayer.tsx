@@ -251,69 +251,121 @@ export default function VideoPlayer({
   const toggleFullscreen = () => {
     const el = containerRef.current;
     if (!el) return;
+    
     const isNativeFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
     
     if (!isNativeFs && !isCssFullscreen) {
+      // Entering fullscreen
       let nativeRequested = false;
+      
+      // Try native fullscreen first (Android Chrome, desktop browsers)
       if (el.requestFullscreen) {
-        el.requestFullscreen().catch(() => setIsCssFullscreen(true));
+        el.requestFullscreen().catch((err) => {
+          console.warn('requestFullscreen failed:', err);
+          setIsCssFullscreen(true);
+          setIsFullscreen(true);
+          attemptOrientationLock('landscape');
+        });
         nativeRequested = true;
-      } else if (el.webkitRequestFullscreen) {
-        el.webkitRequestFullscreen();
-        nativeRequested = true;
+      } else if ((el as any).webkitRequestFullscreen) {
+        // Safari iOS and older Android
+        try {
+          (el as any).webkitRequestFullscreen();
+          nativeRequested = true;
+        } catch (err) {
+          console.warn('webkitRequestFullscreen failed:', err);
+          setIsCssFullscreen(true);
+          setIsFullscreen(true);
+          attemptOrientationLock('landscape');
+        }
       }
       
+      // If no native fullscreen API available, use CSS fullscreen
       if (!nativeRequested) {
         setIsCssFullscreen(true);
         setIsFullscreen(true);
-      }
-
-      // Try to lock orientation to landscape on mobile
-      try {
-        (screen.orientation as any)?.lock?.('landscape');
-      } catch {}
-
-      // Check if native failed silently (iOS iPhone)
-      if (nativeRequested) {
+        attemptOrientationLock('landscape');
+      } else {
+        // For native fullscreen, still try orientation lock
+        attemptOrientationLock('landscape');
+        
+        // Verify native fullscreen worked (timeout for iOS)
         setTimeout(() => {
-          if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+          if (!document.fullscreenElement && !(document as any).webkitFullscreenElement) {
             setIsCssFullscreen(true);
             setIsFullscreen(true);
           }
-        }, 200);
+        }, 300);
       }
     } else {
+      // Exiting fullscreen
       if (isCssFullscreen) {
         setIsCssFullscreen(false);
         setIsFullscreen(false);
       } else {
+        // Exit native fullscreen
         if (document.exitFullscreen) {
-          document.exitFullscreen();
-        } else if (document.webkitExitFullscreen) {
-          document.webkitExitFullscreen();
+          document.exitFullscreen().catch(() => {});
+        } else if ((document as any).webkitExitFullscreen) {
+          try {
+            (document as any).webkitExitFullscreen();
+          } catch (err) {
+            console.warn('webkitExitFullscreen failed:', err);
+          }
         }
       }
-      try {
-        (screen.orientation as any)?.unlock?.();
-      } catch {}
+      attemptOrientationUnlock();
+    }
+  };
+
+  const attemptOrientationLock = (orientation: 'landscape' | 'portrait') => {
+    if (!navigator.maxTouchPoints && !('ontouchstart' in window)) return; // Not a touch device
+    
+    try {
+      const screenOrientation = (screen.orientation || (screen as any).mozOrientation || (screen as any).msOrientation);
+      
+      if (screenOrientation?.lock) {
+        screenOrientation.lock(orientation).catch((err) => {
+          console.warn(`Failed to lock orientation to ${orientation}:`, err);
+        });
+      }
+    } catch (err) {
+      // Orientation lock not supported, silently fail
+    }
+  };
+
+  const attemptOrientationUnlock = () => {
+    try {
+      const screenOrientation = (screen.orientation || (screen as any).mozOrientation || (screen as any).msOrientation);
+      if (screenOrientation?.unlock) {
+        screenOrientation.unlock();
+      }
+    } catch (err) {
+      // Orientation unlock not supported, silently fail
     }
   };
 
   useEffect(() => {
     const onFsChange = () => {
-      const isNativeFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+      const isNativeFs = !!(document.fullscreenElement || (document as any).webkitFullscreenElement);
       if (isNativeFs) {
         setIsFullscreen(true);
         setIsCssFullscreen(false);
-      } else {
-        setIsFullscreen(isCssFullscreen); // keep css fullscreen state if active
+      } else if (!isCssFullscreen) {
+        setIsFullscreen(false);
       }
     };
+    
     document.addEventListener('fullscreenchange', onFsChange);
     document.addEventListener('webkitfullscreenchange', onFsChange);
+    document.addEventListener('mozfullscreenchange', onFsChange);
+    document.addEventListener('MSFullscreenChange', onFsChange);
+    
     return () => {
       document.removeEventListener('fullscreenchange', onFsChange);
       document.removeEventListener('webkitfullscreenchange', onFsChange);
+      document.removeEventListener('mozfullscreenchange', onFsChange);
+      document.removeEventListener('MSFullscreenChange', onFsChange);
     };
   }, [isCssFullscreen]);
 
@@ -375,9 +427,18 @@ export default function VideoPlayer({
   return (
     <div 
       className={isCssFullscreen 
-        ? `fixed inset-0 z-[100] w-full h-[100dvh] bg-black flex flex-col items-center justify-center select-none`
+        ? `fixed inset-0 z-[100] w-screen h-screen bg-black flex flex-col items-center justify-center select-none`
         : `relative w-full aspect-video bg-black md:rounded-2xl overflow-hidden select-none ${theaterMode ? 'fixed inset-0 md:inset-4 z-50 md:rounded-2xl shadow-2xl transition-all' : ''}`
       }
+      style={isCssFullscreen ? { 
+        width: '100vw',
+        height: '100vh',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
+      } : {}}
       ref={containerRef}
       onMouseMove={resetHideTimer}
       onTouchStart={resetHideTimer}
@@ -617,7 +678,7 @@ export default function VideoPlayer({
             {isFullscreen || isCssFullscreen ? <Minimize size={20} /> : <Maximize size={20} />}
           </button>
 
-          {(servers.length > 1 || subtitleTracks.length > 0) && (
+          {(servers.length > 1 || (subtitleTracks.length > 0 && serverType === 'youtube')) && (
             <button 
               onClick={(e) => { 
                 e.stopPropagation(); 
@@ -670,19 +731,21 @@ export default function VideoPlayer({
                   </div>
                 </button>
                 
-                <button 
-                  onClick={() => setSettingsTab('subtitles')}
-                  className="w-full px-4 py-2.5 flex items-center justify-between hover:bg-white/5 transition-colors group"
-                >
-                  <div className="flex items-center gap-3 text-white/80 group-hover:text-white">
-                    <Languages size={16} />
-                    <span className="text-sm font-medium">Subtitles</span>
-                  </div>
-                  <div className="flex items-center gap-1 text-white/50 text-xs">
-                    {activeSubtitleTrack ? activeSubtitleTrack.label : 'Off'}
-                    <ChevronDown size={14} className="-rotate-90" />
-                  </div>
-                </button>
+                {serverType === 'youtube' && (
+                  <button 
+                    onClick={() => setSettingsTab('subtitles')}
+                    className="w-full px-4 py-2.5 flex items-center justify-between hover:bg-white/5 transition-colors group"
+                  >
+                    <div className="flex items-center gap-3 text-white/80 group-hover:text-white">
+                      <Languages size={16} />
+                      <span className="text-sm font-medium">Subtitles</span>
+                    </div>
+                    <div className="flex items-center gap-1 text-white/50 text-xs">
+                      {activeSubtitleTrack ? activeSubtitleTrack.label : 'Off'}
+                      <ChevronDown size={14} className="-rotate-90" />
+                    </div>
+                  </button>
+                )}
 
                 {serverType === 'youtube' && (
                   <>
@@ -747,7 +810,7 @@ export default function VideoPlayer({
               </div>
             )}
 
-            {settingsTab === 'subtitles' && (
+            {settingsTab === 'subtitles' && serverType === 'youtube' && (
               <div className="py-2">
                 <button 
                   onClick={() => {

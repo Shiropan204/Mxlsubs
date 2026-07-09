@@ -2,7 +2,7 @@ import { useParams, Navigate, Link } from 'react-router-dom';
 import { episodes } from '../data/episodes';
 import VideoPlayer from '../components/VideoPlayer';
 import { useLocalStorage } from '../hooks/useLocalStorage';
-import { AlertCircle, Download, Share2, MessageCircle, Upload } from 'lucide-react';
+import { AlertCircle, Languages, Share2, MessageCircle, Upload } from 'lucide-react';
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { SubtitleCue, VideoServer, SubtitleTrack } from '../types';
 
@@ -70,6 +70,7 @@ export default function Episode() {
   
   const [showNotes, setShowNotes] = useState(true);
   const [showUploadControls, setShowUploadControls] = useLocalStorage('showUploadControls', false);
+  const [showCopiedToast, setShowCopiedToast] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [fetchedSubtitles, setFetchedSubtitles] = useState<SubtitleCue[] | null>(null);
   const vttInputRef = useRef<HTMLInputElement>(null);
@@ -112,6 +113,12 @@ export default function Episode() {
     const timer = setTimeout(() => setIsLoading(false), 600);
     return () => clearTimeout(timer);
   }, [id]);
+
+  useEffect(() => {
+    if (!showCopiedToast) return;
+    const timer = window.setTimeout(() => setShowCopiedToast(false), 2200);
+    return () => window.clearTimeout(timer);
+  }, [showCopiedToast]);
 
   useEffect(() => {
     if (activeSubtitleTrack && activeSubtitleTrack.url) {
@@ -221,8 +228,45 @@ export default function Episode() {
   const servers = episode.servers || (episode.videoId ? [{ id: 'youtube', name: 'YouTube', videoId: episode.videoId } as VideoServer] : []);
   const subtitleTracks = episode.subtitleTracks || (episode.vttUrl ? [{ id: 'default', label: 'Default', url: episode.vttUrl } as SubtitleTrack] : []);
 
+  // Detect Indonesian and English subtitles availability (check both tracks and tags)
+  const combined = subtitleTracks.map(track => `${track.id || ''} ${track.label || ''}`).join(' ').toLowerCase();
+  const tags = episode.subtitleTags ? episode.subtitleTags.join(' ').toLowerCase() : '';
+  const fullSubtitleInfo = (combined + ' ' + tags).toLowerCase();
+  const hasIndonesian = /(indonesia|indonesian|indo|id|bahasa)/.test(fullSubtitleInfo);
+  const hasEnglish = /(english|eng|en)/.test(fullSubtitleInfo);
+  const showSubtitleBanner = hasIndonesian || hasEnglish;
+
+  const handleShare = async () => {
+    const shareUrl = window.location.href;
+
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(shareUrl);
+      } else {
+        const textarea = document.createElement('textarea');
+        textarea.value = shareUrl;
+        textarea.setAttribute('readonly', '');
+        textarea.style.position = 'fixed';
+        textarea.style.left = '-9999px';
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+      }
+      setShowCopiedToast(true);
+    } catch (error) {
+      console.warn('Failed to copy link automatically', error);
+      window.prompt('Copy this link:', shareUrl);
+    }
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-0 md:px-4 py-0 md:py-8 flex flex-col lg:flex-row gap-10">
+      {showCopiedToast && (
+        <div className="fixed bottom-4 right-4 z-[120] rounded-xl border border-brand/20 bg-bg-surface/95 px-4 py-3 text-sm font-medium text-text-primary shadow-lg shadow-black/10 backdrop-blur">
+          Link copied to clipboard!
+        </div>
+      )}
       {/* Main Content */}
       <div className="flex-1 flex flex-col gap-0">
         {/* Video Player */}
@@ -243,6 +287,29 @@ export default function Episode() {
         </div>
         
         <div className="px-4 md:px-0 space-y-6 mt-6">
+          {showSubtitleBanner && (
+            <div className="rounded-2xl border border-brand/15 bg-gradient-to-br from-brand/[0.08] to-transparent p-4 shadow-sm shadow-brand/5">
+              <div className="flex items-start gap-3">
+                <div className="rounded-xl bg-brand/10 p-2 text-brand">
+                  <Languages size={16} />
+                </div>
+                <div className="space-y-1">
+                  <p className="text-sm font-semibold text-text-primary">Subtitles Available</p>
+                  <p className="text-sm text-text-muted">
+                    {hasIndonesian && hasEnglish && (
+                      <><span className="mr-1">🇮🇩</span> Indonesian & <span className="ml-1 mr-1">🇺🇸</span> English subtitles tersedia.</>
+                    )}
+                    {hasIndonesian && !hasEnglish && (
+                      <><span className="mr-1">🇮🇩</span> Indonesian subtitles tersedia. <span className="ml-1 mr-1">🇺🇸</span> English coming soon.</>
+                    )}
+                    {!hasIndonesian && hasEnglish && (
+                      <><span className="mr-1">🇺🇸</span> English subtitles tersedia. <span className="ml-1 mr-1">🇮🇩</span> Indonesian coming soon.</>
+                    )}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Title & Info Card */}
           <div className="space-y-5">
@@ -288,10 +355,10 @@ export default function Episode() {
                     </button>
                   </>
                 )}
-                <button className="flex items-center justify-center gap-2 px-4 py-2.5 bg-bg-surface hover:bg-border-subtle rounded-xl text-sm font-semibold transition-all duration-200 flex-1 sm:flex-none border border-border-subtle hover:border-brand/30 hover:text-brand hover:shadow-md hover:shadow-brand/5">
-                  <Download size={15} /> <span className="hidden sm:inline">Download .vtt</span><span className="sm:hidden">Download</span>
-                </button>
-                <button className="flex items-center justify-center gap-2 px-4 py-2.5 bg-bg-surface hover:bg-border-subtle rounded-xl text-sm font-semibold transition-all duration-200 flex-1 sm:flex-none border border-border-subtle hover:border-brand/30 hover:text-brand hover:shadow-md hover:shadow-brand/5">
+                <button
+                  onClick={handleShare}
+                  className="flex items-center justify-center gap-2 px-4 py-2.5 bg-bg-surface hover:bg-border-subtle rounded-xl text-sm font-semibold transition-all duration-200 flex-1 sm:flex-none border border-border-subtle hover:border-brand/30 hover:text-brand hover:shadow-md hover:shadow-brand/5"
+                >
                   <Share2 size={15} /> Share
                 </button>
               </div>
