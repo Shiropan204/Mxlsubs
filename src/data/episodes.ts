@@ -85,6 +85,22 @@ export const episodes: Episode[] = [
     thumbnailUrl: `https://www.ntv.co.jp/equal-love/images/taxy5s5k7h9amf0u11x2io9mjv8iw3.jpg`
   },
   {
+    id: "kimi-wa-motto-love-ep1",
+    title: "Kimi wa Motto =LOVE wo Aiseru ka!!! Episode 1",
+    date: "2026-07-09",
+    type: "Variety",
+    series: "Kimi wa Motto =LOVE wo Aiseru ka!!!",
+    members: [],
+    tags: ["variety"],
+    subtitles: [],
+    servers: [
+      { id: 'dailymotion', name: 'Dailymotion', videoId: 'k1kMOAPuKKyzWNHzOpA' }
+    ],
+    subtitleTracks: [],
+    subtitleTags: ["Eng"],
+    thumbnailUrl: `https://www.fujitv.co.jp/equal-love/photo/main.jpg`
+  },
+  {
     id: "ikonoijoy-tsunhashigo-pesta-minum",
     title: "【Ikonoijoy】- Sashihara P & Mirinya Ikutan! Pesta Minum Super Seru dan Bikin Ngakak Ada di Sini 【Tsun Hashigo】",
     date: "2024-02-01",
