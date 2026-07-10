@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { SubtitleCue, VideoServer, SubtitleTrack } from '../types';
-import { Play, Pause, Volume2, VolumeX, Maximize, Minimize, RotateCcw, RotateCw, Settings, ChevronUp, ChevronDown, Type, Server, Monitor, Languages, Check } from 'lucide-react';
+import { Play, Pause, Volume2, VolumeX, Maximize, Minimize, RotateCcw, RotateCw, Settings, ChevronUp, ChevronDown, Type, Smartphone } from 'lucide-react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 
 interface VideoPlayerProps {
@@ -56,17 +56,22 @@ export default function VideoPlayer({
   const [subSize, setSubSize] = useLocalStorage('subSize', 22);
   const [isMuted, setIsMuted] = useState(false);
   const [volume, setVolume] = useState(100);
-  const [theaterMode, setTheaterMode] = useState(false);
   const [showControls, setShowControls] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isCssFullscreen, setIsCssFullscreen] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-  const [settingsTab, setSettingsTab] = useState<'main' | 'subtitles' | 'servers'>('main');
   const [subtitleDelay, setSubtitleDelay] = useLocalStorage('subtitleDelay', 0);
   const [buffered, setBuffered] = useState(0);
   const [hoverTime, setHoverTime] = useState<number | null>(null);
   const [hoverX, setHoverX] = useState(0);
+  const [showTapHint, setShowTapHint] = useState(true);
   const seekBarRef = useRef<HTMLDivElement>(null);
+  const isMobileRef = useRef(false);
+
+  // Detect mobile once
+  useEffect(() => {
+    isMobileRef.current = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  }, []);
 
   // Auto-hide controls
   const resetHideTimer = useCallback(() => {
@@ -79,6 +84,16 @@ export default function VideoPlayer({
       }, 3000);
     }
   }, [isPlaying]);
+
+  // Tap to toggle controls on mobile
+  const handleContainerTap = useCallback(() => {
+    if (isMobileRef.current) {
+      setShowControls(prev => !prev);
+      if (!showControls) {
+        window.clearTimeout(hideTimerRef.current);
+      }
+    }
+  }, [showControls]);
 
   useEffect(() => {
     if (serverType !== 'youtube') return;
@@ -142,8 +157,10 @@ export default function VideoPlayer({
           }
         },
         onStateChange: (event: any) => {
-          setIsPlaying(event.data === window.YT.PlayerState.PLAYING);
-          if (event.data === window.YT.PlayerState.PLAYING) {
+          const playing = event.data === window.YT.PlayerState.PLAYING;
+          setIsPlaying(playing);
+          if (playing) {
+            setShowTapHint(false);
             try {
               event.target.unloadModule('captions');
               event.target.unloadModule('cc');
@@ -181,6 +198,13 @@ export default function VideoPlayer({
     }
     return () => window.clearInterval(interval);
   }, [isPlaying, showSubtitles, subtitles, subtitleDelay, duration, onProgress]);
+
+  // Auto-show subtitles when track changes from outside
+  useEffect(() => {
+    if (activeSubtitleTrack) {
+      setShowSubtitles(true);
+    }
+  }, [activeSubtitleTrack?.id]);
 
   const togglePlay = useCallback(() => {
     if (playerRef.current) {
@@ -248,103 +272,92 @@ export default function VideoPlayer({
     }
   };
 
-  const toggleFullscreen = () => {
+  // ===== FULLSCREEN: robust, works on Android & iOS =====
+  const toggleFullscreen = useCallback(() => {
     const el = containerRef.current;
     if (!el) return;
-    
-    const isNativeFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
-    
+
+    const isNativeFs = !!(document.fullscreenElement || (document as any).webkitFullscreenElement);
+
     if (!isNativeFs && !isCssFullscreen) {
-      // Entering fullscreen
+      // --- ENTER FULLSCREEN ---
       let nativeRequested = false;
-      
-      // Try native fullscreen first (Android Chrome, desktop browsers)
+
+      // 1) Try standard native fullscreen (Android Chrome, desktop)
       if (el.requestFullscreen) {
-        el.requestFullscreen().catch((err) => {
-          console.warn('requestFullscreen failed:', err);
-          setIsCssFullscreen(true);
-          setIsFullscreen(true);
-          attemptOrientationLock('landscape');
+        el.requestFullscreen().catch(() => {
+          // Fallback to CSS fullscreen if native fails
+          enterCssFullscreen();
         });
         nativeRequested = true;
-      } else if ((el as any).webkitRequestFullscreen) {
-        // Safari iOS and older Android
+      }
+      // 2) Try webkit fullscreen (iOS Safari, older Android)
+      else if ((el as any).webkitRequestFullscreen) {
         try {
           (el as any).webkitRequestFullscreen();
           nativeRequested = true;
-        } catch (err) {
-          console.warn('webkitRequestFullscreen failed:', err);
-          setIsCssFullscreen(true);
-          setIsFullscreen(true);
-          attemptOrientationLock('landscape');
+        } catch {
+          enterCssFullscreen();
         }
       }
-      
-      // If no native fullscreen API available, use CSS fullscreen
-      if (!nativeRequested) {
-        setIsCssFullscreen(true);
-        setIsFullscreen(true);
+      // 3) No native API available → CSS fullscreen
+      else {
+        enterCssFullscreen();
+      }
+
+      if (nativeRequested) {
         attemptOrientationLock('landscape');
-      } else {
-        // For native fullscreen, still try orientation lock
-        attemptOrientationLock('landscape');
-        
         // Verify native fullscreen worked (timeout for iOS)
         setTimeout(() => {
           if (!document.fullscreenElement && !(document as any).webkitFullscreenElement) {
-            setIsCssFullscreen(true);
-            setIsFullscreen(true);
+            enterCssFullscreen();
           }
-        }, 300);
+        }, 500);
       }
     } else {
-      // Exiting fullscreen
+      // --- EXIT FULLSCREEN ---
       if (isCssFullscreen) {
-        setIsCssFullscreen(false);
-        setIsFullscreen(false);
+        exitCssFullscreen();
       } else {
-        // Exit native fullscreen
         if (document.exitFullscreen) {
           document.exitFullscreen().catch(() => {});
         } else if ((document as any).webkitExitFullscreen) {
-          try {
-            (document as any).webkitExitFullscreen();
-          } catch (err) {
-            console.warn('webkitExitFullscreen failed:', err);
-          }
+          try { (document as any).webkitExitFullscreen(); } catch {}
         }
       }
       attemptOrientationUnlock();
     }
+  }, [isCssFullscreen]);
+
+  const enterCssFullscreen = () => {
+    setIsCssFullscreen(true);
+    setIsFullscreen(true);
+    attemptOrientationLock('landscape');
+  };
+
+  const exitCssFullscreen = () => {
+    setIsCssFullscreen(false);
+    setIsFullscreen(false);
   };
 
   const attemptOrientationLock = (orientation: 'landscape' | 'portrait') => {
-    if (!navigator.maxTouchPoints && !('ontouchstart' in window)) return; // Not a touch device
-    
+    if (!isMobileRef.current) return;
     try {
-      const screenOrientation = (screen.orientation || (screen as any).mozOrientation || (screen as any).msOrientation);
-      
-      if (screenOrientation?.lock) {
-        screenOrientation.lock(orientation).catch((err) => {
-          console.warn(`Failed to lock orientation to ${orientation}:`, err);
-        });
+      const so = (screen as any).orientation || (screen as any).mozOrientation || (screen as any).msOrientation;
+      if (so?.lock) {
+        so.lock(orientation).catch(() => {});
       }
-    } catch (err) {
-      // Orientation lock not supported, silently fail
-    }
+    } catch {}
   };
 
   const attemptOrientationUnlock = () => {
     try {
-      const screenOrientation = (screen.orientation || (screen as any).mozOrientation || (screen as any).msOrientation);
-      if (screenOrientation?.unlock) {
-        screenOrientation.unlock();
-      }
-    } catch (err) {
-      // Orientation unlock not supported, silently fail
-    }
+      const so = (screen as any).orientation || (screen as any).mozOrientation || (screen as any).msOrientation;
+      if (so?.unlock) so.unlock();
+    } catch {}
   };
 
+  // Listen for native fullscreen change events
   useEffect(() => {
     const onFsChange = () => {
       const isNativeFs = !!(document.fullscreenElement || (document as any).webkitFullscreenElement);
@@ -355,12 +368,12 @@ export default function VideoPlayer({
         setIsFullscreen(false);
       }
     };
-    
+
     document.addEventListener('fullscreenchange', onFsChange);
     document.addEventListener('webkitfullscreenchange', onFsChange);
     document.addEventListener('mozfullscreenchange', onFsChange);
     document.addEventListener('MSFullscreenChange', onFsChange);
-    
+
     return () => {
       document.removeEventListener('fullscreenchange', onFsChange);
       document.removeEventListener('webkitfullscreenchange', onFsChange);
@@ -411,7 +424,7 @@ export default function VideoPlayer({
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [togglePlay, currentTime, setShowSubtitles]);
+  }, [togglePlay, toggleFullscreen, currentTime, setShowSubtitles]);
 
   const formatTime = (time: number) => {
     const hrs = Math.floor(time / 3600);
@@ -426,13 +439,14 @@ export default function VideoPlayer({
 
   return (
     <div 
-      className={isCssFullscreen 
-        ? `fixed inset-0 z-[100] w-screen h-screen bg-black flex flex-col items-center justify-center select-none`
-        : `relative w-full aspect-video bg-black md:rounded-2xl overflow-hidden select-none ${theaterMode ? 'fixed inset-0 md:inset-4 z-50 md:rounded-2xl shadow-2xl transition-all' : ''}`
+      className={
+        isCssFullscreen 
+          ? `fixed inset-0 z-[100] w-screen h-dvh bg-black flex flex-col select-none`
+          : `relative w-full aspect-video bg-black md:rounded-2xl overflow-hidden select-none`
       }
       style={isCssFullscreen ? { 
-        width: '100vw',
-        height: '100vh',
+        width: '100dvw',
+        height: '100dvh',
         position: 'fixed',
         top: 0,
         left: 0,
@@ -441,7 +455,10 @@ export default function VideoPlayer({
       } : {}}
       ref={containerRef}
       onMouseMove={resetHideTimer}
-      onTouchStart={resetHideTimer}
+      onTouchStart={() => {
+        resetHideTimer();
+        handleContainerTap();
+      }}
       onMouseLeave={() => {
         if (isPlaying) {
           setShowControls(false);
@@ -449,10 +466,7 @@ export default function VideoPlayer({
         }
       }}
     >
-      {theaterMode && (
-         <div className="fixed inset-0 bg-black/90 -z-10" onClick={() => setTheaterMode(false)} />
-      )}
-
+      {/* ===== VIDEO IFRAME / YT PLAYER ===== */}
       {serverType === 'youtube' && (
         <div id={`youtube-player-${videoId}`} className="w-full h-full pointer-events-none" />
       )}
@@ -474,7 +488,7 @@ export default function VideoPlayer({
         />
       )}
 
-      {/* Subtitle Display (YouTube only - iframes handle their own) */}
+      {/* ===== SUBTITLE DISPLAY ===== */}
       {serverType === 'youtube' && showSubtitles && currentSubtitle && (
         <div className="absolute bottom-20 md:bottom-24 left-0 right-0 flex justify-center pointer-events-none px-4 md:px-8 z-10">
           <div 
@@ -490,18 +504,31 @@ export default function VideoPlayer({
         </div>
       )}
 
-      {/* Center Play Overlay - only for YouTube */}
+      {/* ===== TAP HINT (shown once on first load) ===== */}
+      {serverType === 'youtube' && showTapHint && !isPlaying && (
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
+          <div className="bg-black/60 backdrop-blur-sm text-white/90 text-xs px-3 py-1.5 rounded-full flex items-center gap-1.5 animate-pulse">
+            <Smartphone size={12} />
+            Tap screen for controls
+          </div>
+        </div>
+      )}
+
+      {/* ===== CENTER PLAY OVERLAY (YouTube only) ===== */}
       {serverType === 'youtube' && (
         <div 
           className="absolute inset-0 z-0 cursor-pointer" 
-          onClick={togglePlay}
+          onClick={(e) => {
+            e.stopPropagation();
+            togglePlay();
+          }}
           style={{ height: 'calc(100% - 56px)' }}
         >
           {!isPlaying && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/30 backdrop-blur-[1px]">
               <div className="flex items-center gap-8 md:gap-14">
                 <button 
-                  onClick={skipBackward}
+                  onClick={(e) => { e.stopPropagation(); skipBackward(e); }}
                   className="p-3 md:p-4 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all hover:scale-110 active:scale-95 backdrop-blur-md"
                   title="Rewind 10s"
                 >
@@ -517,7 +544,7 @@ export default function VideoPlayer({
                 </button>
                 
                 <button 
-                  onClick={skipForward}
+                  onClick={(e) => { e.stopPropagation(); skipForward(e); }}
                   className="p-3 md:p-4 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all hover:scale-110 active:scale-95 backdrop-blur-md"
                   title="Skip 10s"
                 >
@@ -529,142 +556,137 @@ export default function VideoPlayer({
         </div>
       )}
 
-      {/* Bottom Controls (Only for YouTube) */}
+      {/* ===== BOTTOM CONTROLS (YouTube only) ===== */}
       {serverType === 'youtube' && (
         <div 
           className={`absolute bottom-0 left-0 right-0 transition-all duration-300 z-20 ${showControls || !isPlaying ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}
         >
-        {/* Gradient backdrop */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent pointer-events-none" />
-        
-        <div className="relative px-3 md:px-5 pb-3 md:pb-4 pt-8 flex flex-col gap-2">
-          {/* Seek Bar */}
-          <div 
-            ref={seekBarRef}
-            className="group/seek relative h-8 flex items-center cursor-pointer touch-none"
-            onClick={handleSeekBarClick}
-            onMouseMove={handleSeekBarHover}
-            onMouseLeave={() => setHoverTime(null)}
-            onTouchStart={handleSeekBarTouch}
-            onTouchMove={handleSeekBarTouch}
-            onTouchEnd={handleSeekBarTouch}
-          >
-            {/* Track background */}
-            <div className="absolute left-0 right-0 h-[4px] md:h-[3px] group-hover/seek:h-[5px] transition-all bg-white/20 rounded-full overflow-hidden">
-              {/* Buffered */}
-              <div 
-                className="absolute top-0 left-0 h-full bg-white/25 rounded-full" 
-                style={{ width: `${bufferedPercent}%` }} 
-              />
-              {/* Progress */}
-              <div 
-                className="absolute top-0 left-0 h-full rounded-full transition-colors"
-                style={{ 
-                  width: `${progressPercent}%`,
-                  background: 'linear-gradient(90deg, var(--brand-pink), #ff6b9d)'
-                }} 
-              />
-            </div>
-            {/* Seek thumb - always visible on mobile, hover-only on desktop */}
+          {/* Gradient backdrop */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent pointer-events-none" />
+          
+          <div className="relative px-3 md:px-5 pb-3 md:pb-4 pt-8 flex flex-col gap-2">
+            {/* Seek Bar */}
             <div 
-              className="absolute top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-brand shadow-lg shadow-brand/40 md:opacity-0 md:scale-0 group-hover/seek:opacity-100 group-hover/seek:scale-100 transition-all pointer-events-none"
-              style={{ left: `calc(${progressPercent}% - 8px)` }}
-            />
-            {/* Hover time tooltip */}
-            {hoverTime !== null && (
+              ref={seekBarRef}
+              className="group/seek relative h-8 flex items-center cursor-pointer touch-none"
+              onClick={handleSeekBarClick}
+              onMouseMove={handleSeekBarHover}
+              onMouseLeave={() => setHoverTime(null)}
+              onTouchStart={handleSeekBarTouch}
+              onTouchMove={handleSeekBarTouch}
+              onTouchEnd={handleSeekBarTouch}
+            >
+              {/* Track background */}
+              <div className="absolute left-0 right-0 h-[4px] md:h-[3px] group-hover/seek:h-[5px] transition-all bg-white/20 rounded-full overflow-hidden">
+                {/* Buffered */}
+                <div 
+                  className="absolute top-0 left-0 h-full bg-white/25 rounded-full" 
+                  style={{ width: `${bufferedPercent}%` }} 
+                />
+                {/* Progress */}
+                <div 
+                  className="absolute top-0 left-0 h-full rounded-full transition-colors"
+                  style={{ 
+                    width: `${progressPercent}%`,
+                    background: 'linear-gradient(90deg, var(--brand-pink), #ff6b9d)'
+                  }} 
+                />
+              </div>
+              {/* Seek thumb - always visible on mobile, hover-only on desktop */}
               <div 
-                className="absolute bottom-7 -translate-x-1/2 bg-black/90 text-white text-[11px] font-mono px-2 py-1 rounded-md pointer-events-none opacity-0 group-hover/seek:opacity-100 transition-opacity whitespace-nowrap"
-                style={{ left: `${hoverX}px` }}
-              >
-                {formatTime(hoverTime)}
-              </div>
-            )}
-          </div>
-
-          {/* Control Buttons Row */}
-          <div className="flex items-center justify-between text-white">
-            <div className="flex items-center gap-1 md:gap-3">
-              {/* Play/Pause */}
-              <button onClick={togglePlay} className="p-1.5 hover:bg-white/10 rounded-lg transition-colors" title={isPlaying ? 'Pause (Space)' : 'Play (Space)'}>
-                {isPlaying ? <Pause size={22} className="fill-current" /> : <Play size={22} className="fill-current ml-0.5" />}
-              </button>
-              
-              {/* Skip buttons */}
-              <button onClick={skipBackward} className="p-1.5 hover:bg-white/10 rounded-lg transition-colors hidden md:flex" title="Rewind 10s">
-                <RotateCcw size={18} />
-              </button>
-              <button onClick={skipForward} className="p-1.5 hover:bg-white/10 rounded-lg transition-colors hidden md:flex" title="Forward 10s">
-                <RotateCw size={18} />
-              </button>
-
-              {/* Volume */}
-              <div className="flex items-center gap-2">
-                <button onClick={toggleMute} className="p-1.5 hover:bg-white/10 rounded-lg transition-colors" title={isMuted ? 'Unmute (M)' : 'Mute (M)'}>
-                  {isMuted || volume === 0 ? <VolumeX size={20} /> : <Volume2 size={20} />}
-                </button>
-                <div className="hidden md:block w-20">
-                  <input 
-                    type="range" 
-                    min="0" 
-                    max="100" 
-                    value={isMuted ? 0 : volume} 
-                    onChange={handleVolumeChange}
-                    className="w-20 h-1 bg-white/30 rounded-lg appearance-none cursor-pointer accent-white"
-                  />
+                className="absolute top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-brand shadow-lg shadow-brand/40 md:opacity-0 md:scale-0 group-hover/seek:opacity-100 group-hover/seek:scale-100 transition-all pointer-events-none"
+                style={{ left: `calc(${progressPercent}% - 8px)` }}
+              />
+              {/* Hover time tooltip */}
+              {hoverTime !== null && (
+                <div 
+                  className="absolute bottom-7 -translate-x-1/2 bg-black/90 text-white text-[11px] font-mono px-2 py-1 rounded-md pointer-events-none opacity-0 group-hover/seek:opacity-100 transition-opacity whitespace-nowrap"
+                  style={{ left: `${hoverX}px` }}
+                >
+                  {formatTime(hoverTime)}
                 </div>
-              </div>
-
-              {/* Time */}
-              <span className="text-[11px] md:text-xs font-mono text-white/70 ml-1">
-                {formatTime(currentTime)} <span className="text-white/40">/</span> {formatTime(duration)}
-              </span>
+              )}
             </div>
 
-            <div className="flex items-center gap-0.5 md:gap-1">
-              {/* Subtitle toggle */}
-              <button 
-                onClick={() => setShowSubtitles(!showSubtitles)}
-                className={`p-1.5 rounded-lg transition-all ${showSubtitles ? 'bg-white/20 text-brand' : 'hover:bg-white/10 text-white/60'}`}
-                title="Toggle Subtitles (C)"
-              >
-                <Type size={18} />
-              </button>
+            {/* Control Buttons Row */}
+            <div className="flex items-center justify-between text-white">
+              <div className="flex items-center gap-1 md:gap-3">
+                {/* Play/Pause */}
+                <button onClick={(e) => { e.stopPropagation(); togglePlay(); }} className="p-1.5 hover:bg-white/10 rounded-lg transition-colors" title={isPlaying ? 'Pause (Space)' : 'Play (Space)'}>
+                  {isPlaying ? <Pause size={22} className="fill-current" /> : <Play size={22} className="fill-current ml-0.5" />}
+                </button>
+                
+                {/* Skip buttons */}
+                <button onClick={(e) => { e.stopPropagation(); skipBackward(e); }} className="p-1.5 hover:bg-white/10 rounded-lg transition-colors hidden md:flex" title="Rewind 10s">
+                  <RotateCcw size={18} />
+                </button>
+                <button onClick={(e) => { e.stopPropagation(); skipForward(e); }} className="p-1.5 hover:bg-white/10 rounded-lg transition-colors hidden md:flex" title="Forward 10s">
+                  <RotateCw size={18} />
+                </button>
 
-              {/* Settings */}
-              <button 
-                onClick={(e) => { 
-                  e.stopPropagation(); 
-                  setShowSettings(!showSettings);
-                  if (!showSettings) setSettingsTab('main'); 
-                }}
-                className={`p-1.5 rounded-lg transition-all ${showSettings ? 'bg-white/20 text-brand rotate-45' : 'hover:bg-white/10 text-white/80'}`}
-                title="Settings"
-              >
-                <Settings size={18} />
-              </button>
+                {/* Volume */}
+                <div className="flex items-center gap-2">
+                  <button onClick={(e) => { e.stopPropagation(); toggleMute(); }} className="p-1.5 hover:bg-white/10 rounded-lg transition-colors" title={isMuted ? 'Unmute (M)' : 'Mute (M)'}>
+                    {isMuted || volume === 0 ? <VolumeX size={20} /> : <Volume2 size={20} />}
+                  </button>
+                  <div className="hidden md:block w-20">
+                    <input 
+                      type="range" 
+                      min="0" 
+                      max="100" 
+                      value={isMuted ? 0 : volume} 
+                      onChange={handleVolumeChange}
+                      className="w-20 h-1 bg-white/30 rounded-lg appearance-none cursor-pointer accent-white"
+                    />
+                  </div>
+                </div>
 
-              {/* Theater */}
-              <button 
-                onClick={() => setTheaterMode(!theaterMode)}
-                className="p-1.5 hover:bg-white/10 rounded-lg transition-colors text-white/80 hidden md:flex"
-                title="Theater Mode"
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2" y="4" width="20" height="16" rx="2" />
-                </svg>
-              </button>
+                {/* Time */}
+                <span className="text-[11px] md:text-xs font-mono text-white/70 ml-1">
+                  {formatTime(currentTime)} <span className="text-white/40">/</span> {formatTime(duration)}
+                </span>
+              </div>
 
-              {/* Fullscreen */}
-              <button onClick={toggleFullscreen} className="p-1.5 hover:bg-white/10 rounded-lg transition-colors" title="Fullscreen (F)">
-                {isFullscreen || isCssFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
-              </button>
+              <div className="flex items-center gap-0.5 md:gap-1">
+                {/* Subtitle toggle */}
+                <button 
+                  onClick={(e) => { e.stopPropagation(); setShowSubtitles(!showSubtitles); }}
+                  className={`p-1.5 rounded-lg transition-all ${showSubtitles ? 'bg-white/20 text-brand' : 'hover:bg-white/10 text-white/60'}`}
+                  title="Toggle Subtitles (C)"
+                >
+                  <Type size={18} />
+                </button>
+
+                {/* Settings */}
+                <button 
+                  onClick={(e) => { 
+                    e.stopPropagation(); 
+                    setShowSettings(!showSettings);
+                  }}
+                  className={`p-1.5 rounded-lg transition-all ${showSettings ? 'bg-white/20 text-brand rotate-45' : 'hover:bg-white/10 text-white/80'}`}
+                  title="Settings"
+                >
+                  <Settings size={18} />
+                </button>
+
+                {/* Fullscreen */}
+                <button 
+                  onClick={(e) => { 
+                    e.stopPropagation(); 
+                    toggleFullscreen(); 
+                  }} 
+                  className="p-1.5 hover:bg-white/10 rounded-lg transition-colors" 
+                  title={isFullscreen || isCssFullscreen ? 'Exit Fullscreen (F)' : 'Fullscreen (F)'}
+                >
+                  {isFullscreen || isCssFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
       )}
 
-      {/* Persistent Buttons for Drive/Dailymotion */}
+      {/* ===== PERSISTENT BUTTONS for Drive/Dailymotion ===== */}
       {serverType !== 'youtube' && (
         <div className={`absolute top-4 right-4 z-20 flex gap-2 transition-opacity duration-300 ${showControls ? 'opacity-100' : 'opacity-0'}`}>
           <button 
@@ -678,12 +700,11 @@ export default function VideoPlayer({
             {isFullscreen || isCssFullscreen ? <Minimize size={20} /> : <Maximize size={20} />}
           </button>
 
-          {(servers.length > 1 || (subtitleTracks.length > 0 && serverType === 'youtube')) && (
+          {subtitleTracks.length > 0 && serverType === 'youtube' && (
             <button 
               onClick={(e) => { 
                 e.stopPropagation(); 
                 setShowSettings(!showSettings);
-                if (!showSettings) setSettingsTab('main'); 
               }}
               className={`p-2 rounded-xl backdrop-blur-md transition-all shadow-lg border ${showSettings ? 'bg-black/80 text-brand border-brand/30 rotate-45' : 'bg-black/50 hover:bg-black/70 text-white border-white/10'}`}
               title="Settings"
@@ -694,154 +715,61 @@ export default function VideoPlayer({
         </div>
       )}
 
-      {/* Settings Panel */}
+      {/* ===== SETTINGS PANEL ===== */}
       {showSettings && (showControls || (!isPlaying && serverType === 'youtube') || serverType !== 'youtube') && (
         <div 
           className={`absolute ${serverType === 'youtube' ? 'bottom-14 md:bottom-16 right-2 md:right-5' : 'top-16 right-4'} z-30 w-[calc(100%-1rem)] md:w-64 max-w-sm bg-black/90 backdrop-blur-xl rounded-xl border border-white/10 shadow-2xl overflow-hidden flex flex-col`}
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="px-4 py-3 border-b border-white/10 flex items-center gap-2 bg-white/5">
-            {settingsTab !== 'main' && (
-              <button onClick={() => setSettingsTab('main')} className="p-1 -ml-1 hover:bg-white/10 rounded-md text-white/70 transition-colors">
-                <ChevronDown size={16} className="rotate-90" />
-              </button>
-            )}
-            <h4 className="text-xs font-bold text-white uppercase tracking-widest flex-1">
-              {settingsTab === 'main' ? 'Settings' : settingsTab === 'subtitles' ? 'Subtitles' : 'Servers'}
-            </h4>
+          <div className="px-4 py-3 border-b border-white/10 flex items-center justify-between bg-white/5">
+            <h4 className="text-xs font-bold text-white uppercase tracking-widest">Settings</h4>
             <button onClick={() => setShowSettings(false)} className="p-1 -mr-1 hover:bg-white/10 rounded-md text-white/50 hover:text-white transition-colors">
-              <RotateCw size={14} className="rotate-45" /> {/* Close icon lookalike */}
+              <RotateCw size={14} className="rotate-45" />
             </button>
           </div>
           
           <div className="flex-1 overflow-y-auto max-h-[300px] custom-scrollbar">
-            {settingsTab === 'main' && (
+            {serverType === 'youtube' && (
               <div className="py-2">
-                <button 
-                  onClick={() => setSettingsTab('servers')}
-                  className="w-full px-4 py-2.5 flex items-center justify-between hover:bg-white/5 transition-colors group"
-                >
-                  <div className="flex items-center gap-3 text-white/80 group-hover:text-white">
-                    <Server size={16} />
-                    <span className="text-sm font-medium">Servers</span>
+                {/* Subtitle Delay */}
+                <div className="px-4 py-3 space-y-2.5">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-white/70 font-medium">Subtitle Delay</span>
+                    <span className="text-[10px] font-mono font-bold text-brand px-1.5 py-0.5 bg-brand/10 rounded">
+                      {subtitleDelay > 0 ? `+${subtitleDelay.toFixed(1)}` : subtitleDelay.toFixed(1)}s
+                    </span>
                   </div>
-                  <div className="flex items-center gap-1 text-white/50 text-xs">
-                    {activeServer?.name || 'YouTube'}
-                    <ChevronDown size={14} className="-rotate-90" />
+                  <div className="flex items-center gap-2">
+                    <button onClick={() => setSubtitleDelay(Math.max(-10, subtitleDelay - 0.1))} className="p-1 hover:bg-white/10 rounded text-white/60">
+                      <ChevronDown size={14} />
+                    </button>
+                    <input type="range" min="-10" max="10" step="0.1" value={subtitleDelay} onChange={(e) => setSubtitleDelay(parseFloat(e.target.value))} className="flex-1 h-1 bg-white/20 rounded-lg appearance-none cursor-pointer accent-brand" />
+                    <button onClick={() => setSubtitleDelay(Math.min(10, subtitleDelay + 0.1))} className="p-1 hover:bg-white/10 rounded text-white/60">
+                      <ChevronUp size={14} />
+                    </button>
                   </div>
-                </button>
-                
-                {serverType === 'youtube' && (
-                  <button 
-                    onClick={() => setSettingsTab('subtitles')}
-                    className="w-full px-4 py-2.5 flex items-center justify-between hover:bg-white/5 transition-colors group"
-                  >
-                    <div className="flex items-center gap-3 text-white/80 group-hover:text-white">
-                      <Languages size={16} />
-                      <span className="text-sm font-medium">Subtitles</span>
-                    </div>
-                    <div className="flex items-center gap-1 text-white/50 text-xs">
-                      {activeSubtitleTrack ? activeSubtitleTrack.label : 'Off'}
-                      <ChevronDown size={14} className="-rotate-90" />
-                    </div>
-                  </button>
-                )}
+                </div>
 
-                {serverType === 'youtube' && (
-                  <>
-                    <div className="my-2 border-t border-white/5" />
-                    {/* Subtitle Delay */}
-                    <div className="px-4 py-3 space-y-2.5">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs text-white/70 font-medium">Subtitle Delay</span>
-                        <span className="text-[10px] font-mono font-bold text-brand px-1.5 py-0.5 bg-brand/10 rounded">
-                          {subtitleDelay > 0 ? `+${subtitleDelay.toFixed(1)}` : subtitleDelay.toFixed(1)}s
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <button onClick={() => setSubtitleDelay(Math.max(-10, subtitleDelay - 0.1))} className="p-1 hover:bg-white/10 rounded text-white/60">
-                          <ChevronDown size={14} />
-                        </button>
-                        <input type="range" min="-10" max="10" step="0.1" value={subtitleDelay} onChange={(e) => setSubtitleDelay(parseFloat(e.target.value))} className="flex-1 h-1 bg-white/20 rounded-lg appearance-none cursor-pointer accent-brand" />
-                        <button onClick={() => setSubtitleDelay(Math.min(10, subtitleDelay + 0.1))} className="p-1 hover:bg-white/10 rounded text-white/60">
-                          <ChevronUp size={14} />
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Subtitle Size */}
-                    <div className="px-4 py-3 space-y-2.5 border-t border-white/5">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs text-white/70 font-medium">Subtitle Size</span>
-                        <span className="text-[10px] font-mono font-bold text-white/50 px-1.5 py-0.5 bg-white/5 rounded">
-                          {subSize}px
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <span className="text-[10px] text-white/40">A</span>
-                        <input type="range" min="14" max="36" step="1" value={subSize} onChange={(e) => setSubSize(parseInt(e.target.value))} className="flex-1 h-1 bg-white/20 rounded-lg appearance-none cursor-pointer accent-brand" />
-                        <span className="text-sm text-white/40 font-bold">A</span>
-                      </div>
-                    </div>
-                  </>
-                )}
+                {/* Subtitle Size */}
+                <div className="px-4 py-3 space-y-2.5 border-t border-white/5">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-white/70 font-medium">Subtitle Size</span>
+                    <span className="text-[10px] font-mono font-bold text-white/50 px-1.5 py-0.5 bg-white/5 rounded">
+                      {subSize}px
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-[10px] text-white/40">A</span>
+                    <input type="range" min="14" max="36" step="1" value={subSize} onChange={(e) => setSubSize(parseInt(e.target.value))} className="flex-1 h-1 bg-white/20 rounded-lg appearance-none cursor-pointer accent-brand" />
+                    <span className="text-sm text-white/40 font-bold">A</span>
+                  </div>
+                </div>
               </div>
             )}
 
-            {settingsTab === 'servers' && (
-              <div className="py-2">
-                {servers.length > 0 ? servers.map(server => (
-                  <button 
-                    key={server.id}
-                    onClick={() => {
-                      if (onServerChange) onServerChange(server);
-                      setSettingsTab('main');
-                    }}
-                    className="w-full px-4 py-3 flex items-center justify-between hover:bg-white/5 transition-colors group"
-                  >
-                    <span className={`text-sm font-medium ${activeServer?.id === server.id ? 'text-brand' : 'text-white/80 group-hover:text-white'}`}>
-                      {server.name}
-                    </span>
-                    {activeServer?.id === server.id && <Check size={16} className="text-brand" />}
-                  </button>
-                )) : (
-                  <div className="px-4 py-3 text-sm text-white/50 text-center">No servers available</div>
-                )}
-              </div>
-            )}
-
-            {settingsTab === 'subtitles' && serverType === 'youtube' && (
-              <div className="py-2">
-                <button 
-                  onClick={() => {
-                    if (onSubtitleChange) onSubtitleChange(null);
-                    setShowSubtitles(false);
-                    setSettingsTab('main');
-                  }}
-                  className="w-full px-4 py-3 flex items-center justify-between hover:bg-white/5 transition-colors group"
-                >
-                  <span className={`text-sm font-medium ${!activeSubtitleTrack && !showSubtitles ? 'text-brand' : 'text-white/80 group-hover:text-white'}`}>
-                    Off
-                  </span>
-                  {!activeSubtitleTrack && !showSubtitles && <Check size={16} className="text-brand" />}
-                </button>
-                
-                {subtitleTracks.length > 0 && subtitleTracks.map(track => (
-                  <button 
-                    key={track.id}
-                    onClick={() => {
-                      if (onSubtitleChange) onSubtitleChange(track);
-                      setShowSubtitles(true);
-                      setSettingsTab('main');
-                    }}
-                    className="w-full px-4 py-3 flex items-center justify-between hover:bg-white/5 transition-colors group"
-                  >
-                    <span className={`text-sm font-medium ${activeSubtitleTrack?.id === track.id && showSubtitles ? 'text-brand' : 'text-white/80 group-hover:text-white'}`}>
-                      {track.label}
-                    </span>
-                    {activeSubtitleTrack?.id === track.id && showSubtitles && <Check size={16} className="text-brand" />}
-                  </button>
-                ))}
+            {serverType !== 'youtube' && (
+              <div className="px-4 py-8 text-sm text-white/50 text-center">
+                Settings available only for YouTube player
               </div>
             )}
           </div>

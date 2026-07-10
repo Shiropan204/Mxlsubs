@@ -269,8 +269,8 @@ export default function Episode() {
       )}
       {/* Main Content */}
       <div className="flex-1 flex flex-col gap-0">
-        {/* Video Player */}
-        <div className="w-full md:rounded-2xl overflow-hidden shadow-2xl shadow-black/20">
+        {/* Video Player - wrapper tanpa overflow-hidden agar fullscreen tidak terpotong */}
+        <div className="w-full md:rounded-2xl shadow-2xl shadow-black/20">
           <VideoPlayer 
             servers={servers}
             activeServer={activeServer}
@@ -285,6 +285,59 @@ export default function Episode() {
             initialTime={initialTime}
           />
         </div>
+
+        {/* Server & Subtitle Quick Select */}
+        {servers.length > 1 && (
+          <div className="px-4 md:px-0 mt-4">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-xs font-bold uppercase tracking-widest text-text-muted mr-1">Server</span>
+              {servers.map(server => (
+                <button
+                  key={server.id}
+                  onClick={() => setActiveServer(server)}
+                  className={`px-3 py-1.5 text-sm rounded-lg font-medium transition-all ${
+                    activeServer?.id === server.id
+                      ? 'bg-brand text-white shadow-sm shadow-brand/30'
+                      : 'bg-bg-surface border border-border-subtle text-text-muted hover:text-text-primary hover:border-brand/30'
+                  }`}
+                >
+                  {server.name}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {subtitleTracks.length > 0 && activeServer?.id === 'youtube' && (
+          <div className="px-4 md:px-0 mt-3">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-xs font-bold uppercase tracking-widest text-text-muted mr-1">Subtitles</span>
+              <button
+                onClick={() => setActiveSubtitleTrack(null)}
+                className={`px-3 py-1.5 text-sm rounded-lg font-medium transition-all ${
+                  !activeSubtitleTrack
+                    ? 'bg-brand text-white shadow-sm shadow-brand/30'
+                    : 'bg-bg-surface border border-border-subtle text-text-muted hover:text-text-primary hover:border-brand/30'
+                }`}
+              >
+                Off
+              </button>
+              {subtitleTracks.map(track => (
+                <button
+                  key={track.id}
+                  onClick={() => setActiveSubtitleTrack(track)}
+                  className={`px-3 py-1.5 text-sm rounded-lg font-medium transition-all ${
+                    activeSubtitleTrack?.id === track.id
+                      ? 'bg-brand text-white shadow-sm shadow-brand/30'
+                      : 'bg-bg-surface border border-border-subtle text-text-muted hover:text-text-primary hover:border-brand/30'
+                  }`}
+                >
+                  {track.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
         
         <div className="px-4 md:px-0 space-y-6 mt-6">
           {showSubtitleBanner && (
