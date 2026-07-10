@@ -1,4 +1,4 @@
-import { Globe, Discord, Twitter } from 'lucide-react';
+import { Globe, MessageCircle, Twitter } from 'lucide-react';
 
 export default function Partners() {
   return (
@@ -23,7 +23,7 @@ export default function Partners() {
               <Globe size={20} />
             </a>
             <a href="https://discord.gg/mCaUwH4GFS" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary-hover transition-colors" title="Discord">
-              <Discord size={20} />
+              <MessageCircle size={20} />
             </a>
             <a href="https://x.com/frelein_asli" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary-hover transition-colors" title="X">
               <Twitter size={20} />
