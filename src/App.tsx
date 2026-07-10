@@ -13,6 +13,7 @@ const About = lazy(() => import('./pages/About'));
 const Profile = lazy(() => import('./pages/Profile'));
 const Variety = lazy(() => import('./pages/Variety'));
 const Partners = lazy(() => import('./pages/Partners'));
+const Support = lazy(() => import('./pages/Support'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 export default function App() {
@@ -26,6 +27,7 @@ export default function App() {
           <Route path="profile" element={<Profile />} />
           <Route path="variety" element={<Variety />} />
           <Route path="partners" element={<Partners />} />
+          <Route path="support" element={<Support />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

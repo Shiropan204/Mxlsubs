@@ -85,6 +85,7 @@ export default function Layout() {
               <Link to="/" className="hover:text-brand transition-colors font-medium">Home</Link>
               <Link to="/variety" className="hover:text-brand transition-colors font-medium">Variety</Link>
               <Link to="/about" className="hover:text-brand transition-colors font-medium">About</Link>
+              <Link to="/support" className="hover:text-brand transition-colors font-medium">Support</Link>
             </div>
             
             <button 
@@ -134,6 +135,7 @@ export default function Layout() {
             <Link to="/about" onClick={() => setIsMobileMenuOpen(false)} className="hover:opacity-70 transition-opacity">ABOUT</Link>
             <Link to="/profile" onClick={() => setIsMobileMenuOpen(false)} className="hover:opacity-70 transition-opacity">PROFILE</Link>
             <Link to="/partners" onClick={() => setIsMobileMenuOpen(false)} className="hover:opacity-70 transition-opacity">PARTNERS</Link>
+            <Link to="/support" onClick={() => setIsMobileMenuOpen(false)} className="hover:opacity-70 transition-opacity">SUPPORT</Link>
             
             <div className="mt-4 pt-4 border-t border-white/20">
               <h3 className="text-xs text-white/50 mb-4">CATEGORIES</h3>
@@ -205,6 +207,7 @@ export default function Layout() {
             <div className="flex items-center gap-6">
               <Link to="/" className="hover:text-brand transition-colors">Home</Link>
               <Link to="/about" className="hover:text-brand transition-colors">About</Link>
+              <Link to="/support" className="hover:text-brand transition-colors">Support</Link>
               <Link to="/about" className="hover:text-brand transition-colors">Disclaimer</Link>
             </div>
             <p className="mt-2 text-xs opacity-70">
