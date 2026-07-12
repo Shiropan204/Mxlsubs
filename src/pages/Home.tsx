@@ -26,32 +26,38 @@ function EpisodeCard({ ep, customThumbnail, progress, size = 'normal' }: {
   ep: typeof episodes[0]; 
   customThumbnail?: string; 
   progress?: number;
-  size?: 'large' | 'normal' | 'wide';
+  size?: 'large' | 'normal' | 'wide' | 'grid';
 }) {
-  const widthClass = size === 'large' ? 'w-[75vw] md:w-80' : size === 'wide' ? 'w-[85vw] md:w-96' : 'w-[42vw] md:w-56';
+  const widthClass = 
+    size === 'large' ? 'w-[75vw] md:w-80' : 
+    size === 'wide' ? 'w-[85vw] md:w-96' : 
+    size === 'grid' ? 'w-full' : 
+    'w-[42vw] md:w-56';
   
   return (
     <Link to={`/episode/${ep.id}`} className={`group flex-none ${widthClass} flex flex-col gap-2`}>
-      <div className="w-full aspect-video rounded-xl overflow-hidden relative shadow-md shadow-black/10 dark:shadow-black/30 bg-bg-surface">
+      <div className="w-full aspect-video rounded-xl overflow-hidden relative shadow-sm shadow-black/5 dark:shadow-black/20 bg-bg-surface border border-border-subtle/30">
         <img 
           src={customThumbnail || ep.thumbnailUrl || `https://img.youtube.com/vi/${ep.videoId}/hqdefault.jpg`} 
           alt={ep.title}
-          className="w-full h-full object-cover md:group-hover:scale-105 transition-transform duration-500"
+          className="w-full h-full object-cover md:group-hover:scale-105 transition-transform duration-700 ease-out"
           loading="lazy"
         />
         {/* Gradient overlay on bottom for readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 md:group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 md:group-hover:opacity-100 transition-opacity duration-300" />
         
         {/* Play icon on hover */}
-        <div className="hidden md:flex absolute inset-0 items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
-            <Play size={18} className="fill-black text-black ml-0.5" />
+        <div className="hidden md:flex absolute inset-0 items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform md:group-hover:scale-110">
+          <div className="w-12 h-12 rounded-full bg-brand text-white flex items-center justify-center shadow-lg shadow-brand/30">
+            <Play size={20} className="fill-current ml-0.5" />
           </div>
         </div>
 
-        {/* Date badge */}
-        <div className="absolute top-2 right-2 bg-black/70 backdrop-blur-sm text-white text-[10px] px-2 py-0.5 rounded-md font-medium">
-          {ep.date}
+        {/* Top badges (minimalist) */}
+        <div className="absolute top-2 right-2 flex flex-col items-end gap-1">
+          <div className="bg-black/70 backdrop-blur-md text-white/90 text-[9px] md:text-[10px] px-1.5 py-0.5 rounded font-medium tracking-wide">
+            {ep.date}
+          </div>
         </div>
 
         {/* Progress bar */}
@@ -61,26 +67,18 @@ function EpisodeCard({ ep, customThumbnail, progress, size = 'normal' }: {
           </div>
         )}
       </div>
-      <div className="px-0.5">
+      <div className="px-0.5 mt-0.5">
         <h3 className="font-heading font-semibold text-[13px] md:text-sm line-clamp-2 leading-snug group-hover:text-brand transition-colors">
           {ep.title}
         </h3>
-        <div className="flex items-center gap-1.5 mt-1">
-          <span className="text-[10px] md:text-xs text-text-muted bg-bg-surface border border-border-subtle px-1.5 py-0.5 rounded-md font-medium">
-            {ep.type}
-          </span>
-          {ep.subtitleTags && ep.subtitleTags.map(tag => (
-            <span key={tag} className="text-[9px] text-white bg-brand/80 border border-brand/50 px-1.5 py-0.5 rounded shadow-sm font-bold uppercase tracking-wide">
-              {tag}
-            </span>
-          ))}
-          {ep.members.slice(0, 1).map(m => (
-            <span key={m} className="text-[10px] md:text-xs text-text-muted">
-              {m}
-            </span>
-          ))}
-          {ep.members.length > 1 && (
-            <span className="text-[10px] text-text-muted">+{ep.members.length - 1}</span>
+        {/* Minimal metadata text instead of colorful badges */}
+        <div className="flex items-center gap-1.5 mt-1 text-[11px] md:text-xs text-text-muted">
+          <span>{ep.type}</span>
+          {ep.subtitleTags && ep.subtitleTags.length > 0 && (
+            <>
+              <span className="text-border-subtle/50 text-[8px]">•</span>
+              <span className="text-brand/80 font-medium">{ep.subtitleTags.join(', ')}</span>
+            </>
           )}
         </div>
       </div>
@@ -113,6 +111,7 @@ export default function Home() {
   const [watchHistory] = useLocalStorage<Record<string, { currentTime: number, duration: number } | number>>('watchHistory', {});
   const [isLoading, setIsLoading] = useState(true);
   const [recentlyViewedIds, setRecentlyViewedIds] = useState<string[]>([]);
+  const [featuredIndex, setFeaturedIndex] = useState(0);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 400);
@@ -126,6 +125,18 @@ export default function Home() {
     }
     return () => clearTimeout(timer);
   }, []);
+
+  // Searching mode
+  const isSearching = search || selectedCategories.length > 0 || selectedMembers.length > 0;
+
+  // Auto-slider effect
+  useEffect(() => {
+    if (isSearching || isLoading) return;
+    const interval = setInterval(() => {
+      setFeaturedIndex((prev) => (prev + 1) % 5); // top 5 featured
+    }, 6000); // 6 seconds per slide
+    return () => clearInterval(interval);
+  }, [isSearching, isLoading]);
 
   const filteredEpisodes = episodes.filter(ep => {
     const matchesSearch = ep.title.toLowerCase().includes(search.toLowerCase()) || 
@@ -148,40 +159,45 @@ export default function Home() {
     return Math.min(100, (historyEntry.currentTime / historyEntry.duration) * 100);
   };
 
-  // Searching mode - show filtered grid
-  const isSearching = search || selectedCategories.length > 0 || selectedMembers.length > 0;
 
   // Categorized episodes for shelves
   const ikonoijoyEps = episodes.filter(ep => ep.type === 'IKONOIJOY Channel');
   const latestEps = [...episodes].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
-  const featured = episodes[0]; // newest as featured
+  const featuredEpisodes = latestEps.slice(0, 5);
+  const featured = featuredEpisodes[featuredIndex] || featuredEpisodes[0];
 
   return (
     <div className="w-full pb-8">
       
-      {/* ====== MOBILE HERO (compact, streaming-style) ====== */}
-      {!isSearching && !isLoading && (
-        <section className="md:hidden relative">
-          {/* Compact hero card */}
-          <Link to={`/episode/${featured.id}`} className="block relative aspect-[16/9] overflow-hidden">
-            <img 
-              src={customThumbnails[featured.id] || featured.thumbnailUrl || `https://img.youtube.com/vi/${featured.videoId}/maxresdefault.jpg`} 
-              onError={(e) => {
-                if (e.currentTarget.src.includes('maxresdefault.jpg')) {
-                  e.currentTarget.src = `https://img.youtube.com/vi/${featured.videoId}/hqdefault.jpg`;
-                }
-              }}
-              alt={featured.title}
-              className="w-full h-full object-cover"
-            />
-            {/* Subtle bottom gradient only */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-            
-            {/* Content pinned to bottom-left */}
-            <div className="absolute bottom-0 left-0 right-0 p-4 flex items-end justify-between gap-3">
+      {/* ====== MOBILE HERO (Auto Slide) ====== */}
+      {!isSearching && !isLoading && featuredEpisodes.length > 0 && (
+        <section className="md:hidden relative aspect-[16/9] overflow-hidden">
+          {featuredEpisodes.map((ep, idx) => (
+            <div 
+              key={`mob-${ep.id}`}
+              className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${idx === featuredIndex ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+            >
+              <img 
+                src={customThumbnails[ep.id] || ep.thumbnailUrl || `https://img.youtube.com/vi/${ep.videoId}/maxresdefault.jpg`} 
+                onError={(e) => {
+                  if (e.currentTarget.src.includes('maxresdefault.jpg')) {
+                    e.currentTarget.src = `https://img.youtube.com/vi/${ep.videoId}/hqdefault.jpg`;
+                  }
+                }}
+                alt={ep.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          ))}
+          {/* Subtle bottom gradient */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+          
+          {/* Content pinned to bottom-left */}
+          <div className="absolute inset-0 flex flex-col justify-end p-4 pointer-events-none">
+            <div key={`mob-content-${featured.id}`} className="flex items-end justify-between gap-3 animate-in fade-in slide-in-from-bottom-2 duration-700 pointer-events-auto">
               <div className="flex-1 min-w-0">
-                <span className="inline-block text-[10px] font-bold tracking-widest uppercase text-brand bg-brand/20 backdrop-blur-sm px-2 py-0.5 rounded-md mb-1.5">
+                <span className="inline-block text-[10px] font-bold tracking-widest uppercase text-brand bg-brand/20 backdrop-blur-sm px-2 py-0.5 rounded-md mb-1.5 shadow-sm border border-brand/30">
                   Terbaru
                 </span>
                 <h2 className="text-white font-heading font-bold text-base leading-snug line-clamp-2 drop-shadow-lg">
@@ -190,55 +206,107 @@ export default function Home() {
               </div>
               {/* Play button */}
               <div className="flex items-center gap-2 shrink-0">
-                <div className="flex items-center gap-1.5 bg-white text-black px-4 py-2 rounded-full text-xs font-bold shadow-lg active:scale-95 transition-transform">
+                <Link to={`/episode/${featured.id}`} className="flex items-center gap-1.5 bg-brand text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg shadow-brand/30 active:scale-95 transition-transform">
                   <Play size={14} className="fill-current" />
                   Tonton
-                </div>
-              </div>
-            </div>
-          </Link>
-        </section>
-      )}
-
-      {/* ====== DESKTOP HERO (keep existing but refined) ====== */}
-      {!isSearching && !isLoading && (
-        <section className="hidden md:block max-w-7xl mx-auto px-4 pt-8 group">
-          <div className="bg-bg-surface border border-border-subtle rounded-2xl p-8 lg:p-12 flex flex-row items-center gap-8 relative overflow-hidden">
-            {/* Content */}
-            <div className="flex-1 space-y-4 z-10">
-              <span className="inline-block px-3 py-1 rounded-full bg-brand/10 text-brand text-sm font-bold tracking-wider uppercase">
-                Terbaru
-              </span>
-              <h1 className="text-3xl lg:text-4xl font-heading font-bold leading-tight">
-                {featured.title}
-              </h1>
-              <p className="text-text-muted text-base max-w-lg">
-                Saksikan keseruan member =LOVE di episode terbaru!
-              </p>
-              <div className="flex items-center gap-3 pt-2">
-                <Link 
-                  to={`/episode/${featured.id}`}
-                  className="inline-flex items-center gap-2 bg-brand text-white px-6 py-3 rounded-full font-bold text-sm hover:bg-brand-strong transition-all hover:scale-105 shadow-lg shadow-brand/30"
-                >
-                  <Play size={16} className="fill-current" />
-                  Tonton Sekarang
                 </Link>
               </div>
             </div>
-            {/* Thumbnail */}
-            <div className="w-1/2 aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl shadow-black/20">
-              <Link to={`/episode/${featured.id}`}>
+            
+            {/* Slider Indicators Mobile */}
+            <div className="flex items-center gap-1.5 mt-3 pointer-events-auto">
+              {featuredEpisodes.map((_, idx) => (
+                <button
+                  key={`mob-ind-${idx}`}
+                  onClick={(e) => { e.preventDefault(); setFeaturedIndex(idx); }}
+                  className={`h-1 rounded-full transition-all duration-500 ease-in-out ${idx === featuredIndex ? 'w-4 bg-brand shadow-[0_0_4px_rgba(234,102,135,0.8)]' : 'w-1.5 bg-white/40'}`}
+                  aria-label={`Go to slide ${idx + 1}`}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ====== DESKTOP HERO (Premium Banner Auto Slide) ====== */}
+      {!isSearching && !isLoading && featuredEpisodes.length > 0 && (
+        <section className="hidden md:block w-full max-w-7xl mx-auto px-4 pt-8 group">
+          <div className="block relative rounded-3xl overflow-hidden bg-black aspect-[21/9] shadow-2xl shadow-black/20">
+            {/* Background blurred image */}
+            <div className="absolute inset-0 opacity-40">
+              {featuredEpisodes.map((ep, idx) => (
                 <img 
-                  src={customThumbnails[featured.id] || featured.thumbnailUrl || `https://img.youtube.com/vi/${featured.videoId}/maxresdefault.jpg`} 
+                  key={`blur-${ep.id}`}
+                  src={customThumbnails[ep.id] || ep.thumbnailUrl || `https://img.youtube.com/vi/${ep.videoId}/hqdefault.jpg`} 
+                  alt="Background blur"
+                  className={`absolute inset-0 w-full h-full object-cover blur-xl scale-110 transition-opacity duration-1000 ease-in-out ${idx === featuredIndex ? 'opacity-100' : 'opacity-0'}`}
+                />
+              ))}
+            </div>
+            
+            {/* Main sharp image masked on the right */}
+            <div className="absolute top-0 right-0 bottom-0 w-2/3 md:w-3/4">
+              <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-transparent z-10"></div>
+              {featuredEpisodes.map((ep, idx) => (
+                <img 
+                  key={`main-${ep.id}`}
+                  src={customThumbnails[ep.id] || ep.thumbnailUrl || `https://img.youtube.com/vi/${ep.videoId}/maxresdefault.jpg`} 
                   onError={(e) => {
                     if (e.currentTarget.src.includes('maxresdefault.jpg')) {
-                      e.currentTarget.src = `https://img.youtube.com/vi/${featured.videoId}/hqdefault.jpg`;
+                      e.currentTarget.src = `https://img.youtube.com/vi/${ep.videoId}/hqdefault.jpg`;
                     }
                   }}
-                  alt={featured.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  alt={ep.title}
+                  className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 ease-in-out ${idx === featuredIndex ? 'opacity-100 scale-100 md:group-hover:scale-105' : 'opacity-0 scale-105'}`}
+                  style={{ maskImage: 'linear-gradient(to right, transparent, black 15%)', WebkitMaskImage: 'linear-gradient(to right, transparent, black 15%)' }}
                 />
-              </Link>
+              ))}
+            </div>
+
+            {/* Gradient Overlay for text */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/40 to-transparent z-10 pointer-events-none" />
+
+            {/* Content */}
+            <div className="absolute inset-0 z-20 flex flex-col justify-end p-10 lg:p-14 w-full md:w-3/4 lg:w-2/3 pointer-events-none">
+              <div key={`desk-content-${featured.id}`} className="space-y-4 animate-in fade-in slide-in-from-left-4 duration-700 ease-out pointer-events-auto">
+                <span className="inline-block px-3 py-1 rounded-full bg-brand/20 backdrop-blur-md text-brand font-bold text-xs tracking-widest uppercase border border-brand/30 shadow-sm">
+                  Rilisan Terbaru
+                </span>
+                <h1 className="text-3xl lg:text-5xl font-heading font-bold leading-tight text-white drop-shadow-lg">
+                  {featured.title}
+                </h1>
+                <p className="text-white/80 text-base md:text-lg max-w-xl line-clamp-2 drop-shadow-md">
+                  Saksikan keseruan member =LOVE di episode terbaru!
+                </p>
+                <div className="flex items-center gap-4 pt-4">
+                  <Link 
+                    to={`/episode/${featured.id}`}
+                    className="inline-flex items-center gap-3 bg-brand text-white px-8 py-3.5 rounded-full font-bold text-sm hover:bg-brand-strong transition-all hover:scale-105 shadow-[0_0_20px_rgba(234,102,135,0.4)] active:scale-95"
+                  >
+                    <Play size={18} className="fill-current" />
+                    Tonton Sekarang
+                  </Link>
+                  <Link 
+                    to={`/episode/${featured.id}`}
+                    className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white/20 transition-all border border-white/20"
+                  >
+                    <Sparkles size={20} />
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            {/* Slider Indicators */}
+            <div className="absolute bottom-6 right-8 z-20 flex items-center gap-2">
+              {featuredEpisodes.map((_, idx) => (
+                <button
+                  key={`desk-ind-${idx}`}
+                  onClick={(e) => { e.preventDefault(); setFeaturedIndex(idx); }}
+                  className={`h-1.5 rounded-full transition-all duration-500 ease-in-out ${idx === featuredIndex ? 'w-8 bg-brand shadow-[0_0_8px_rgba(234,102,135,0.8)]' : 'w-2 bg-white/40 hover:bg-white/70'}`}
+                  aria-label={`Go to slide ${idx + 1}`}
+                />
+              ))}
             </div>
           </div>
         </section>
@@ -258,8 +326,9 @@ export default function Home() {
       )}
 
       {/* ====== CONTENT SHELVES (Rak Toko) ====== */}
+      {/* ====== SHELVES / GRID ====== */}
       {!isLoading && !isSearching && (
-        <div className="space-y-6 md:space-y-10 mt-5 md:mt-10 max-w-7xl md:mx-auto">
+        <div className="space-y-10 md:space-y-16 mt-8 md:mt-12 max-w-7xl md:mx-auto">
           
           {/* Continue Watching */}
           {recentlyViewed.length > 0 && (
@@ -313,46 +382,15 @@ export default function Home() {
           {/* Semua Episode heading + grid (desktop-friendly) */}
           <section className="px-4 space-y-4">
             <h2 className="text-base md:text-xl font-heading font-bold">Semua Episode</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
               {episodes.map(ep => (
-                <Link key={ep.id} to={`/episode/${ep.id}`} className="group flex flex-col gap-2">
-                  <div className="w-full aspect-video rounded-xl overflow-hidden relative shadow-md shadow-black/10 dark:shadow-black/30 bg-bg-surface">
-                    <img 
-                      src={customThumbnails[ep.id] || ep.thumbnailUrl || `https://img.youtube.com/vi/${ep.videoId}/hqdefault.jpg`} 
-                      alt={ep.title}
-                      className="w-full h-full object-cover md:group-hover:scale-105 transition-transform duration-300"
-                      loading="lazy"
-                    />
-                    <div className="absolute top-1.5 right-1.5 bg-black/70 backdrop-blur-sm text-white text-[9px] md:text-[11px] px-1.5 py-0.5 rounded-md font-medium">
-                      {ep.date}
-                    </div>
-                    {watchHistory[ep.id] && getProgressWidth(ep.id) > 0 && (
-                      <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-white/20">
-                        <div className="h-full bg-brand rounded-r-full" style={{ width: `${getProgressWidth(ep.id)}%` }} />
-                      </div>
-                    )}
-                    <div className="hidden md:flex absolute inset-0 items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                      <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
-                        <Play size={16} className="fill-black text-black ml-0.5" />
-                      </div>
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="font-heading font-semibold text-xs md:text-sm line-clamp-2 leading-snug group-hover:text-brand transition-colors">
-                      {ep.title}
-                    </h3>
-                    <div className="flex flex-wrap gap-1 mt-1 hidden sm:flex items-center">
-                      <span className="text-[10px] md:text-xs text-text-muted bg-bg-surface border border-border-subtle px-1.5 py-0.5 rounded-md">
-                        {ep.type}
-                      </span>
-                      {ep.subtitleTags && ep.subtitleTags.map(tag => (
-                        <span key={tag} className="text-[9px] text-white bg-brand/80 border border-brand/50 px-1.5 py-0.5 rounded shadow-sm font-bold uppercase tracking-wide">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </Link>
+                <EpisodeCard 
+                  key={ep.id} 
+                  ep={ep} 
+                  customThumbnail={customThumbnails[ep.id]}
+                  progress={getProgressWidth(ep.id)}
+                  size="grid"
+                />
               ))}
             </div>
           </section>
@@ -428,41 +466,15 @@ export default function Home() {
           )}
 
           {/* Results Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
             {filteredEpisodes.map(ep => (
-              <Link key={ep.id} to={`/episode/${ep.id}`} className="group flex flex-col gap-2">
-                <div className="w-full aspect-video rounded-xl overflow-hidden relative shadow-md shadow-black/10 dark:shadow-black/30 bg-bg-surface">
-                  <img 
-                    src={customThumbnails[ep.id] || ep.thumbnailUrl || `https://img.youtube.com/vi/${ep.videoId}/hqdefault.jpg`} 
-                    alt={ep.title}
-                    className="w-full h-full object-cover md:group-hover:scale-105 transition-transform duration-300"
-                    loading="lazy"
-                  />
-                  <div className="absolute top-1.5 right-1.5 bg-black/70 backdrop-blur-sm text-white text-[9px] md:text-[11px] px-1.5 py-0.5 rounded-md font-medium">
-                    {ep.date}
-                  </div>
-                  {watchHistory[ep.id] && getProgressWidth(ep.id) > 0 && (
-                    <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-white/20">
-                      <div className="h-full bg-brand rounded-r-full" style={{ width: `${getProgressWidth(ep.id)}%` }} />
-                    </div>
-                  )}
-                </div>
-                <div>
-                  <h3 className="font-heading font-semibold text-xs md:text-sm line-clamp-2 leading-snug group-hover:text-brand transition-colors">
-                    {ep.title}
-                  </h3>
-                  <div className="flex flex-wrap gap-1 mt-1 hidden sm:flex items-center">
-                    <span className="text-[10px] md:text-xs text-text-muted bg-bg-surface border border-border-subtle px-1.5 py-0.5 rounded-md">
-                      {ep.type}
-                    </span>
-                    {ep.subtitleTags && ep.subtitleTags.map(tag => (
-                      <span key={tag} className="text-[9px] text-white bg-brand/80 border border-brand/50 px-1.5 py-0.5 rounded shadow-sm font-bold uppercase tracking-wide">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </Link>
+              <EpisodeCard 
+                key={ep.id} 
+                ep={ep} 
+                customThumbnail={customThumbnails[ep.id]}
+                progress={getProgressWidth(ep.id)}
+                size="grid"
+              />
             ))}
           </div>
           

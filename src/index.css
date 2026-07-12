@@ -63,3 +63,14 @@ input[type=range]::-webkit-slider-runnable-track {
   cursor: pointer;
   border-radius: 2px;
 }
+
+/* Hide scrollbar utility */
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}

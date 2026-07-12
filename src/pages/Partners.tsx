@@ -1,4 +1,4 @@
-import freleinLogo from '@/assets/partners/frelein-fansub.png';
+import freleinLogo from '../assets/partners/frelein-fansub.png';
 
 export default function Partners() {
   return (

@@ -700,18 +700,7 @@ export default function VideoPlayer({
             {isFullscreen || isCssFullscreen ? <Minimize size={20} /> : <Maximize size={20} />}
           </button>
 
-          {subtitleTracks.length > 0 && serverType === 'youtube' && (
-            <button 
-              onClick={(e) => { 
-                e.stopPropagation(); 
-                setShowSettings(!showSettings);
-              }}
-              className={`p-2 rounded-xl backdrop-blur-md transition-all shadow-lg border ${showSettings ? 'bg-black/80 text-brand border-brand/30 rotate-45' : 'bg-black/50 hover:bg-black/70 text-white border-white/10'}`}
-              title="Settings"
-            >
-              <Settings size={20} />
-            </button>
-          )}
+
         </div>
       )}
 
