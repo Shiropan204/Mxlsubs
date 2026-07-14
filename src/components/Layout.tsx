@@ -119,17 +119,20 @@ export default function Layout() {
       >
         <div className="absolute inset-0 overflow-hidden" onClick={() => setIsMobileMenuOpen(false)}>
           <div className="absolute inset-0 bg-bg-primary/40 backdrop-blur-sm"></div>
-          {/* Slanted pink background */}
+          {/* Slanted pink background — covers full screen on mobile, right panel on desktop */}
           <div 
-            className={`absolute top-0 bottom-0 w-[150%] -right-[50%] md:w-[1000px] md:right-[calc(min(42vw,440px)-1000px)] xl:right-[calc(min(30vw,420px)-1000px)] bg-[#ea6687] transform origin-top-left transition-transform duration-700 ease-in-out ${
-              isMobileMenuOpen 
-                ? 'translate-x-[-40%] md:translate-x-0 -skew-x-[15deg] md:-skew-x-[10deg]' 
-                : 'translate-x-[100%] md:translate-x-full -skew-x-[15deg] md:-skew-x-[10deg]'
-            }`}
+            className={`absolute top-0 bottom-0 bg-[#ea6687] transform origin-top-left transition-transform duration-700 ease-in-out
+              w-[200%] -right-[20%] md:w-[1000px] md:right-[calc(min(42vw,440px)-1000px)] xl:right-[calc(min(30vw,420px)-1000px)]
+              -skew-x-[15deg] md:-skew-x-[10deg]
+              ${
+                isMobileMenuOpen 
+                  ? 'translate-x-0 md:translate-x-0' 
+                  : 'translate-x-[120%] md:translate-x-full'
+              }`}
           ></div>
         </div>
 
-        <div className="relative z-10 flex flex-col h-full pt-28 px-8 md:px-12 xl:px-14 pb-12 overflow-y-auto pointer-events-none md:ml-auto w-full md:w-[min(42vw,440px)] xl:w-[min(30vw,420px)]">
+        <div className="relative z-10 flex flex-col h-full pt-24 px-8 md:px-12 xl:px-14 pb-12 overflow-y-auto pointer-events-none ml-0 md:ml-auto w-full md:w-[min(42vw,440px)] xl:w-[min(30vw,420px)]">
           <div className={`flex flex-col gap-6 text-[15px] tracking-widest font-heading font-medium text-white mt-4 ${isMobileMenuOpen ? 'pointer-events-auto' : ''}`}>
             <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="hover:opacity-70 transition-opacity">HOME</Link>
             <Link to="/about" onClick={() => setIsMobileMenuOpen(false)} className="hover:opacity-70 transition-opacity">ABOUT</Link>
@@ -170,8 +173,8 @@ export default function Layout() {
         </React.Suspense>
       </main>
       
-      {/* Bottom Navigation for Mobile - Floating Style */}
-      <nav className="md:hidden fixed left-4 right-4 z-40" style={{ bottom: 'calc(1rem + env(safe-area-inset-bottom, 0px))' }}>
+      {/* Bottom Navigation for Mobile - Floating Style — hidden when menu is open */}
+      <nav className={`md:hidden fixed left-4 right-4 z-30 transition-all duration-300 ${isMobileMenuOpen ? 'opacity-0 pointer-events-none translate-y-4' : 'opacity-100 translate-y-0'}`} style={{ bottom: 'calc(1rem + env(safe-area-inset-bottom, 0px))' }}>
         <div className="bg-bg-surface/85 backdrop-blur-xl border border-border-subtle rounded-2xl shadow-xl shadow-black/15 dark:shadow-black/40">
           <div className="flex items-center justify-around h-14 px-2">
             <Link to="/" className={`flex flex-col items-center justify-center w-full h-full gap-0.5 transition-all ${location.pathname === '/' ? 'text-brand' : 'text-text-muted'}`}>

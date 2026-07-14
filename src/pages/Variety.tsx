@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { episodes } from '../data/episodes';
 import { Play, Tv2 } from 'lucide-react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
+import { EpisodeCard } from '../components/EpisodeCard';
 
 export default function Variety() {
   const varietyEps = useMemo(
@@ -121,77 +122,13 @@ export default function Variety() {
             const progress = getProgress(ep.id);
 
             return (
-              <Link
+              <EpisodeCard
                 key={ep.id}
-                to={`/episode/${ep.id}`}
-                className="group flex flex-col gap-2"
-              >
-                <div className="w-full aspect-video rounded-xl overflow-hidden relative shadow-md shadow-black/10 dark:shadow-black/30 bg-bg-surface">
-                  {thumb ? (
-                    <img
-                      src={thumb}
-                      alt={ep.title}
-                      className="w-full h-full object-cover md:group-hover:scale-105 transition-transform duration-500"
-                      loading="lazy"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-brand/5">
-                      <Tv2 size={32} className="text-brand/30" />
-                    </div>
-                  )}
-
-                  {/* Hover overlay */}
-                  <div className="hidden md:flex absolute inset-0 items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/30">
-                    <div className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
-                      <Play size={18} className="fill-black text-black ml-0.5" />
-                    </div>
-                  </div>
-
-                  {/* Date badge */}
-                  <div className="absolute top-2 right-2 bg-black/70 backdrop-blur-sm text-white text-[10px] px-2 py-0.5 rounded-md font-medium">
-                    {ep.date}
-                  </div>
-
-                  {/* Series badge */}
-                  {ep.series && (
-                    <div className="absolute top-2 left-2 bg-brand/90 backdrop-blur-sm text-white text-[9px] px-2 py-0.5 rounded-md font-bold uppercase tracking-wide">
-                      {ep.series}
-                    </div>
-                  )}
-
-                  {/* Progress bar */}
-                  {progress > 0 && (
-                    <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-white/20">
-                      <div
-                        className="h-full bg-brand rounded-r-full"
-                        style={{ width: `${progress}%` }}
-                      />
-                    </div>
-                  )}
-                </div>
-
-                <div className="px-0.5">
-                  <h3 className="font-heading font-semibold text-[13px] md:text-sm line-clamp-2 leading-snug group-hover:text-brand transition-colors">
-                    {ep.title}
-                  </h3>
-                  <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
-                    {ep.subtitleTags?.map(tag => (
-                      <span
-                        key={tag}
-                        className="text-[9px] text-white bg-brand/80 border border-brand/50 px-1.5 py-0.5 rounded shadow-sm font-bold uppercase tracking-wide"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                    {ep.members.slice(0, 2).map(m => (
-                      <span key={m} className="text-[10px] text-text-muted">{m}</span>
-                    ))}
-                    {ep.members.length > 2 && (
-                      <span className="text-[10px] text-text-muted">+{ep.members.length - 2}</span>
-                    )}
-                  </div>
-                </div>
-              </Link>
+                ep={ep}
+                customThumbnail={thumb}
+                progress={progress}
+                size="grid"
+              />
             );
           })}
         </div>

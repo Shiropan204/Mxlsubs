@@ -4,87 +4,8 @@ import { episodes } from '../data/episodes';
 import { Search, Play, Filter, X, Clock, Sparkles } from 'lucide-react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 
-// Reusable horizontal scroll row component
-function ContentRow({ title, icon, children, className = '' }: { title: string; icon?: ReactNode; children: ReactNode; className?: string }) {
-  return (
-    <section className={`space-y-3 ${className}`}>
-      <div className="flex items-center gap-2 px-4">
-        {icon}
-        <h2 className="text-base md:text-xl font-heading font-bold">{title}</h2>
-      </div>
-      <div className="flex gap-3 overflow-x-auto pb-4 px-4 scrollbar-hide">
-        {children}
-        <div className="w-1 flex-shrink-0" aria-hidden="true"></div>
-      </div>
-    </section>
-  );
-}
-
-// Episode card for horizontal rows (large, streaming-style)
-function EpisodeCard({ ep, customThumbnail, progress, size = 'normal' }: { 
-  key?: string | number;
-  ep: typeof episodes[0]; 
-  customThumbnail?: string; 
-  progress?: number;
-  size?: 'large' | 'normal' | 'wide' | 'grid';
-}) {
-  const widthClass = 
-    size === 'large' ? 'w-[75vw] md:w-80' : 
-    size === 'wide' ? 'w-[85vw] md:w-96' : 
-    size === 'grid' ? 'w-full' : 
-    'w-[42vw] md:w-56';
-  
-  return (
-    <Link to={`/episode/${ep.id}`} className={`group flex-none ${widthClass} flex flex-col gap-2`}>
-      <div className="w-full aspect-video rounded-xl overflow-hidden relative shadow-sm shadow-black/5 dark:shadow-black/20 bg-bg-surface border border-border-subtle/30">
-        <img 
-          src={customThumbnail || ep.thumbnailUrl || `https://img.youtube.com/vi/${ep.videoId}/hqdefault.jpg`} 
-          alt={ep.title}
-          className="w-full h-full object-cover md:group-hover:scale-105 transition-transform duration-700 ease-out"
-          loading="lazy"
-        />
-        {/* Gradient overlay on bottom for readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 md:group-hover:opacity-100 transition-opacity duration-300" />
-        
-        {/* Play icon on hover */}
-        <div className="hidden md:flex absolute inset-0 items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform md:group-hover:scale-110">
-          <div className="w-12 h-12 rounded-full bg-brand text-white flex items-center justify-center shadow-lg shadow-brand/30">
-            <Play size={20} className="fill-current ml-0.5" />
-          </div>
-        </div>
-
-        {/* Top badges (minimalist) */}
-        <div className="absolute top-2 right-2 flex flex-col items-end gap-1">
-          <div className="bg-black/70 backdrop-blur-md text-white/90 text-[9px] md:text-[10px] px-1.5 py-0.5 rounded font-medium tracking-wide">
-            {ep.date}
-          </div>
-        </div>
-
-        {/* Progress bar */}
-        {progress !== undefined && progress > 0 && (
-          <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-white/20">
-            <div className="h-full bg-brand rounded-r-full" style={{ width: `${Math.min(100, progress)}%` }} />
-          </div>
-        )}
-      </div>
-      <div className="px-0.5 mt-0.5">
-        <h3 className="font-heading font-semibold text-[13px] md:text-sm line-clamp-2 leading-snug group-hover:text-brand transition-colors">
-          {ep.title}
-        </h3>
-        {/* Minimal metadata text instead of colorful badges */}
-        <div className="flex items-center gap-1.5 mt-1 text-[11px] md:text-xs text-text-muted">
-          <span>{ep.type}</span>
-          {ep.subtitleTags && ep.subtitleTags.length > 0 && (
-            <>
-              <span className="text-border-subtle/50 text-[8px]">•</span>
-              <span className="text-brand/80 font-medium">{ep.subtitleTags.join(', ')}</span>
-            </>
-          )}
-        </div>
-      </div>
-    </Link>
-  );
-}
+import { ContentRow } from '../components/ContentRow';
+import { EpisodeCard } from '../components/EpisodeCard';
 
 export default function Home() {
   const [searchParams, setSearchParams] = useSearchParams();

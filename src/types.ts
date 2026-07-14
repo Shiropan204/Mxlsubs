@@ -32,6 +32,8 @@ export interface Episode {
   subtitleTracks?: SubtitleTrack[];
   subtitleTags?: string[]; // Display tags for natively hardcoded/embedded subs
   thumbnailUrl?: string;
+  duration?: string;
+  status?: 'Ongoing' | 'Completed';
 }
 
 export interface MemberProfile {
@@ -45,4 +47,11 @@ export interface MemberProfile {
   zodiac?: string;
   color?: string; // Member color if available
   imageUrl?: string;
+  sns?: {
+    twitter?: string;
+    instagram?: string;
+    tiktok?: string;
+    showroom?: string;
+    blog?: string;
+  };
 }

@@ -1,5 +1,20 @@
 import { motion } from 'motion/react';
 import { members } from '../data/members';
+import { Instagram, Music2, Tv, PenTool } from 'lucide-react';
+
+const XLogo = ({ size = 16, className = "" }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="currentColor" 
+    className={className}
+  >
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+  </svg>
+);
+
 
 export default function Profile() {
   return (
@@ -17,7 +32,7 @@ export default function Profile() {
         </p>
       </motion.div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-6 lg:gap-8">
         {members.map((member, index) => (
           <motion.div
             key={member.id}
@@ -46,11 +61,11 @@ export default function Profile() {
               />
             </div>
             
-            <div className="p-6 flex-1 flex flex-col">
-              <h2 className="text-xl font-heading font-bold text-text-primary mb-1">{member.name}</h2>
-              <p className="text-sm tracking-widest text-[#ea6687] font-medium mb-4 uppercase">{member.nameRomaji}</p>
+            <div className="p-3 sm:p-5 flex-1 flex flex-col">
+              <h2 className="text-sm sm:text-xl font-heading font-bold text-text-primary mb-0.5">{member.name}</h2>
+              <p className="text-[10px] sm:text-xs tracking-widest text-[#ea6687] font-medium mb-3 uppercase">{member.nameRomaji}</p>
               
-              <div className="space-y-2 mt-auto text-sm text-text-secondary">
+              <div className="space-y-1.5 mt-auto text-[10px] sm:text-sm text-text-secondary hidden sm:block">
                 <div className="flex justify-between">
                   <span className="text-text-muted">Birth Date</span>
                   <span>{member.birthDate}</span>
@@ -68,6 +83,37 @@ export default function Profile() {
                   <span>{member.zodiac}</span>
                 </div>
               </div>
+
+              {/* SNS Links */}
+              {member.sns && (
+                <div className="flex flex-wrap items-center gap-3 sm:gap-4 mt-3 sm:mt-5 pt-3 sm:pt-4 border-t border-border-subtle">
+                  {member.sns.twitter && (
+                    <a href={member.sns.twitter} target="_blank" rel="noreferrer" className="text-text-muted hover:text-text-primary transition-colors" title="X (Twitter)">
+                      <XLogo size={14} className="sm:w-4 sm:h-4" />
+                    </a>
+                  )}
+                  {member.sns.instagram && (
+                    <a href={member.sns.instagram} target="_blank" rel="noreferrer" className="text-text-muted hover:text-[#E1306C] transition-colors" title="Instagram">
+                      <Instagram size={14} className="sm:w-4 sm:h-4" />
+                    </a>
+                  )}
+                  {member.sns.tiktok && (
+                    <a href={member.sns.tiktok} target="_blank" rel="noreferrer" className="text-text-muted hover:text-text-primary transition-colors" title="TikTok">
+                      <Music2 size={14} className="sm:w-4 sm:h-4" />
+                    </a>
+                  )}
+                  {member.sns.showroom && (
+                    <a href={member.sns.showroom} target="_blank" rel="noreferrer" className="text-text-muted hover:text-[#2BCB9E] transition-colors" title="Showroom">
+                      <Tv size={14} className="sm:w-4 sm:h-4" />
+                    </a>
+                  )}
+                  {member.sns.blog && (
+                    <a href={member.sns.blog} target="_blank" rel="noreferrer" className="text-text-muted hover:text-[#2D8C3C] transition-colors" title="Blog">
+                      <PenTool size={14} className="sm:w-4 sm:h-4" />
+                    </a>
+                  )}
+                </div>
+              )}
             </div>
           </motion.div>
         ))}
