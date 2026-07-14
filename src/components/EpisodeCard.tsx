@@ -24,15 +24,17 @@ export function EpisodeCard({ ep, customThumbnail, progress, size = 'normal' }: 
     <Link to={`/episode/${ep.id}`} className={`group flex-none ${widthClass} flex flex-col gap-2 relative`}>
       <div className="w-full aspect-video rounded-xl overflow-hidden relative shadow-sm shadow-black/5 dark:shadow-black/20 bg-bg-surface border border-border-subtle/30">
         
-        {/* Ribbon Badge */}
-        {ep.series && (
-          <div className="absolute top-2 -right-1 z-30 transform shadow-md">
+        {/* Premium Floating Badge */}
+        {ep.series && meta.status && (
+          <div className="absolute top-2.5 right-2.5 z-30 flex gap-2">
             {meta.status === 'Completed' ? (
-              <div className="bg-gray-600/90 backdrop-blur-md text-white text-[9px] md:text-[10px] font-bold tracking-widest uppercase px-3 py-1 rounded-l-md border-y border-l border-white/20">
-                TAMAT
+              <div className="bg-black/60 backdrop-blur-md text-white/90 text-[8.5px] font-extrabold tracking-[0.15em] uppercase px-2.5 py-1 rounded-full border border-white/10 shadow-lg flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-white/40"></span>
+                COMPLETED
               </div>
             ) : (
-              <div className="bg-brand/90 backdrop-blur-md text-white text-[9px] md:text-[10px] font-bold tracking-widest uppercase px-3 py-1 rounded-l-md border-y border-l border-white/20 shadow-[0_0_10px_rgba(234,102,135,0.5)]">
+              <div className="bg-brand/80 backdrop-blur-md text-white text-[8.5px] font-extrabold tracking-[0.15em] uppercase px-2.5 py-1 rounded-full border border-white/20 shadow-[0_4px_12px_rgba(234,102,135,0.3)] flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
                 ONGOING
               </div>
             )}
@@ -98,6 +100,31 @@ export function EpisodeCard({ ep, customThumbnail, progress, size = 'normal' }: 
             </div>
           )}
         </div>
+
+        {/* Subtitle language indicators */}
+        {ep.subtitleTags && ep.subtitleTags.length > 0 && (
+          <div className="flex items-center gap-1.5 mt-1">
+            {ep.subtitleTags.map(tag => {
+              const isIndo = /(indo|id|indonesia)/i.test(tag);
+              const isEng = /(eng|en|english)/i.test(tag);
+              return (
+                <span
+                  key={tag}
+                  title={isIndo ? 'Subtitle Indonesia tersedia' : isEng ? 'English subtitle available' : tag}
+                  className={`inline-flex items-center gap-1 text-[8.5px] font-extrabold tracking-wider uppercase px-1.5 py-0.5 rounded-md ${
+                    isIndo
+                      ? 'bg-red-500/15 text-red-400 border border-red-500/20'
+                      : isEng
+                      ? 'bg-blue-500/15 text-blue-400 border border-blue-500/20'
+                      : 'bg-white/10 text-white/60 border border-white/10'
+                  }`}
+                >
+                  {isIndo ? '🇮🇩' : isEng ? '🇺🇸' : ''} {tag}
+                </span>
+              );
+            })}
+          </div>
+        )}
       </div>
     </Link>
   );

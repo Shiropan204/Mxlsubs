@@ -380,7 +380,7 @@ export default function Episode() {
                 <span className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest font-bold text-brand bg-brand/10 px-3 py-1 rounded-full">
                   {episode.type}
                 </span>
-                {episode.series && (
+                {episode.series && getSeriesMeta(episode.series).status && (
                   <span className={`inline-flex items-center gap-1.5 text-[10px] uppercase tracking-widest font-bold px-2 py-1 rounded border ${
                     getSeriesMeta(episode.series).status === 'Completed'
                       ? 'bg-gray-500/10 text-gray-400 border-gray-500/20'
@@ -389,7 +389,7 @@ export default function Episode() {
                     <span className={`w-1.5 h-1.5 rounded-full ${
                       getSeriesMeta(episode.series).status === 'Completed' ? 'bg-gray-400' : 'bg-brand'
                     }`}></span>
-                    {getSeriesMeta(episode.series).status === 'Completed' ? 'Tamat' : 'Ongoing'}
+                    {getSeriesMeta(episode.series).status === 'Completed' ? 'Completed' : 'Ongoing'}
                   </span>
                 )}
                 {episode.subtitleTags && episode.subtitleTags.map(tag => (

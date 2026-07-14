@@ -67,7 +67,7 @@ export default function Variety() {
       <div className="flex bg-bg-surface border border-border-subtle rounded-xl p-1 w-max">
         {['Semua', 'Ongoing', 'Completed'].map(status => {
           const isActive = statusFilter === status;
-          const label = status === 'Completed' ? 'Tamat' : status;
+          const label = status;
           return (
             <button
               key={status}
@@ -105,7 +105,7 @@ export default function Variety() {
               const meta = getSeriesMeta(slug);
               const count = varietyEps.filter(ep => ep.series === slug).length;
               const isActive = activeSeries === slug;
-              const statusColor = meta.status === 'Completed' ? 'bg-gray-500' : 'bg-green-500';
+              const statusColor = meta.status === 'Completed' ? 'bg-gray-500' : meta.status === 'Ongoing' ? 'bg-green-500' : 'hidden';
 
               return (
                 <button

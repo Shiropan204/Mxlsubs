@@ -2,7 +2,7 @@ export type SeriesStatus = 'Ongoing' | 'Completed';
 
 export interface SeriesMeta {
   title: string;
-  status: SeriesStatus;
+  status?: SeriesStatus;
 }
 
 // Gunakan slug/id stabil sebagai key
@@ -17,12 +17,11 @@ export const seriesMetadata: Record<string, SeriesMeta> = {
   },
   'ikonoijoy-channel': {
     title: 'IKONOIJOY Channel',
-    status: 'Ongoing',
   },
 };
 
 // Helper function dengan fallback
 export const getSeriesMeta = (seriesId: string | undefined): SeriesMeta => {
-  if (!seriesId) return { title: 'Unknown Series', status: 'Ongoing' };
-  return seriesMetadata[seriesId] || { title: seriesId, status: 'Ongoing' };
+  if (!seriesId) return { title: 'Unknown Series' };
+  return seriesMetadata[seriesId] || { title: seriesId };
 };
