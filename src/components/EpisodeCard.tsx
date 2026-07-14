@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Play, Calendar, User } from 'lucide-react';
 import { Episode } from '../types';
+import { getSeriesMeta } from '../data/seriesMetadata';
 
 interface EpisodeCardProps {
   ep: Episode;
@@ -17,9 +18,27 @@ export function EpisodeCard({ ep, customThumbnail, progress, size = 'normal' }: 
     size === 'grid' ? 'w-full' : 
     'w-[42vw] md:w-56';
   
+  const meta = getSeriesMeta(ep.series);
+
   return (
-    <Link to={`/episode/${ep.id}`} className={`group flex-none ${widthClass} flex flex-col gap-2`}>
+    <Link to={`/episode/${ep.id}`} className={`group flex-none ${widthClass} flex flex-col gap-2 relative`}>
       <div className="w-full aspect-video rounded-xl overflow-hidden relative shadow-sm shadow-black/5 dark:shadow-black/20 bg-bg-surface border border-border-subtle/30">
+        
+        {/* Ribbon Badge */}
+        {ep.series && (
+          <div className="absolute top-2 -right-1 z-30 transform shadow-md">
+            {meta.status === 'Completed' ? (
+              <div className="bg-gray-600/90 backdrop-blur-md text-white text-[9px] md:text-[10px] font-bold tracking-widest uppercase px-3 py-1 rounded-l-md border-y border-l border-white/20">
+                TAMAT
+              </div>
+            ) : (
+              <div className="bg-brand/90 backdrop-blur-md text-white text-[9px] md:text-[10px] font-bold tracking-widest uppercase px-3 py-1 rounded-l-md border-y border-l border-white/20 shadow-[0_0_10px_rgba(234,102,135,0.5)]">
+                ONGOING
+              </div>
+            )}
+          </div>
+        )}
+        
         <img 
           src={customThumbnail || ep.thumbnailUrl || `https://img.youtube.com/vi/${ep.videoId}/hqdefault.jpg`} 
           alt={ep.title}
@@ -56,14 +75,8 @@ export function EpisodeCard({ ep, customThumbnail, progress, size = 'normal' }: 
       <div className="px-0.5 mt-2 flex flex-col gap-1.5">
         <div className="flex items-center justify-between">
           <span className="text-[9px] md:text-[10px] font-bold text-brand uppercase tracking-wider truncate">
-            {ep.series || ep.type}
+            {ep.series ? meta.title : ep.type}
           </span>
-          {ep.status && (
-            <span className="flex items-center gap-1 text-[8px] md:text-[9px] font-bold uppercase tracking-wider text-[#00a8ff]">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#00a8ff]"></span>
-              {ep.status}
-            </span>
-          )}
         </div>
         
         <h3 className="font-heading font-semibold text-[13px] md:text-sm line-clamp-2 leading-snug group-hover:text-brand transition-colors">

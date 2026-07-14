@@ -11,7 +11,7 @@ export const kimiWaMotto: Episode[] = [
     title: 'Kimi wa Motto =LOVE wo Aiseru ka!!! Episode 1',
     date: '2026-07-09',
     type: 'Variety',
-    series: 'Kimi wa Motto =LOVE wo Aiseru ka!!!',
+    series: 'kimi-wa-motto',
     members: [],
     tags: ['variety'],
     subtitles: [],

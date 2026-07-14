@@ -5,6 +5,7 @@ import { useLocalStorage } from '../hooks/useLocalStorage';
 import { AlertCircle, Languages, Share2, MessageCircle, Upload } from 'lucide-react';
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { SubtitleCue, VideoServer, SubtitleTrack } from '../types';
+import { getSeriesMeta } from '../data/seriesMetadata';
 
 const parseVTT = (vttString: string): SubtitleCue[] => {
   const lines = vttString.split(/\r?\n/);
@@ -379,6 +380,18 @@ export default function Episode() {
                 <span className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest font-bold text-brand bg-brand/10 px-3 py-1 rounded-full">
                   {episode.type}
                 </span>
+                {episode.series && (
+                  <span className={`inline-flex items-center gap-1.5 text-[10px] uppercase tracking-widest font-bold px-2 py-1 rounded border ${
+                    getSeriesMeta(episode.series).status === 'Completed'
+                      ? 'bg-gray-500/10 text-gray-400 border-gray-500/20'
+                      : 'bg-brand/10 text-brand border-brand/20 animate-pulse'
+                  }`}>
+                    <span className={`w-1.5 h-1.5 rounded-full ${
+                      getSeriesMeta(episode.series).status === 'Completed' ? 'bg-gray-400' : 'bg-brand'
+                    }`}></span>
+                    {getSeriesMeta(episode.series).status === 'Completed' ? 'Tamat' : 'Ongoing'}
+                  </span>
+                )}
                 {episode.subtitleTags && episode.subtitleTags.map(tag => (
                   <span key={tag} className="inline-flex items-center gap-1 text-[10px] uppercase font-bold text-white bg-white/10 border border-white/20 px-2 py-1 rounded">
                     {tag}

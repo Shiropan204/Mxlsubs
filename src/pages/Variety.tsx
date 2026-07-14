@@ -4,6 +4,7 @@ import { episodes } from '../data/episodes';
 import { Play, Tv2 } from 'lucide-react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { EpisodeCard } from '../components/EpisodeCard';
+import { getSeriesMeta, SeriesStatus } from '../data/seriesMetadata';
 
 export default function Variety() {
   const varietyEps = useMemo(
@@ -11,15 +12,16 @@ export default function Variety() {
     []
   );
 
-  // Get all unique series names from variety episodes
+  // Get all unique series slugs from variety episodes
   const seriesList = useMemo(() => {
-    const names = varietyEps
+    const slugs = varietyEps
       .map(ep => ep.series)
       .filter((s): s is string => Boolean(s));
-    return Array.from(new Set(names));
+    return Array.from(new Set(slugs));
   }, [varietyEps]);
 
   const [activeSeries, setActiveSeries] = useState<string | null>(null);
+  const [statusFilter, setStatusFilter] = useState<SeriesStatus | 'Semua'>('Semua');
   const [customThumbnails] = useLocalStorage<Record<string, string>>('customThumbnails', {});
   const [watchHistory] = useLocalStorage<Record<string, { currentTime: number; duration: number } | number>>('watchHistory', {});
 
@@ -31,9 +33,20 @@ export default function Variety() {
     return Math.min(100, (h.currentTime / h.duration) * 100);
   };
 
-  const displayed = activeSeries
-    ? varietyEps.filter(ep => ep.series === activeSeries)
-    : varietyEps;
+  // AND filter implementation
+  const displayed = useMemo(() => {
+    let filtered = varietyEps;
+    
+    if (activeSeries) {
+      filtered = filtered.filter(ep => ep.series === activeSeries);
+    }
+    
+    if (statusFilter !== 'Semua') {
+      filtered = filtered.filter(ep => getSeriesMeta(ep.series).status === statusFilter);
+    }
+    
+    return filtered;
+  }, [varietyEps, activeSeries, statusFilter]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-10 space-y-8">
@@ -50,6 +63,27 @@ export default function Variety() {
         </div>
       </div>
 
+      {/* Status Filter Tabs */}
+      <div className="flex bg-bg-surface border border-border-subtle rounded-xl p-1 w-max">
+        {['Semua', 'Ongoing', 'Completed'].map(status => {
+          const isActive = statusFilter === status;
+          const label = status === 'Completed' ? 'Tamat' : status;
+          return (
+            <button
+              key={status}
+              onClick={() => setStatusFilter(status as any)}
+              className={`px-5 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
+                isActive 
+                  ? 'bg-bg-primary text-text-primary shadow-sm' 
+                  : 'text-text-muted hover:text-text-primary hover:bg-white/5'
+              }`}
+            >
+              {label}
+            </button>
+          );
+        })}
+      </div>
+
       {/* Series Filter Chips */}
       {seriesList.length > 0 && (
         <div className="space-y-2">
@@ -64,24 +98,28 @@ export default function Variety() {
                   : 'bg-bg-surface text-text-muted border-border-subtle hover:border-brand/40 hover:text-brand'
               }`}
             >
-              Semua ({varietyEps.length})
+              Semua Series
             </button>
 
-            {seriesList.map(name => {
-              const count = varietyEps.filter(ep => ep.series === name).length;
-              const isActive = activeSeries === name;
+            {seriesList.map(slug => {
+              const meta = getSeriesMeta(slug);
+              const count = varietyEps.filter(ep => ep.series === slug).length;
+              const isActive = activeSeries === slug;
+              const statusColor = meta.status === 'Completed' ? 'bg-gray-500' : 'bg-green-500';
+
               return (
                 <button
-                  key={name}
-                  onClick={() => setActiveSeries(isActive ? null : name)}
-                  className={`px-4 py-2 rounded-full text-sm font-semibold border transition-all duration-200 ${
+                  key={slug}
+                  onClick={() => setActiveSeries(isActive ? null : slug)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold border transition-all duration-200 ${
                     isActive
                       ? 'bg-brand text-white border-brand shadow-md shadow-brand/30'
                       : 'bg-bg-surface text-text-muted border-border-subtle hover:border-brand/40 hover:text-brand'
                   }`}
                 >
-                  {name}
-                  <span className={`ml-1.5 text-[11px] font-bold px-1.5 py-0.5 rounded-full ${
+                  <span className={`w-2 h-2 rounded-full ${statusColor}`} title={meta.status}></span>
+                  {meta.title}
+                  <span className={`ml-0.5 text-[11px] font-bold px-1.5 py-0.5 rounded-full ${
                     isActive ? 'bg-white/20 text-white' : 'bg-brand/10 text-brand'
                   }`}>
                     {count}
@@ -98,7 +136,7 @@ export default function Variety() {
         <div className="rounded-2xl bg-gradient-to-r from-brand/10 to-transparent border border-brand/20 px-5 py-4 flex items-center justify-between">
           <div>
             <p className="text-xs font-bold uppercase tracking-widest text-brand/70 mb-0.5">Series</p>
-            <h2 className="text-lg font-heading font-bold">{activeSeries}</h2>
+            <h2 className="text-lg font-heading font-bold">{getSeriesMeta(activeSeries).title}</h2>
           </div>
           <button
             onClick={() => setActiveSeries(null)}
