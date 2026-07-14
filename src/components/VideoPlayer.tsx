@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { SubtitleCue, VideoServer, SubtitleTrack } from '../types';
 import { Play, Pause, Volume2, VolumeX, Maximize, Minimize, RotateCcw, RotateCw, Settings, ChevronUp, ChevronDown, Type, Smartphone } from 'lucide-react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
+import { useVideoProtection } from '../hooks/useVideoProtection';
 
 interface VideoPlayerProps {
   servers?: VideoServer[];
@@ -15,6 +16,7 @@ interface VideoPlayerProps {
   subtitles?: SubtitleCue[];
   onProgress?: (currentTime: number, duration: number) => void;
   initialTime?: number;
+  thumbnailUrl?: string;
 }
 
 declare global {
@@ -43,9 +45,12 @@ export default function VideoPlayer({
   serverType = 'youtube',
   subtitles = [], 
   onProgress, 
-  initialTime = 0 
+  initialTime = 0,
+  thumbnailUrl 
 }: VideoPlayerProps) {
+  const [loaded, setLoaded] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  useVideoProtection(containerRef);
   const playerRef = useRef<any>(null);
   const hideTimerRef = useRef<number>(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -96,7 +101,7 @@ export default function VideoPlayer({
   }, [showControls]);
 
   useEffect(() => {
-    if (serverType !== 'youtube') return;
+    if (serverType !== 'youtube' || !loaded) return;
 
     if (!window.YT) {
       const tag = document.createElement('script');
@@ -125,7 +130,7 @@ export default function VideoPlayer({
       }
       window.clearTimeout(hideTimerRef.current);
     };
-  }, [videoId, serverType]);
+  }, [videoId, serverType, loaded]);
 
   const initPlayer = () => {
     playerRef.current = new window.YT.Player(`youtube-player-${videoId}`, {
@@ -436,6 +441,34 @@ export default function VideoPlayer({
 
   const progressPercent = duration ? (currentTime / duration) * 100 : 0;
   const bufferedPercent = duration ? (buffered / duration) * 100 : 0;
+
+  if (!loaded) {
+    const defaultThumb = serverType === 'youtube' ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+    return (
+      <div ref={containerRef} className="relative w-full aspect-video bg-black md:rounded-2xl overflow-hidden select-none shadow-xl shadow-black/20">
+        <button onClick={() => setLoaded(true)} className="group relative h-full w-full block" aria-label="Putar video">
+          <img 
+            src={thumbnailUrl || defaultThumb} 
+            onError={(e) => {
+              if (e.currentTarget.src.includes('maxresdefault.jpg')) {
+                e.currentTarget.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+              }
+            }}
+            alt="Video thumbnail" 
+            draggable={false} 
+            loading="lazy" 
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" 
+          />
+          <span className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-300" />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-16 h-16 md:w-20 md:h-20 bg-brand text-white rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(234,102,135,0.6)] group-hover:scale-110 transition-transform duration-300">
+              <Play size={36} className="ml-1.5 fill-current" />
+            </div>
+          </div>
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div 

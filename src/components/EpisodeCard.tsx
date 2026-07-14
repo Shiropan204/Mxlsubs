@@ -25,6 +25,8 @@ export function EpisodeCard({ ep, customThumbnail, progress, size = 'normal' }: 
           alt={ep.title}
           className="w-full h-full object-cover md:group-hover:scale-105 transition-transform duration-700 ease-out"
           loading="lazy"
+          decoding="async"
+          draggable={false}
         />
         {/* Gradient overlay on bottom for readability */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 md:group-hover:opacity-100 transition-opacity duration-300" />
