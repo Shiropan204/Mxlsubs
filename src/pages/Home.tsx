@@ -6,6 +6,7 @@ import { useLocalStorage } from '../hooks/useLocalStorage';
 
 import { ContentRow } from '../components/ContentRow';
 import { EpisodeCard } from '../components/EpisodeCard';
+import { seriesMetadata } from '../data/seriesMetadata';
 
 export default function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -81,11 +82,30 @@ export default function Home() {
   };
 
 
-  // Categorized episodes for shelves
-  const ikonoijoyEps = episodes.filter(ep => ep.type === 'IKONOIJOY Channel');
-  const latestEps = [...episodes].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  // Group episodes by series
+  const seriesGroups = Object.entries(
+    episodes.reduce((acc, ep) => {
+      const key = ep.series || '__uncategorized';
+      if (!acc[key]) acc[key] = [];
+      acc[key].push(ep);
+      return acc;
+    }, {} as Record<string, typeof episodes>)
+  )
+  .filter(([slug]) => slug !== '__uncategorized')
+  .map(([slug, eps]) => ({
+    slug,
+    title: seriesMetadata[slug as keyof typeof seriesMetadata]?.title || slug,
+    status: seriesMetadata[slug as keyof typeof seriesMetadata]?.status,
+    episodes: [...eps].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()),
+  }))
+  .sort((a, b) => {
+    const aLatest = new Date(a.episodes[0].date).getTime();
+    const bLatest = new Date(b.episodes[0].date).getTime();
+    return bLatest - aLatest;
+  });
 
-  const featuredEpisodes = latestEps.slice(0, 5);
+  const sortedByDate = [...episodes].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const featuredEpisodes = sortedByDate.slice(0, 5);
   const featured = featuredEpisodes[featuredIndex] || featuredEpisodes[0];
 
   return (
@@ -246,75 +266,89 @@ export default function Home() {
         </div>
       )}
 
-      {/* ====== CONTENT SHELVES (Rak Toko) ====== */}
-      {/* ====== SHELVES / GRID ====== */}
+      {/* ====== CONTENT ====== */}
       {!isLoading && !isSearching && (
-        <div className="space-y-10 md:space-y-16 mt-8 md:mt-12 max-w-7xl md:mx-auto">
-          
-          {/* Continue Watching */}
-          {recentlyViewed.length > 0 && (
-            <ContentRow 
-              title="Lanjutkan Menonton" 
-              icon={<Clock size={18} className="text-brand" />}
-            >
-              {recentlyViewed.map(ep => (
-                <EpisodeCard 
-                  key={`recent-${ep.id}`} 
-                  ep={ep} 
-                  customThumbnail={customThumbnails[ep.id]}
-                  progress={getProgressWidth(ep.id)}
-                  size="wide"
+        <div className="mt-6 md:mt-8 max-w-7xl md:mx-auto">
+          {/* Search & Filter Bar */}
+          <div className="px-4 mb-6">
+            <div className="flex flex-row gap-2 items-center">
+              <div className="relative flex-1 max-w-md">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" size={18} />
+                <input 
+                  type="text" 
+                  placeholder="Cari judul, member..." 
+                  value={search}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    if (val) {
+                      searchParams.set('search', val);
+                    } else {
+                      searchParams.delete('search');
+                    }
+                    setSearchParams(searchParams);
+                  }}
+                  className="w-full pl-10 pr-4 py-2.5 bg-bg-surface border border-border-subtle rounded-xl text-sm focus:outline-none focus:border-brand transition-colors"
                 />
-              ))}
-            </ContentRow>
-          )}
-
-          {/* Baru Ditambahkan */}
-          <ContentRow 
-            title="Baru Ditambahkan" 
-            icon={<Sparkles size={18} className="text-brand" />}
-          >
-            {latestEps.map(ep => (
-              <EpisodeCard 
-                key={`latest-${ep.id}`} 
-                ep={ep} 
-                customThumbnail={customThumbnails[ep.id]}
-                progress={getProgressWidth(ep.id)}
-                size="large"
-              />
-            ))}
-          </ContentRow>
-
-          {/* IKONOIJOY Channel */}
-          {ikonoijoyEps.length > 0 && (
-            <ContentRow title="IKONOIJOY Channel">
-              {ikonoijoyEps.map(ep => (
-                <EpisodeCard 
-                  key={`iko-${ep.id}`} 
-                  ep={ep} 
-                  customThumbnail={customThumbnails[ep.id]}
-                  progress={getProgressWidth(ep.id)}
-                  size="large"
-                />
-              ))}
-            </ContentRow>
-          )}
-
-          {/* Semua Episode heading + grid (desktop-friendly) */}
-          <section className="px-4 space-y-4">
-            <h2 className="text-base md:text-xl font-heading font-bold">Semua Episode</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-              {episodes.map(ep => (
-                <EpisodeCard 
-                  key={ep.id} 
-                  ep={ep} 
-                  customThumbnail={customThumbnails[ep.id]}
-                  progress={getProgressWidth(ep.id)}
-                  size="grid"
-                />
-              ))}
+              </div>
+              <button 
+                onClick={() => setIsFilterOpen(true)}
+                className="flex-none flex items-center justify-center gap-2 px-3 md:px-5 py-2.5 bg-bg-surface border border-border-subtle rounded-xl text-sm font-medium text-text-primary hover:bg-border-subtle transition-colors"
+              >
+                <Filter size={16} />
+                <span className="hidden sm:inline">Filter</span>
+                {(selectedCategories.length > 0 || selectedMembers.length > 0) && (
+                  <span className="bg-brand text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                    {selectedCategories.length + selectedMembers.length}
+                  </span>
+                )}
+              </button>
             </div>
-          </section>
+          </div>
+
+          <div className="px-4 md:px-0 space-y-10 md:space-y-16 pb-8">
+            {/* Continue Watching */}
+            {recentlyViewed.length > 0 && (
+              <ContentRow 
+                title="Lanjutkan Menonton" 
+                icon={<Clock size={18} className="text-brand" />}
+              >
+                {recentlyViewed.map(ep => (
+                  <EpisodeCard 
+                    key={`recent-${ep.id}`} 
+                    ep={ep} 
+                    customThumbnail={customThumbnails[ep.id]}
+                    progress={getProgressWidth(ep.id)}
+                    size="wide"
+                  />
+                ))}
+              </ContentRow>
+            )}
+
+            {/* Series Sections */}
+            {seriesGroups.map(group => (
+              <section key={group.slug}>
+                <div className="flex items-center gap-3 mb-4">
+                  <h2 className="text-base md:text-xl font-heading font-bold">{group.title}</h2>
+                  {group.status && (
+                    <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border border-brand/30 text-brand bg-brand/10">
+                      {group.status}
+                    </span>
+                  )}
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                  {group.episodes.map(ep => (
+                    <EpisodeCard 
+                      key={ep.id} 
+                      ep={ep} 
+                      customThumbnail={customThumbnails[ep.id]}
+                      progress={getProgressWidth(ep.id)}
+                      size="grid"
+                    />
+                  ))}
+                </div>
+              </section>
+            ))}
+          </div>
         </div>
       )}
 
