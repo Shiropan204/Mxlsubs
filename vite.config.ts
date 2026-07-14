@@ -4,8 +4,11 @@ import path from 'path';
 import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
+  // GitHub Actions sets GITHUB_ACTIONS=true automatically.
+  // Vercel and local dev use base '/'.
+  const base = process.env.GITHUB_ACTIONS === 'true' ? '/Mxlsubs/' : '/';
   return {
-    base: '/Mxlsubs/',
+    base,
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {

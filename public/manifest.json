@@ -13,9 +13,9 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": "/Mxlsubs/",
+  "start_url": "/",
   "background_color": "#FFFFFF",
   "display": "standalone",
-  "scope": "/Mxlsubs/",
+  "scope": "/",
   "theme_color": "#F48FB1"
 }
