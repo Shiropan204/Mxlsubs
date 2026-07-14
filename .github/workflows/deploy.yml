@@ -64,24 +64,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Deploy to GitHub Pages (with retries)
+      - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-        continue-on-error: true
-
-      - name: Retry if Pages deployment failed
-        if: steps.deployment.outcome == 'failure'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          echo "Initial deploy failed — retrying once..."
-          n=0
-          until [ $n -ge 2 ]
-          do
-            gh api repos/${{ github.repository }}/pages/builds -X POST || true
-            n=$((n+1))
-            sleep 10
-          done
-          
-          # Force job failure if the deployment step failed
-          exit 1
