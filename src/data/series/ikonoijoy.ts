@@ -11,7 +11,7 @@ export const ikonoijoy: Episode[] = [
   {
     id: 'ikonoijoy-bUlMuCSv76g',
     title: '【¥30,000 Budget Each】ZARA Shopping Haul! We Picked Outfits for Each Other 🛍️',
-    date: '2024-07-21',
+    date: '2026-07-21',
     type: 'IKONOIJOY Channel',
     series: 'ikonoijoy-channel',
     members: ['Hana Oba', 'Hitomi Takamatsu'],
