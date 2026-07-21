@@ -2,6 +2,7 @@ import { Episode } from '../types';
 import { equalLoveKokokko } from './series/equal-love-kokokko';
 import { kimiWaMotto } from './series/kimi-wa-motto';
 import { ikonoijoy } from './series/ikonoijoy';
+import { ikorabuAnmai } from './series/ikorabu-anmai';
 
 /**
  * Gabungan semua episode dari tiap series.
@@ -11,4 +12,5 @@ export const episodes: Episode[] = [
   ...equalLoveKokokko,
   ...kimiWaMotto,
   ...ikonoijoy,
+  ...ikorabuAnmai,
 ];

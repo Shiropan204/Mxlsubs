@@ -18,6 +18,9 @@ export const seriesMetadata: Record<string, SeriesMeta> = {
   'ikonoijoy-channel': {
     title: 'IKONOIJOY Channel',
   },
+  'ikorabu-anmai': {
+    title: 'Ikorabu Anmai',
+  },
 };
 
 // Helper function dengan fallback
