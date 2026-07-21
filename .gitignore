@@ -23,3 +23,6 @@ desktop.ini
 # TypeScript / Build cache
 *.tsbuildinfo
 .eslintcache
+
+# Documentation
+docs/

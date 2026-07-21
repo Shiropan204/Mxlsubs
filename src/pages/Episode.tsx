@@ -7,73 +7,20 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { SubtitleCue, VideoServer, SubtitleTrack } from '../types';
 import { getSeriesMeta } from '../data/seriesMetadata';
 
-const parseVTT = (vttString: string): SubtitleCue[] => {
-  const lines = vttString.split(/\r?\n/);
-  const cues: SubtitleCue[] = [];
-  let currentCue: Partial<SubtitleCue> | null = null;
 
-  const timeToSeconds = (timeStr: string) => {
-    const parts = timeStr.split(':');
-    let seconds = 0;
-    if (parts.length === 3) {
-      seconds += parseInt(parts[0], 10) * 3600;
-      seconds += parseInt(parts[1], 10) * 60;
-      seconds += parseFloat(parts[2].replace(',', '.'));
-    } else if (parts.length === 2) {
-      seconds += parseInt(parts[0], 10) * 60;
-      seconds += parseFloat(parts[1].replace(',', '.'));
-    }
-    return seconds;
-  };
-
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i].trim();
-    if (line.startsWith('WEBVTT') || line.startsWith('Region:') || line.startsWith('Style:')) {
-      continue;
-    }
-    
-    if (line.includes('-->')) {
-      const times = line.split('-->');
-      currentCue = {
-        start: timeToSeconds(times[0].trim()),
-        end: timeToSeconds(times[1].trim()),
-        text: ''
-      };
-    } else if (line === '') {
-      if (currentCue && currentCue.start !== undefined && currentCue.text) {
-        currentCue.text = currentCue.text.trim();
-        cues.push(currentCue as SubtitleCue);
-      }
-      currentCue = null;
-    } else if (currentCue && !line.match(/^[0-9]+$/)) { // ignore cue numbers
-      if (currentCue.text) {
-        currentCue.text += '\n' + line;
-      } else {
-        currentCue.text = line;
-      }
-    }
-  }
-
-  if (currentCue && currentCue.start !== undefined && currentCue.text) {
-    currentCue.text = currentCue.text.trim();
-    cues.push(currentCue as SubtitleCue);
-  }
-
-  return cues;
-};
 
 export default function Episode() {
   const { id } = useParams<{ id: string }>();
   const episode = episodes.find(e => e.id === id);
   const [watchHistory, setWatchHistory] = useLocalStorage<Record<string, { currentTime: number, duration: number } | number>>('watchHistory', {});
-  const [customSubtitles, setCustomSubtitles] = useLocalStorage<Record<string, SubtitleCue[]>>('customSubtitles', {});
+  const [customSubtitles, setCustomSubtitles] = useLocalStorage<Record<string, string>>('customSubtitles', {});
   const [customThumbnails, setCustomThumbnails] = useLocalStorage<Record<string, string>>('customThumbnails', {});
   
   const [showNotes, setShowNotes] = useState(true);
   const [showUploadControls, setShowUploadControls] = useLocalStorage('showUploadControls', false);
   const [showCopiedToast, setShowCopiedToast] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [fetchedSubtitles, setFetchedSubtitles] = useState<SubtitleCue[] | null>(null);
+
   const vttInputRef = useRef<HTMLInputElement>(null);
   const thumbnailInputRef = useRef<HTMLInputElement>(null);
 
@@ -121,22 +68,17 @@ export default function Episode() {
     return () => window.clearTimeout(timer);
   }, [showCopiedToast]);
 
+  const [activeVttUrl, setActiveVttUrl] = useState<string | undefined>();
   useEffect(() => {
-    if (activeSubtitleTrack && activeSubtitleTrack.url) {
-      fetch(activeSubtitleTrack.url)
-        .then(res => {
-          if (!res.ok) throw new Error('VTT not found');
-          return res.text();
-        })
-        .then(text => setFetchedSubtitles(parseVTT(text)))
-        .catch(err => {
-          console.warn('Failed to load subtitles from vttUrl', err);
-          setFetchedSubtitles(null);
-        });
+    if (episode && customSubtitles[episode.id]) {
+      const blob = new Blob([customSubtitles[episode.id]], { type: 'text/vtt' });
+      const url = URL.createObjectURL(blob);
+      setActiveVttUrl(url);
+      return () => URL.revokeObjectURL(url);
     } else {
-      setFetchedSubtitles(null);
+      setActiveVttUrl(activeSubtitleTrack?.url);
     }
-  }, [activeSubtitleTrack?.url]);
+  }, [episode?.id, customSubtitles, activeSubtitleTrack?.url]);
 
   useEffect(() => {
     if (episode) {
@@ -157,9 +99,13 @@ export default function Episode() {
     return <Navigate to="/404" replace />;
   }
 
+  const lastSavedWindowRef = useRef<number>(-1);
+
   const handleProgress = (currentTime: number, duration: number) => {
     // Only update occasionally to avoid too many renders/saves
-    if (Math.floor(currentTime) % 5 === 0) {
+    const currentWindow = Math.floor(currentTime / 5);
+    if (currentWindow !== lastSavedWindowRef.current) {
+      lastSavedWindowRef.current = currentWindow;
       setWatchHistory(prev => ({ ...prev, [episode.id]: { currentTime, duration } }));
     }
   };
@@ -202,7 +148,7 @@ export default function Episode() {
     const reader = new FileReader();
     reader.onload = (event) => {
       const content = event.target?.result as string;
-      setCustomSubtitles(prev => ({ ...prev, [episode.id]: parseVTT(content) }));
+      setCustomSubtitles(prev => ({ ...prev, [episode.id]: content }));
     };
     reader.readAsText(file);
     if (vttInputRef.current) {
@@ -225,7 +171,6 @@ export default function Episode() {
     }
   };
 
-  const activeSubtitles = customSubtitles[episode.id] || fetchedSubtitles || episode.subtitles;
   const servers = episode.servers || (episode.videoId ? [{ id: 'youtube', name: 'YouTube', videoId: episode.videoId } as VideoServer] : []);
   const subtitleTracks = episode.subtitleTracks || (episode.vttUrl ? [{ id: 'default', label: 'Default', url: episode.vttUrl } as SubtitleTrack] : []);
 
@@ -273,15 +218,9 @@ export default function Episode() {
         {/* Video Player - wrapper tanpa overflow-hidden agar fullscreen tidak terpotong */}
         <div className="w-full md:rounded-2xl shadow-2xl shadow-black/20">
           <VideoPlayer 
-            servers={servers}
-            activeServer={activeServer}
-            onServerChange={setActiveServer}
-            subtitleTracks={subtitleTracks}
-            activeSubtitleTrack={activeSubtitleTrack}
-            onSubtitleChange={setActiveSubtitleTrack}
             videoId={activeServer?.videoId || episode.videoId || ''} 
             serverType={activeServer?.id || 'youtube'}
-            subtitles={activeSubtitles}
+            vttUrl={activeVttUrl}
             onProgress={handleProgress}
             initialTime={initialTime}
           />

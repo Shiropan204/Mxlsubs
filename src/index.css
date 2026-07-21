@@ -74,3 +74,17 @@ input[type=range]::-webkit-slider-runnable-track {
     scrollbar-width: none;
   }
 }
+
+/* VTT Subtitle Styling */
+.vtt-container span[title]::before {
+  content: attr(title) ": ";
+  font-weight: 700;
+  margin-right: 4px;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.9);
+}
+
+.vtt-container span[title="Hitomi"]::before { color: #facc15; }
+.vtt-container span[title="Hana"]::before { color: #f472b6; }
+.vtt-container span[title="Maika"]::before { color: #60a5fa; }
+.vtt-container span[title="Iori"]::before { color: #a78bfa; }
+.vtt-container span[title="Sana"]::before { color: #34d399; }

@@ -1,0 +1,617 @@
+WEBVTT
+
+NOTE
+Diasumsikan pemutaran menggunakan browser <video>+<track> sehingga styling CSS dirender. Jika menggunakan pemutar video desktop konvensional atau hardsub otomatis, blok STYLE dan cue settings posisi akan diabaikan dan kembali ke format teks standar.
+
+STYLE
+::cue(.nametag) { color: #ffffff; background-color: rgba(226, 178, 32, 0.8); }
+::cue(.item-box) { color: #ffffff; background-color: rgba(230, 80, 120, 0.8); }
+::cue(.title) { color: #ffd400; font-weight: bold; }
+::cue(v[voice="Hitomi"]) { color: #ffb6c1; }
+::cue(v[voice="Hana"]) { color: #ffa500; }
+
+00:00:00.600 --> 00:00:05.100
+<v Hitomi>Halo semuanya! Aku Hitomi Takamatsu dari =LOVE.
+<v Hana>Aku Hana Oba!
+
+NOTE Nametag menggunakan metode PAIRING, posisi disesuaikan
+00:00:00.800 --> 00:00:04.000 line:80% position:25% align:center
+<c.nametag>=LOVE
+Takamatsu Hitomi</c>
+
+00:00:00.800 --> 00:00:04.000 line:80% position:75% align:center
+<c.nametag>=LOVE
+Oba Hana</c>
+
+00:00:05.800 --> 00:00:09.000
+- Hujan!
+- Eh, mulai hujan! Rintik-rintik.
+
+00:00:09.500 --> 00:00:15.500
+- Udah lama ya kita nggak bikin video berdua aja.
+- Iya, terakhir pas tanding masak masakan rumah itu.
+
+NOTE Thumbnail video sebelumnya, standalone cue (COVERING)
+00:00:13.500 --> 00:00:16.000 line:15% position:50% align:center
+<c.title>[Video Sebelumnya: Tanding Masak Masakan Rumah]</c>
+
+00:00:16.800 --> 00:00:20.500
+Hari ini kita bukan mau tanding masak,
+tapi mau belanja!
+
+00:00:20.600 --> 00:00:23.000
+Yey! Mari kita borong!
+
+00:00:24.000 --> 00:00:29.500
+- Jadi, toko kita hari ini adalah...
+- Jeng jeng! ZARA di Shibuya!
+
+00:00:30.000 --> 00:00:34.500
+- Akhirnya ke sini juga. Hana kan suka banget ZARA.
+- Iya, suka banget.
+
+00:00:34.500 --> 00:00:38.200
+- Imej baju ZARA emang melekat banget di kamu. Tolong ajarin, ya.
+- Di sini luas banget.
+
+00:00:38.200 --> 00:00:40.500
+Pasti ada apa aja di dalem.
+
+00:00:40.500 --> 00:00:43.500
+Hari ini kita punya budget 30.000 yen buat belanja!
+
+00:00:44.200 --> 00:00:47.500
+- Gila, seneng banget! Bisa beli banyak nih.
+- Beneran berasa dapet hadiah.
+
+00:00:47.800 --> 00:00:53.000
+Jadi aturannya, kita harus beli satu set baju lengkap
+buat diri sendiri...
+
+00:00:53.000 --> 00:00:58.500
+- Sama satu barang yang sekiranya cocok buat dipake satu sama lain.
+- Totalnya maksimal 30.000 yen!
+
+00:00:59.800 --> 00:01:03.500
+- Bisa nggak ya kita belanja dengan pintar?
+- Semangat! Pasti seru banget.
+
+00:01:04.200 --> 00:01:07.500
+- Kalo gitu, kita berangkat dulu, ya!
+- Berangkat!
+
+00:01:10.000 --> 00:01:13.500
+- Belanjanya udah selesai!
+- Udah selesai!
+
+00:01:15.800 --> 00:01:19.500
+- Aku bingung banget tadi!
+- Aku malah cepet banget.
+
+00:01:19.500 --> 00:01:23.500
+- Iya, kamu mutusinnya cepet banget!
+- Udah beres aja?
+
+00:01:24.000 --> 00:01:28.000
+- Tapi kamu tadi sempet ngilang loh.
+- Aku ada kok, di mana-mana.
+
+00:01:28.500 --> 00:01:32.000
+- Kita sama sekali nggak papasan.
+- Syukurlah kita berhasil beli.
+
+00:01:34.000 --> 00:01:38.000
+- Boleh aku duluan yang unjukin?
+- Aku abis 30.000 yen pas!
+
+NOTE Telop pengenalan dipersingkat dan diposisikan agar tidak menumpuk
+00:01:34.000 --> 00:01:37.000 line:15% align:center
+<c.title>[Barang Belanjaan Hitomi Takamatsu]</c>
+
+00:01:38.500 --> 00:01:42.500
+- Hebat banget!
+- Apalagi aku dapet tas sama sepatu juga.
+
+00:01:43.000 --> 00:01:46.000
+- Kok bisa? Hebat banget!
+- Mari kita mulai dari yang utama.
+
+00:01:46.500 --> 00:01:50.000
+Jeng! Atasan ini!
+
+NOTE Item box ditangani sebagai COVERING standalone cue di sudut kanan atas agar screen budget aman
+00:01:48.000 --> 00:01:51.500 line:15% position:75% align:start
+<c.item-box>Atasan Rajut Pita Garis (S)
+¥4.390</c>
+
+00:01:51.500 --> 00:01:56.500
+- Tahu nggak, aku juga pilihin baju itu buat kamu!
+- Seriusan milih ini?!
+
+00:01:56.500 --> 00:02:00.000
+Pas papasan tadi, aku liat kamu lagi megang baju ini.
+
+00:02:00.500 --> 00:02:04.500
+Aku mikir baju ini pasti bakal cocok banget buat kamu.
+
+00:02:04.500 --> 00:02:09.500
+Kan kamu jarang pake baju motif garis,
+makanya aku pengen kamu coba.
+
+00:02:10.500 --> 00:02:14.000
+Terus tiba-tiba orangnya sendiri yang milih!
+
+00:02:14.500 --> 00:02:17.500
+- Hebat banget, kan? Makanya aku mantap pilih ini.
+- Desainnya ala marine gitu ya.
+
+00:02:17.500 --> 00:02:22.000
+Kata guru kita, musim panas tahun ini temanya emang marine.
+
+00:02:22.500 --> 00:02:28.000
+- Ini harganya 4.390 yen termasuk pajak.
+- Aku dapet ukuran S, yang paling kecil.
+
+00:02:30.000 --> 00:02:33.500
+- Bagus deh dapet.
+- Lanjut, celana denim!
+
+00:02:33.500 --> 00:02:37.000
+Akhir-akhir ini aku lagi suka banget pake denim.
+
+00:02:37.500 --> 00:02:40.500
+Taraaa! Lucu banget, kan?
+
+00:02:37.500 --> 00:02:41.000 line:15% position:75% align:start
+<c.item-box>Celana Denim Mid-Rise Lipat (S)
+¥7.990</c>
+
+00:02:41.500 --> 00:02:47.000
+- Aku sengaja pilih jeans yang ada damage-nya.
+- Kayaknya cocok deh.
+
+00:02:47.500 --> 00:02:51.000
+Aku jarang punya celana yang kebuka begini,
+makanya pengen beli.
+
+00:02:51.000 --> 00:02:55.500
+- Terus bagian sininya juga stylish. Kamu pasti suka kan?
+- Iya, aku suka.
+
+00:02:56.500 --> 00:03:00.000
+Awalnya aku kira ukuran yang paling kecil itu bagus.
+
+00:03:00.000 --> 00:03:04.500
+- Eh ternyata ada ukuran 32, yang paling kecil!
+- Beruntung banget!
+
+00:03:05.000 --> 00:03:08.500
+- Makanya aku langsung ambil yang ini.
+- Harganya 7.990 yen.
+
+00:03:09.000 --> 00:03:13.500
+Sekilas kelihatannya rapi,
+tapi bagian bawahnya ada detail robekan.
+
+00:03:14.000 --> 00:03:18.000
+- Rasanya "aku banget" gitu.
+- Paham banget.
+
+00:03:18.500 --> 00:03:22.500
+Kedua barang ini ditambah...
+Tas yang cocok buat baju tadi!
+
+00:03:23.000 --> 00:03:26.500
+- Ala marine banget ya.
+- Kalo pake baju gini, tasnya harus merah!
+
+00:03:29.500 --> 00:03:33.000 line:15% position:75% align:start
+<c.item-box>Tas Bahu Panjang
+¥5.290</c>
+
+00:03:30.500 --> 00:03:35.000
+Ini harganya 5.290 yen. Lucu, kan?
+
+00:03:35.500 --> 00:03:39.000
+- Kamu pinter banget sih belanjanya?
+- Masa sih? Seneng deh.
+
+00:03:39.500 --> 00:03:43.000
+Tapi budget-nya masih sisa, jadi aku juga beli sandal!
+
+00:03:44.000 --> 00:03:49.000
+- Gila, jadi satu setelan lengkap dong.
+- Parah, lucu banget sandal bersol tebel ini.
+
+00:03:49.500 --> 00:03:54.000
+Lucu, kan? Musim panas ini
+kayaknya aku bakal pake sandal ini terus.
+
+00:03:59.000 --> 00:04:02.500 line:15% position:75% align:start
+<c.item-box>Sandal Platform Pita Satin (40)
+¥6.590</c>
+
+00:04:00.000 --> 00:04:04.000
+Harganya 6.590 yen. Ukurannya... 40!
+
+00:04:04.500 --> 00:04:09.500
+- Gede banget.
+- Ukuran kaki aku emang gede, nyampe 25 cm.
+
+00:04:09.500 --> 00:04:14.000
+Kalo nggak ukuran 40, nggak bakal muat.
+Ya sekitar 40, 25, atau LL lah.
+
+00:04:18.500 --> 00:04:22.500
+- Jadi, aku beli 4 barang ini!
+- Total harganya... ini dia!
+
+00:04:22.500 --> 00:04:27.500
+30.250 yen! Pinter banget belanjanya!
+
+NOTE Sequence ringan agar telop tidak menabrak wajah atau text box sebelumnya
+00:04:23.000 --> 00:04:27.000 line:15% align:center
+<c.title>TOTAL: ¥30.250
+(Termasuk barang untuk Hana)</c>
+
+00:04:28.000 --> 00:04:32.000
+- Yey! Aku puas banget.
+- Barang yang bagus-bagus ngumpul semua.
+
+00:04:34.000 --> 00:04:37.000
+Nah, sekarang giliran aku!
+
+00:04:34.500 --> 00:04:37.500 line:15% align:center
+<c.title>[Barang Belanjaan Oba Hana]</c>
+
+00:04:37.500 --> 00:04:41.500
+- Silakan.
+- Dari awal aku emang pengen banget jaket ini!
+
+00:04:44.000 --> 00:04:47.500
+- Yakin banget pasti ini yang dipilih!
+- Pas liat ini, aku langsung mikir, "Ini dia!"
+
+00:04:48.000 --> 00:04:52.500
+- ZARA jualan banyak banget jaket napoleon lho.
+- Oh ya?
+
+00:04:53.000 --> 00:04:57.500
+Ada macem-macem, dan aku ngerasa
+yang ini lucu banget, jadi aku ambil.
+
+00:04:58.500 --> 00:05:02.000 line:15% position:75% align:start
+<c.item-box>Jaket Peplum Z1975 (S)
+¥10.990</c>
+
+00:04:58.500 --> 00:05:05.500
+- Ini ukurannya S... harganya 10.990 yen.
+- Sepuluh ribu yen!
+
+00:05:06.000 --> 00:05:10.500
+- Sultan!
+- Bentuknya bagus banget, pas di badan.
+
+00:05:11.000 --> 00:05:15.000
+- Aku sempet cobain juga.
+- Lucu banget pas dipake, makanya aku pilih ini.
+
+00:05:16.500 --> 00:05:21.000
+Terus buat pasangannya,
+ada atasan tembus pandang motif polkadot.
+
+00:05:21.500 --> 00:05:25.500
+Bakal lucu kalo dipake di dalem,
+apalagi kalo bagian lengannya kelihatan.
+
+00:05:28.500 --> 00:05:32.000 line:15% position:75% align:start
+<c.item-box>Atasan Rajut Semi-Sheer Polkadot (XS)
+¥5.290</c>
+
+00:05:28.000 --> 00:05:33.500
+- Ini ukuran XS, harganya 5.290 yen.
+- Lucu, agak nerawang gitu ya.
+
+00:05:35.500 --> 00:05:40.000
+- Bisa dipaduin sama kamisol.
+- Aku sempet mikir mau beli lagi kalo cukup...
+
+00:05:40.500 --> 00:05:43.000
+Dan untungnya ngepas! Bentuknya kayak korset.
+
+00:05:44.000 --> 00:05:48.000
+- Mau aku dobelin pakenya. Kira-kira muat nggak ya?
+- Lucu! Wah, mulai was-was muat apa enggak.
+
+00:05:49.500 --> 00:05:53.000
+- Eh, sekecil ini muat nggak sih?
+- Ukurannya apa emang? M!
+
+00:05:54.000 --> 00:05:58.000
+- Pasti muat!
+- Kalo kamu aja nggak muat, siapa yang bakal muat?
+
+00:05:59.000 --> 00:06:05.000
+- Kamu kan idola, pasti muat lah. Kalo enggak... ya udah.
+- Jangan nyerah dong!
+
+00:06:06.500 --> 00:06:10.000 line:15% position:75% align:start
+<c.item-box>Atasan Korset Renda (M)
+¥4.390</c>
+
+00:06:07.000 --> 00:06:11.000
+Ukurannya M, harganya 4.390 yen.
+
+00:06:11.500 --> 00:06:16.000
+- Terus celananya, celana pendek ini!
+- Lucu!
+
+00:06:16.000 --> 00:06:20.000
+Kan atasannya lengan panjang,
+jadi bawahan sengaja mau dipendekin aja.
+
+00:06:20.500 --> 00:06:25.000
+Aku suka warna cokelat, dan ini udah dapet
+sabuk cokelat juga, jadi pas banget.
+
+00:06:27.500 --> 00:06:31.000 line:15% position:75% align:start
+<c.item-box>Celana Bermuda High-Rise Berikat Pinggang (XS)
+¥5.290</c>
+
+00:06:27.500 --> 00:06:31.500
+Ukurannya XS, harganya 5.290 yen.
+
+00:06:31.500 --> 00:06:35.500
+- Kira-kira totalnya berapa ya?
+- Aman nggak ya budget-nya? Bakal kutampilin di layar.
+
+00:06:37.000 --> 00:06:41.000 line:15% align:center
+<c.title>TOTAL: ¥30.864 (Sebelum Pajak)</c>
+
+00:06:38.000 --> 00:06:45.000
+- Aku ngitungnya pake harga sebelum pajak...
+- Oh, sebelum pajak.
+
+00:06:41.500 --> 00:06:46.000 line:15% align:center
+<c.title>TOTAL: ¥33.950 (Termasuk Pajak)</c>
+
+00:06:46.000 --> 00:06:49.000
+- Kalo pake pajak harganya segini...
+- Waaaa!
+
+00:06:49.500 --> 00:06:54.000
+Ngomong-ngomong total kalian berdua kalo
+udah pake pajak itu 64.200 yen lho.
+
+00:06:55.000 --> 00:06:59.000
+- Berarti ada yang ngelanggar budget...
+- Elu yang lewat batas!
+
+00:06:59.500 --> 00:07:02.000
+Lho, aku?!
+
+00:07:03.000 --> 00:07:07.500
+Dan, hari ini kita nggak cuma milih buat diri sendiri,
+tapi juga saling milih satu barang yang cocok.
+
+00:07:08.500 --> 00:07:12.500
+- Aku sempet pusing banget tadi!
+- Padahal aku udah netapin mau beli yang ini.
+
+00:07:13.000 --> 00:07:18.000
+- Gara-gara itu aku harus cari ulang dari awal!
+- Kalo tadi kita nggak papasan, pasti udah berabe.
+
+00:07:18.500 --> 00:07:25.000
+- Akhirnya dapetnya ini deh.
+- Untung tadi ada dua tasnya, jadi aman.
+
+00:07:28.000 --> 00:07:34.000
+Aku milih baju yang pengen banget aku pake...
+eh maksudku, kan gaya baju kita beda...
+
+00:07:34.000 --> 00:07:39.500
+Aku penasaran aja bakal kayak gimana
+kalo kamu pake baju gaya aku.
+
+00:07:40.000 --> 00:07:46.000
+- Kata kamu, ini baju yang biasa aku pilih, kan?
+- Iya, ini beneran "Hitomi" banget!
+
+00:07:46.500 --> 00:07:51.500
+Parah, ini emang gue banget!
+Aku emang sering banget pake baju kayak gini.
+
+00:07:52.000 --> 00:07:59.000
+- Aku juga suka baju model gini.
+- Tapi kalo aku yang pake, jadinya terlalu biasa kan?
+
+00:07:59.000 --> 00:08:07.500
+- Makanya aku pengen kamu yang pake baju gaya sehari-hariku ini!
+- Seneng banget, makasih!
+
+00:08:18.000 --> 00:08:22.000 line:15% position:75% align:start
+<c.item-box>Atasan Rajut Trim Gelombang (S)
+¥5.990</c>
+
+00:08:18.000 --> 00:08:22.500
+- Harganya 5.990 yen dapet ukuran S.
+- Pinter banget sih milihnya.
+
+00:08:26.500 --> 00:08:33.000
+- Ini juga tetep masuk budget 30.000 yen kan?
+- Betul! Makasih ya.
+
+00:08:34.000 --> 00:08:38.500
+- Terus, barang yang aku pilih buat Hitomi...
+- Apa ya?
+
+00:08:38.500 --> 00:08:44.000
+Aku milih sesuatu yang gampang dipake sehari-hari,
+dan yang pastinya bergaya aku banget.
+
+00:08:44.000 --> 00:08:48.000
+Tuh kan, pikiran kita sama!
+Seneng deh bisa sepemikiran.
+
+00:08:49.000 --> 00:08:54.000
+- Aku pilih ini!
+- Hah?! Seneng banget! Lucu banget!
+
+00:08:54.500 --> 00:08:59.000
+- Rompi napoleon!
+- Lucu banget kan? Pasti cocok deh di kamu.
+
+00:08:59.000 --> 00:09:03.500
+- Cocok banget buat musim panas.
+- Iya kan? Pasti kamu bakal sering pake.
+
+00:09:04.000 --> 00:09:08.500
+- Bener-bener ngebuka sisi baru dari diriku.
+- Lucu kan?
+
+00:09:09.000 --> 00:09:14.000
+- Kita bisa kembaran dong? Duo napoleon hitam putih!
+- Nggak sabar pengen pake.
+
+00:09:16.500 --> 00:09:20.500 line:15% position:75% align:start
+<c.item-box>Rompi Berkancing Halter Neck (S)
+¥7.990</c>
+
+00:09:16.500 --> 00:09:22.000
+- Ukurannya S, harganya 7.990 yen.
+- Wah, ini lumayan mahal loh.
+
+00:09:23.000 --> 00:09:29.000
+Maaf ya. Tadi aku bimbang antara
+yang harga 5.000 atau 7.000...
+
+00:09:29.000 --> 00:09:34.000
+- Tapi aku lebih pengen liat kamu pake yang ini.
+- Makasih! Bakal aku rawat baik-baik.
+
+00:09:34.500 --> 00:09:39.000
+- Kalo gitu, ayo kita ganti baju!
+- Kita mulai dari pakaian yang dipilih sendiri.
+
+00:09:39.500 --> 00:09:43.000
+Udah selesai ganti bajunya!
+
+00:09:46.500 --> 00:09:51.500
+- Gimana nih?
+- Lucu banget! Bagus banget!
+
+00:09:56.000 --> 10:00.000
+- Cocok banget di kamu.
+- Kamu juga, super lucu!
+
+00:10:00.000 --> 10:05.500
+- Ada temanya nggak?
+- Temanya... "Mari Pergi ke Prancis".
+
+00:10:05.500 --> 10:11.000
+Padahal aku juga mikir gitu lho!
+Kita versi Prancis yang kedua.
+
+00:10:12.000 --> 10:17.500
+Beneran deh, gaya kita Prancis banget.
+Mari pergi ke Paris!
+
+00:10:19.000 --> 10:24.000
+- Eh, bajumu beneran muat lho!
+- Syukurlah muat, aku deg-degan banget tadi.
+
+00:10:24.000 --> 10:29.000
+- Untung korsetnya muat. Lucu kan?
+- Lucu banget! Ini pas banget ukurannya.
+
+00:10:30.000 --> 10:35.000
+- Celananya juga pas walau nggak sempet dicoba.
+- Lucu banget, jaketnya cocok.
+
+00:10:38.000 --> 10:44.000
+- Sengaja kubikin gaya tumpuk.
+- Baju dilapis gini tuh super lucu kan?
+
+00:10:45.000 --> 10:50.000
+- Ini level pro sih, sampe dilapis tiga.
+- Lucu banget, bakal kepake terus pas kerja.
+
+00:10:56.000 --> 11:00.500
+- Bakal jadi baju favorit deh.
+- Beneran sukses besar!
+
+00:11:01.000 --> 11:06.000
+- Sepatuku juga lucu kan.
+- Sempurna banget sampe ke sandalnya segala.
+
+00:11:08.500 --> 11:13.500
+Walaupun ada juga celana denim
+yang lebih rapi dan kalem...
+
+00:11:13.500 --> 11:18.000
+Aku tetep pengen milih yang ngasih kesan kasual.
+
+00:11:18.500 --> 11:23.000
+- Ini gaya musim panas ala aku!
+- Lucu!
+
+00:11:23.000 --> 11:27.500
+Bagian perutnya emang agak ketutup sih,
+tapi gayanya kurang lebih kayak gini.
+
+00:11:28.000 --> 11:33.500
+Bagus banget, kamu keliatan kayak biasanya.
+Bener-bener kayak pakaian sehari-harimu.
+
+00:11:34.000 --> 11:39.000
+Kita berdua berhasil milih gaya yang sama persis
+kayak baju sehari-hari. Sukses besar!
+
+00:11:49.000 --> 11:54.000
+- Sekarang kita ganti pake baju pilihan satu sama lain yuk!
+- Semangat! Berangkat!
+
+00:11:55.000 --> 12:00.000
+Selesai ganti bajunya!
+
+00:12:02.000 --> 12:06.500
+Liat deh, keren banget kan?!
+Bener-bener kaget pas nyobain.
+
+00:12:07.000 --> 12:12.500
+Gembung-gembung banget! Lucu banget tau!
+
+00:12:14.000 --> 12:19.500
+- Sengaja kupaduin pake celana denimku hari ini...
+- Wah, kamu jadi keliatan kayak aku!
+
+00:12:20.000 --> 12:25.000
+- Beneran gaya "Hitomi Takamatsu" banget!
+- Lucu banget! Cocok abis.
+
+00:12:26.000 --> 12:30.000
+- Bakal sering kupake sih ini. Aku juga pengen beli celananya.
+- Apapun yang kamu pake, pasti cocok.
+
+00:12:35.000 --> 12:40.000
+Keliatan kayak jamur ya?
+Tapi jamur yang kelihatannya enak!
+
+00:12:43.000 --> 12:48.000
+Punya aku juga lucu tau! Cocok banget kan.
+
+00:12:50.000 --> 12:55.000
+Wanita musim panas banget.
+Jadi inget jaman ikut baton twirling dulu.
+
+00:12:55.000 --> 13:00.000
+- Udah siap muterin tongkat nih. Padahal jarang pake baju ginian.
+- Ternyata cocok banget buat sehari-hari lho.
+
+00:13:00.000 --> 13:05.000
+- Apalagi dipaduin sama celana ini.
+- Beneran berasa lagi tukeran baju! Sukses besar!
+
+00:13:16.000 --> 13:22.000
+Sekian proyek belanja kita di ZARA hari ini! Dadah!

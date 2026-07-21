@@ -1,0 +1,617 @@
+WEBVTT
+
+NOTE
+Assumed delivery context: browser <video>+<track> which renders CSS styling. If played via a conventional desktop media player or auto-hardsubber, the STYLE block and position cue settings will likely be ignored, falling back to standard text rendering.
+
+STYLE
+::cue(.nametag) { color: #ffffff; background-color: rgba(226, 178, 32, 0.8); }
+::cue(.item-box) { color: #ffffff; background-color: rgba(230, 80, 120, 0.8); }
+::cue(.title) { color: #ffd400; font-weight: bold; }
+::cue(v[voice="Hitomi"]) { color: #ffb6c1; }
+::cue(v[voice="Hana"]) { color: #ffa500; }
+
+00:00:00.600 --> 00:00:05.100
+<v Hitomi>Hello everyone! I'm Hitomi Takamatsu from =LOVE.
+<v Hana>I'm Hana Oba!
+
+NOTE Nametags use PAIRING, repositioned slightly to match the members
+00:00:00.800 --> 00:00:04.000 line:80% position:25% align:center
+<c.nametag>=LOVE
+Hitomi Takamatsu</c>
+
+00:00:00.800 --> 00:00:04.000 line:80% position:75% align:center
+<c.nametag>=LOVE
+Hana Oba</c>
+
+00:00:05.800 --> 00:00:09.000
+- It's raining!
+- Oh, it's starting to rain! Just a drizzle.
+
+00:00:09.500 --> 00:00:15.500
+- It's been a while since we did a video with just us two.
+- Yeah, the last time was the home-cooked meal battle.
+
+NOTE Previous video thumbnail, standalone cue (COVERING)
+00:00:13.500 --> 00:00:16.000 line:15% position:50% align:center
+<c.title>[Previous Video: Home-cooked Meal Battle]</c>
+
+00:00:16.800 --> 00:00:20.500
+Today, we're not doing a cooking battle,
+we're going shopping!
+
+00:00:20.600 --> 00:00:23.000
+Yay! Let's go on a shopping spree!
+
+00:00:24.000 --> 00:00:29.500
+- So, the store for today is...
+- Ta-da! ZARA in Shibuya!
+
+00:00:30.000 --> 00:00:34.500
+- We're finally here. You really love ZARA, Hana.
+- I do, I love it.
+
+00:00:34.500 --> 00:00:38.200
+- I always picture you wearing ZARA clothes. Guide me.
+- It's super spacious in here.
+
+00:00:38.200 --> 00:00:40.500
+I'm sure they have everything.
+
+00:00:40.500 --> 00:00:43.500
+Today, we have a budget of 30,000 yen for shopping!
+
+00:00:44.200 --> 00:00:47.500
+- Wow, I'm so happy! We can buy so much.
+- It feels like a real treat.
+
+00:00:47.800 --> 00:00:53.000
+The rule is, we have to buy a full outfit
+for ourselves...
+
+00:00:53.000 --> 00:00:58.500
+- Plus one item that we think would suit each other.
+- All under a total of 30,000 yen!
+
+00:00:59.800 --> 00:01:03.500
+- I wonder if we can shop smartly?
+- Let's do our best! It'll be fun.
+
+00:01:04.200 --> 00:01:07.500
+- Let's go then!
+- Let's go!
+
+00:01:10.000 --> 00:01:13.500
+- We're done shopping!
+- We're done!
+
+00:01:15.800 --> 00:01:19.500
+- I had such a hard time deciding!
+- I was actually pretty fast.
+
+00:01:19.500 --> 00:01:23.500
+- Yeah, you made up your mind so quickly!
+- You're done already?
+
+00:01:24.000 --> 00:01:28.000
+- But you completely disappeared on me.
+- I was around, everywhere.
+
+00:01:28.500 --> 00:01:32.000
+- We didn't cross paths at all.
+- I'm just glad we managed to buy everything.
+
+00:01:34.000 --> 00:01:38.000
+- Can I show mine first?
+- I spent exactly 30,000 yen!
+
+NOTE Intro telop simplified and positioned to avoid stacking
+00:01:34.000 --> 00:01:37.000 line:15% align:center
+<c.title>[Hitomi Takamatsu's Purchases]</c>
+
+00:01:38.500 --> 00:01:42.500
+- That's amazing!
+- And I even managed to get a bag and shoes.
+
+00:01:43.000 --> 00:01:46.000
+- Really? That's incredible!
+- Let's start with the main item.
+
+00:01:46.500 --> 00:01:50.000
+Ta-da! This top!
+
+NOTE Item box handled as COVERING standalone cue in top right corner to preserve screen budget
+00:01:48.000 --> 00:01:51.500 line:15% position:75% align:start
+<c.item-box>Striped Bow Knit Top (S)
+¥4,390</c>
+
+00:01:51.500 --> 00:01:56.500
+- You know what, I actually picked that for you too!
+- You chose this?!
+
+00:01:56.500 --> 00:02:00.000
+When we passed by each other, I saw you holding it.
+
+00:02:00.500 --> 00:02:04.500
+I was thinking how perfect this top would look on you.
+
+00:02:04.500 --> 00:02:09.500
+You don't wear stripes very often,
+so I wanted you to try it.
+
+00:02:10.500 --> 00:02:14.000
+And then you ended up picking it yourself!
+
+00:02:14.500 --> 00:02:17.500
+- Incredible, right? So I definitely had to get it.
+- It has a nice marine vibe to it.
+
+00:02:17.500 --> 00:02:22.000
+Our teacher said that this summer's theme is marine.
+
+00:02:22.500 --> 00:02:28.000
+- This was 4,390 yen with tax.
+- I got it in size S, the smallest one.
+
+00:02:30.000 --> 00:02:33.500
+- I'm glad you got it.
+- Next, denim pants!
+
+00:02:33.500 --> 00:02:37.000
+I've been really into denim lately.
+
+00:02:37.500 --> 00:02:40.500
+Ta-da! Isn't it so cute?
+
+00:02:37.500 --> 00:02:41.000 line:15% position:75% align:start
+<c.item-box>TRF Mid-Rise Foldover Denim (S)
+¥7,990</c>
+
+00:02:41.500 --> 00:02:47.000
+- I intentionally went for distressed jeans.
+- I think they'll suit you.
+
+00:02:47.500 --> 00:02:51.000
+I rarely own pants with holes in them,
+so I wanted to buy one.
+
+00:02:51.000 --> 00:02:55.500
+- And this part is really stylish. You'd like this, right?
+- Yeah, I like it.
+
+00:02:56.500 --> 00:03:00.000
+At first, I thought the smallest size would be best.
+
+00:03:00.000 --> 00:03:04.500
+- But then I saw they had a size 32, the smallest!
+- So lucky!
+
+00:03:05.000 --> 00:03:08.500
+- That's why I grabbed this right away.
+- It was 7,990 yen.
+
+00:03:09.000 --> 00:03:13.500
+It looks clean and neat at a glance,
+but the bottom has ripped details.
+
+00:03:14.000 --> 00:03:18.000
+- It feels very "me."
+- I totally get that.
+
+00:03:18.500 --> 00:03:22.500
+To go with these two items...
+I got a matching bag!
+
+00:03:23.000 --> 00:03:26.500
+- Very marine.
+- With an outfit like this, the bag has to be red!
+
+00:03:29.500 --> 00:03:33.000 line:15% position:75% align:start
+<c.item-box>Long Shoulder Bag
+¥5,290</c>
+
+00:03:30.500 --> 00:03:35.000
+This was 5,290 yen. Cute, isn't it?
+
+00:03:35.500 --> 00:03:39.000
+- How are you so good at shopping?
+- Am I? I'm so glad.
+
+00:03:39.500 --> 00:03:43.000
+But I still had budget left, so I bought sandals too!
+
+00:03:44.000 --> 00:03:49.000
+- Wow, you made a complete outfit.
+- I know, these thick-soled sandals are so cute.
+
+00:03:49.500 --> 00:03:54.000
+Aren't they? I think I'll be wearing these
+all the time this summer.
+
+00:03:59.000 --> 00:04:02.500 line:15% position:75% align:start
+<c.item-box>Satin Bow Platform Sandals (40)
+¥6,590</c>
+
+00:04:00.000 --> 00:04:04.000
+It was 6,590 yen. The size is... 40!
+
+00:04:04.500 --> 00:04:09.500
+- That's huge.
+- My feet are really big, like 25 cm.
+
+00:04:09.500 --> 00:04:14.000
+If it's not a 40, it won't fit me.
+It has to be 40, 25, or LL.
+
+00:04:18.500 --> 00:04:22.500
+- So, I bought these 4 items!
+- The total price is... here!
+
+00:04:22.500 --> 00:04:27.500
+30,250 yen! You're such a good shopper!
+
+NOTE Slight sequencing so the telop doesn't collide with the dialogue text
+00:04:23.000 --> 00:04:27.000 line:15% align:center
+<c.title>TOTAL: ¥30,250
+(Includes the item for Hana)</c>
+
+00:04:28.000 --> 00:04:32.000
+- Yay! I'm so satisfied.
+- You gathered a lot of great stuff.
+
+00:04:34.000 --> 00:04:37.000
+Alright, now it's my turn!
+
+00:04:34.500 --> 00:04:37.500 line:15% align:center
+<c.title>[Hana Oba's Purchases]</c>
+
+00:04:37.500 --> 00:04:41.500
+- Go ahead.
+- I wanted this jacket right from the start!
+
+00:04:44.000 --> 00:04:47.500
+- I just knew you'd pick that!
+- The moment I saw this, I thought, "This is it!"
+
+00:04:48.000 --> 00:04:52.500
+- ZARA sells a lot of Napoleon jackets.
+- Oh, really?
+
+00:04:53.000 --> 00:04:57.500
+They had various kinds, and I thought
+this one was adorable, so I grabbed it.
+
+00:04:58.500 --> 00:05:02.000 line:15% position:75% align:start
+<c.item-box>Z1975 Peplum Jacket (S)
+¥10,990</c>
+
+00:04:58.500 --> 00:05:05.500
+- It's a size S... and it cost 10,990 yen.
+- Ten thousand yen!
+
+00:05:06.000 --> 00:05:10.500
+- You're rich!
+- It has a beautiful shape, fits perfectly.
+
+00:05:11.000 --> 00:05:15.000
+- I actually tried it on too.
+- It looked so cute when I wore it, so I chose it.
+
+00:05:16.500 --> 00:05:21.000
+Next, to pair with it,
+I got this semi-sheer polka dot top.
+
+00:05:21.500 --> 00:05:25.500
+It would look cute worn underneath,
+especially with the sleeves peeking out.
+
+00:05:28.500 --> 00:05:32.000 line:15% position:75% align:start
+<c.item-box>Polka Dot Semi-Sheer Knit Top (XS)
+¥5,290</c>
+
+00:05:28.000 --> 00:05:33.500
+- This is a size XS, for 5,290 yen.
+- It's cute, slightly see-through.
+
+00:05:35.500 --> 00:05:40.000
+- I can wear it with a camisole.
+- I thought about buying another layer if I had enough...
+
+00:05:40.500 --> 00:05:43.000
+And luckily I did! It looks like a corset.
+
+00:05:44.000 --> 00:05:48.000
+- I want to layer them together. Do you think it'll fit?
+- Cute! Wow, now I'm worried it won't fit.
+
+00:05:49.500 --> 00:05:53.000
+- Wait, is it going to fit being this small?
+- What size is it anyway? M!
+
+00:05:54.000 --> 00:05:58.000
+- It'll definitely fit!
+- If you can't fit into it, who could?
+
+00:05:59.000 --> 00:06:05.000
+- You're an idol, of course it'll fit. If it doesn't... oh well.
+- Don't give up on it!
+
+00:06:06.500 --> 00:06:10.000 line:15% position:75% align:start
+<c.item-box>Lace Trim Corset Top (M)
+¥4,390</c>
+
+00:06:07.000 --> 00:06:11.000
+It's size M, for 4,390 yen.
+
+00:06:11.500 --> 00:06:16.000
+- Then for pants, these shorts!
+- Cute!
+
+00:06:16.000 --> 00:06:20.000
+The top has long sleeves,
+so I wanted to keep the bottoms short.
+
+00:06:20.500 --> 00:06:25.000
+I like the color brown, and it comes with
+a brown belt too, so it's perfect.
+
+00:06:27.500 --> 00:06:31.000 line:15% position:75% align:start
+<c.item-box>High-Rise Bermuda Shorts with Belt (XS)
+¥5,290</c>
+
+00:06:27.500 --> 00:06:31.500
+It's size XS, 5,290 yen.
+
+00:06:31.500 --> 00:06:35.500
+- I wonder what the total is?
+- Is it within the budget? I'll show it on screen.
+
+00:06:37.000 --> 00:06:41.000 line:15% align:center
+<c.title>TOTAL: ¥30,864 (Before Tax)</c>
+
+00:06:38.000 --> 00:06:45.000
+- I calculated the prices before tax...
+- Oh, before tax.
+
+00:06:41.500 --> 00:06:46.000 line:15% align:center
+<c.title>TOTAL: ¥33,950 (With Tax)</c>
+
+00:06:46.000 --> 00:06:49.000
+- With tax, it comes to this much...
+- Waaaa!
+
+00:06:49.500 --> 00:06:54.000
+By the way, the total for both of you
+with tax included is 64,200 yen.
+
+00:06:55.000 --> 00:06:59.000
+- That means someone went over budget...
+- It's you who went over!
+
+00:06:59.500 --> 00:07:02.000
+Wait, me?!
+
+00:07:03.000 --> 00:07:07.500
+Also, today we didn't just shop for ourselves,
+we picked out an item for each other too.
+
+00:07:08.500 --> 00:07:12.500
+- I had such a hard time deciding!
+- Even though I had already set my mind on one.
+
+00:07:13.000 --> 00:07:18.000
+- Because of that, I had to search all over again!
+- If we hadn't crossed paths, it would've been bad.
+
+00:07:18.500 --> 00:07:25.000
+- This is what I ended up getting.
+- Luckily they had two of the bags, so we're good.
+
+00:07:28.000 --> 00:07:34.000
+I picked clothes that I personally want to wear...
+I mean, our fashion styles are different...
+
+00:07:34.000 --> 00:07:39.500
+I was just curious to see what you
+would look like wearing my style.
+
+00:07:40.000 --> 00:07:46.000
+- You said this is what I'd usually pick, right?
+- Yeah, it screams "Hitomi"!
+
+00:07:46.500 --> 00:07:51.500
+Wow, this is totally me!
+I wear clothes like this all the time.
+
+00:07:52.000 --> 00:07:59.000
+- I love this kind of clothing too.
+- But if I wore it, it'd look too normal, wouldn't it?
+
+00:07:59.000 --> 00:08:07.500
+- That's why I wanted you to wear my everyday style!
+- I'm so happy, thank you!
+
+00:08:18.000 --> 00:08:22.000 line:15% position:75% align:start
+<c.item-box>Wavy Trim Knit Top (S)
+¥5,990</c>
+
+00:08:18.000 --> 00:08:22.500
+- It's 5,990 yen for a size S.
+- You're really good at picking things out.
+
+00:08:26.500 --> 00:08:33.000
+- And this still fits within the 30,000 yen budget, right?
+- Yep! Thank you.
+
+00:08:34.000 --> 00:08:38.500
+- So, the item I chose for Hitomi is...
+- What could it be?
+
+00:08:38.500 --> 00:08:44.000
+I picked something that's easy to wear daily,
+and something that's totally my style.
+
+00:08:44.000 --> 00:08:48.000
+See, we thought of the exact same thing!
+I'm glad we're on the same wavelength.
+
+00:08:49.000 --> 00:08:54.000
+- I chose this!
+- Huh?! I'm so happy! It's so cute!
+
+00:08:54.500 --> 00:08:59.000
+- A Napoleon vest!
+- Adorable, right? It'll definitely look great on you.
+
+00:08:59.000 --> 00:09:03.500
+- Perfect for the summer.
+- Right? I'm sure you'll wear it a lot.
+
+00:09:04.000 --> 00:09:08.500
+- It really opens up a new side of me.
+- Isn't it cute?
+
+00:09:09.000 --> 00:09:14.000
+- We can match, can't we? The black and white Napoleon duo!
+- I can't wait to put it on.
+
+00:09:16.500 --> 00:09:20.500 line:15% position:75% align:start
+<c.item-box>Halter Neck Button Vest (S)
+¥7,990</c>
+
+00:09:16.500 --> 00:09:22.000
+- It's size S, 7,990 yen.
+- Wow, this is actually pretty expensive.
+
+00:09:23.000 --> 00:09:29.000
+Sorry about that. I was torn between
+the 5,000 yen or the 7,000 yen one...
+
+00:09:29.000 --> 00:09:34.000
+- But I really wanted to see you wear this one.
+- Thank you! I'll take good care of it.
+
+00:09:34.500 --> 00:09:39.000
+- Well then, let's go change!
+- We'll start with the outfits we picked for ourselves.
+
+00:09:39.500 --> 00:09:43.000
+We're done changing!
+
+00:09:46.500 --> 00:09:51.500
+- What do you think?
+- It's so cute! It looks amazing!
+
+00:09:56.000 --> 10:00.000
+- It suits you so well.
+- You too, super cute!
+
+10:00.000 --> 10:05.500
+- Do you have a theme?
+- The theme is... "Let's Go to France."
+
+10:05.500 --> 10:11.000
+Wait, I was thinking the exact same thing!
+We're the France duo part two.
+
+10:12.000 --> 10:17.500
+Seriously, our outfits are very French.
+Let's go to Paris!
+
+10:19.000 --> 10:24.000
+- Wow, your clothes actually fit!
+- Thank goodness they did, I was so nervous earlier.
+
+10:24.000 --> 10:29.000
+- I'm glad the corset fit. Isn't it cute?
+- Super cute! The size is absolutely perfect.
+
+10:30.000 --> 10:35.000
+- The pants fit too, even though I didn't try them on.
+- It's adorable, and the jacket goes well with it.
+
+10:38.000 --> 10:44.000
+- I deliberately went for a layered look.
+- Layered clothes look so good, don't they?
+
+10:45.000 --> 10:50.000
+- You're on a pro level, layering three pieces.
+- It's so cute, I'll definitely wear it to work.
+
+10:56.000 --> 11:00.500
+- It'll become my favorite outfit.
+- It's a huge success!
+
+11:01.000 --> 11:06.000
+- My shoes are cute too, right?
+- It's perfect, down to the sandals.
+
+11:08.500 --> 11:13.500
+Even though there were neat, tailored
+denim pants available...
+
+11:13.500 --> 11:18.000
+I still wanted to go for a casual vibe.
+
+11:18.500 --> 11:23.000
+- This is my summer style!
+- Cute!
+
+11:23.000 --> 11:27.500
+My stomach is a little covered up,
+but the style looks roughly like this.
+
+11:28.000 --> 11:33.500
+It's so nice, you look just like you usually do.
+It really feels like your everyday clothes.
+
+11:34.000 --> 11:39.000
+We both managed to pick styles that match
+our daily wear perfectly. Huge success!
+
+11:49.000 --> 11:54.000
+- Now let's change into the clothes we picked for each other!
+- Let's do this! Let's go!
+
+11:55.000 --> 12:00.000
+We're done changing!
+
+12:02.000 --> 12:06.500
+Look at this, isn't it amazing?!
+I was honestly surprised when I tried it on.
+
+12:07.000 --> 12:12.500
+It's so ruffled and bouncy! It's so cute!
+
+12:14.000 --> 12:19.500
+- I deliberately paired it with my denim from today...
+- Wow, you look just like me!
+
+12:20.000 --> 12:25.000
+- It screams "Hitomi Takamatsu" style!
+- So cute! It suits you perfectly.
+
+12:26.000 --> 12:30.000
+- I'll definitely wear this often. I want to buy the pants too.
+- Whatever you wear, it always looks great on you.
+
+12:35.000 --> 12:40.000
+It looks like a mushroom, right?
+But a very delicious-looking mushroom!
+
+12:43.000 --> 12:48.000
+Mine is cute too, you know! It looks great, right?
+
+12:50.000 --> 12:55.000
+Such a summer lady.
+Reminds me of my baton twirling days.
+
+12:55.000 --> 13:00.000
+- I feel ready to spin a baton. Even though I rarely wear this stuff.
+- It actually works really well for daily wear.
+
+13:00.000 --> 13:05.000
+- Especially paired with these pants.
+- It really feels like we swapped clothes! Huge success!
+
+13:16.000 --> 13:22.000
+That's all for our ZARA shopping project today! Bye-bye!

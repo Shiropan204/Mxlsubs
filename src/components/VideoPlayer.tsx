@@ -1,22 +1,16 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { SubtitleCue, VideoServer, SubtitleTrack } from '../types';
-import { Play, Pause, Volume2, VolumeX, Maximize, Minimize, RotateCcw, RotateCw, Settings, ChevronUp, ChevronDown, Type, Smartphone } from 'lucide-react';
+import { SubtitleCue } from '../types';
+import { Play, Pause, Volume2, VolumeX, Maximize, Minimize, RotateCcw, RotateCw, Settings, ChevronUp, ChevronDown, Type, Smartphone, SkipForward } from 'lucide-react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
-import { useVideoProtection } from '../hooks/useVideoProtection';
 
 interface VideoPlayerProps {
-  servers?: VideoServer[];
-  activeServer?: VideoServer;
-  onServerChange?: (server: VideoServer) => void;
-  subtitleTracks?: SubtitleTrack[];
-  activeSubtitleTrack?: SubtitleTrack | null;
-  onSubtitleChange?: (track: SubtitleTrack | null) => void;
   videoId: string;
   serverType?: 'youtube' | 'drive' | 'dailymotion';
-  subtitles?: SubtitleCue[];
+  vttUrl?: string;
   onProgress?: (currentTime: number, duration: number) => void;
   initialTime?: number;
   thumbnailUrl?: string;
+  onNextEpisode?: () => void;
 }
 
 declare global {
@@ -35,28 +29,30 @@ declare global {
 }
 
 export default function VideoPlayer({ 
-  servers = [], 
-  activeServer, 
-  onServerChange,
-  subtitleTracks = [],
-  activeSubtitleTrack,
-  onSubtitleChange,
   videoId, 
   serverType = 'youtube',
-  subtitles = [], 
+  vttUrl, 
   onProgress, 
   initialTime = 0,
-  thumbnailUrl 
+  thumbnailUrl,
+  onNextEpisode
 }: VideoPlayerProps) {
   const [loaded, setLoaded] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  useVideoProtection(containerRef);
+  const trackRef = useRef<HTMLTrackElement>(null);
+  const subtitleContainerRef = useRef<HTMLDivElement>(null);
+  const isFocusedRef = useRef(false);
   const playerRef = useRef<any>(null);
   const hideTimerRef = useRef<number>(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
-  const [currentSubtitle, setCurrentSubtitle] = useState<string>('');
+  const [isEnded, setIsEnded] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const isDraggingRef = useRef(false);
+  const [dragTime, setDragTime] = useState<number | null>(null);
+  const dragTimeRef = useRef<number | null>(null);
+
   const [showSubtitles, setShowSubtitles] = useLocalStorage('showSubtitles', true);
   const [subSize, setSubSize] = useLocalStorage('subSize', 22);
   const [isMuted, setIsMuted] = useState(false);
@@ -70,6 +66,8 @@ export default function VideoPlayer({
   const [hoverTime, setHoverTime] = useState<number | null>(null);
   const [hoverX, setHoverX] = useState(0);
   const [showTapHint, setShowTapHint] = useState(true);
+  const [hasError, setHasError] = useState(false);
+  const [isBuffering, setIsBuffering] = useState(true);
   const seekBarRef = useRef<HTMLDivElement>(null);
   const isMobileRef = useRef(false);
 
@@ -77,6 +75,12 @@ export default function VideoPlayer({
   useEffect(() => {
     isMobileRef.current = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   }, []);
+
+  useEffect(() => {
+    if (trackRef.current && trackRef.current.track) {
+      trackRef.current.track.mode = 'hidden';
+    }
+  }, [vttUrl]);
 
   // Auto-hide controls
   const resetHideTimer = useCallback(() => {
@@ -90,15 +94,27 @@ export default function VideoPlayer({
     }
   }, [isPlaying]);
 
-  // Tap to toggle controls on mobile
+  // CB-1 fix: Tap to toggle controls on mobile — single source of truth,
+  // no conflict with resetHideTimer's setShowControls(true).
   const handleContainerTap = useCallback(() => {
-    if (isMobileRef.current) {
-      setShowControls(prev => !prev);
-      if (!showControls) {
-        window.clearTimeout(hideTimerRef.current);
+    if (!isMobileRef.current) return;
+    setShowControls(prev => {
+      const next = !prev;
+      window.clearTimeout(hideTimerRef.current);
+      if (next && isPlaying) {
+        hideTimerRef.current = window.setTimeout(() => {
+          setShowControls(false);
+          setShowSettings(false);
+        }, 3000);
       }
-    }
-  }, [showControls]);
+      return next;
+    });
+  }, [isPlaying]);
+
+  // CB-3 fix: Cleanup hideTimer unconditionally on unmount
+  useEffect(() => {
+    return () => window.clearTimeout(hideTimerRef.current);
+  }, []);
 
   useEffect(() => {
     if (serverType !== 'youtube' || !loaded) return;
@@ -162,8 +178,18 @@ export default function VideoPlayer({
           }
         },
         onStateChange: (event: any) => {
-          const playing = event.data === window.YT.PlayerState.PLAYING;
+          const state = event.data;
+          const playing = state === window.YT.PlayerState.PLAYING;
           setIsPlaying(playing);
+          setIsEnded(state === window.YT.PlayerState.ENDED);
+          
+          if (state === window.YT.PlayerState.BUFFERING) {
+            setIsBuffering(true);
+          } else if (state === window.YT.PlayerState.PLAYING || state === window.YT.PlayerState.PAUSED) {
+            setIsBuffering(false);
+            setLoaded(true);
+          }
+
           if (playing) {
             setShowTapHint(false);
             try {
@@ -171,6 +197,11 @@ export default function VideoPlayer({
               event.target.unloadModule('cc');
             } catch (e) {}
           }
+        },
+        onError: (event: any) => {
+          console.error('YouTube Player Error:', event.data);
+          setHasError(true);
+          setIsBuffering(false);
         }
       }
     });
@@ -182,7 +213,11 @@ export default function VideoPlayer({
       interval = window.setInterval(() => {
         if (playerRef.current && playerRef.current.getCurrentTime) {
           const time = playerRef.current.getCurrentTime();
-          setCurrentTime(time);
+          
+          if (!isDraggingRef.current) {
+            setCurrentTime(time);
+          }
+          
           if (onProgress) onProgress(time, duration);
 
           // Buffered
@@ -191,58 +226,78 @@ export default function VideoPlayer({
             setBuffered(frac * duration);
           } catch {}
 
-          if (showSubtitles && subtitles.length > 0) {
+          if (showSubtitles && trackRef.current && trackRef.current.track && trackRef.current.track.cues) {
+            const cues = Array.from(trackRef.current.track.cues) as VTTCue[];
             const adjustedTime = time - subtitleDelay;
-            const cue = subtitles.find(c => adjustedTime >= c.start && adjustedTime <= c.end);
-            setCurrentSubtitle(cue ? cue.text : '');
-          } else {
-            setCurrentSubtitle('');
+            const activeCues = cues.filter(c => c.startTime <= adjustedTime && c.endTime >= adjustedTime);
+            
+            if (subtitleContainerRef.current) {
+              subtitleContainerRef.current.innerHTML = '';
+              activeCues.forEach(cue => {
+                const cueDiv = document.createElement('div');
+                cueDiv.appendChild(cue.getCueAsHTML());
+                subtitleContainerRef.current!.appendChild(cueDiv);
+              });
+            }
+          } else if (subtitleContainerRef.current) {
+            subtitleContainerRef.current.innerHTML = '';
           }
         }
       }, 100);
     }
     return () => window.clearInterval(interval);
-  }, [isPlaying, showSubtitles, subtitles, subtitleDelay, duration, onProgress]);
+  }, [isPlaying, showSubtitles, subtitleDelay, duration, onProgress]);
 
-  // Auto-show subtitles when track changes from outside
-  useEffect(() => {
-    if (activeSubtitleTrack) {
-      setShowSubtitles(true);
-    }
-  }, [activeSubtitleTrack?.id]);
+
 
   const togglePlay = useCallback(() => {
     if (playerRef.current) {
-      if (isPlaying) {
+      if (isEnded) {
+        playerRef.current.seekTo(0, true);
+        playerRef.current.playVideo();
+        setIsEnded(false);
+      } else if (isPlaying) {
         playerRef.current.pauseVideo();
       } else {
         playerRef.current.playVideo();
       }
     }
-  }, [isPlaying]);
+  }, [isPlaying, isEnded]);
 
-  const handleSeekBarClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!seekBarRef.current || !duration) return;
-    const rect = seekBarRef.current.getBoundingClientRect();
-    const fraction = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-    const time = fraction * duration;
-    setCurrentTime(time);
-    if (playerRef.current) {
-      playerRef.current.seekTo(time, true);
-    }
+    e.currentTarget.setPointerCapture(e.pointerId);
+    setIsDragging(true);
+    isDraggingRef.current = true;
+    updateDragTime(e.clientX);
   };
 
-  const handleSeekBarTouch = (e: React.TouchEvent<HTMLDivElement>) => {
-    if (!seekBarRef.current || !duration) return;
-    e.preventDefault();
-    const touch = e.touches[0] || e.changedTouches[0];
-    const rect = seekBarRef.current.getBoundingClientRect();
-    const fraction = Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width));
-    const time = fraction * duration;
-    setCurrentTime(time);
-    if (playerRef.current) {
-      playerRef.current.seekTo(time, true);
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDragging || !seekBarRef.current || !duration) return;
+    updateDragTime(e.clientX);
+  };
+
+  const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDragging) return;
+    e.currentTarget.releasePointerCapture(e.pointerId);
+    setIsDragging(false);
+    isDraggingRef.current = false;
+    
+    if (dragTimeRef.current !== null) {
+      setCurrentTime(dragTimeRef.current);
+      if (playerRef.current) playerRef.current.seekTo(dragTimeRef.current, true);
     }
+    
+    setDragTime(null);
+    dragTimeRef.current = null;
+  };
+
+  const updateDragTime = (clientX: number) => {
+    const rect = seekBarRef.current!.getBoundingClientRect();
+    const fraction = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+    const newTime = fraction * duration;
+    setDragTime(newTime);
+    dragTimeRef.current = newTime;
   };
 
   const handleSeekBarHover = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -401,9 +456,13 @@ export default function VideoPlayer({
     }
   };
 
+  // CB-2 fix: Keyboard shortcuts scoped to this instance via isFocusedRef,
+  // also handles Escape for CSS fullscreen (LB-4 fix), and contentEditable (A11Y-4 fix).
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement).tagName)) return;
+      if (!isFocusedRef.current) return;
+      const target = e.target as HTMLElement;
+      if (['INPUT', 'TEXTAREA'].includes(target.tagName) || target.isContentEditable) return;
 
       switch(e.key.toLowerCase()) {
         case ' ':
@@ -419,6 +478,12 @@ export default function VideoPlayer({
         case 'm':
           toggleMute();
           break;
+        case 'escape':
+          if (isCssFullscreen) {
+            setIsCssFullscreen(false);
+            setIsFullscreen(false);
+          }
+          break;
         case 'arrowright':
           if (playerRef.current) playerRef.current.seekTo(currentTime + 5, true);
           break;
@@ -429,7 +494,7 @@ export default function VideoPlayer({
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [togglePlay, toggleFullscreen, currentTime, setShowSubtitles]);
+  }, [togglePlay, toggleFullscreen, currentTime, setShowSubtitles, isCssFullscreen]);
 
   const formatTime = (time: number) => {
     const hrs = Math.floor(time / 3600);
@@ -439,7 +504,8 @@ export default function VideoPlayer({
     return `${min}:${sec < 10 ? '0' : ''}${sec}`;
   };
 
-  const progressPercent = duration ? (currentTime / duration) * 100 : 0;
+  const displayTime = isDragging && dragTime !== null ? dragTime : currentTime;
+  const progressPercent = duration ? (displayTime / duration) * 100 : 0;
   const bufferedPercent = duration ? (buffered / duration) * 100 : 0;
 
   if (!loaded) {
@@ -487,21 +553,26 @@ export default function VideoPlayer({
         right: 0,
       } : {}}
       ref={containerRef}
-      onMouseMove={resetHideTimer}
-      onTouchStart={() => {
-        resetHideTimer();
-        handleContainerTap();
-      }}
+      tabIndex={0}
+      onFocus={() => { isFocusedRef.current = true; }}
+      onBlur={() => { isFocusedRef.current = false; }}
+      onMouseEnter={() => { isFocusedRef.current = true; }}
       onMouseLeave={() => {
+        isFocusedRef.current = false;
         if (isPlaying) {
           setShowControls(false);
           setShowSettings(false);
         }
       }}
+      onMouseMove={resetHideTimer}
+      onTouchStart={() => handleContainerTap()}
+      onContextMenu={(e) => e.preventDefault()}
     >
       {/* ===== VIDEO IFRAME / YT PLAYER ===== */}
       {serverType === 'youtube' && (
-        <div id={`youtube-player-${videoId}`} className="w-full h-full pointer-events-none" />
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          <div id={`youtube-player-${videoId}`} className="w-full h-full" />
+        </div>
       )}
       {serverType === 'drive' && (
         <iframe 
@@ -511,6 +582,59 @@ export default function VideoPlayer({
           allowFullScreen
         />
       )}
+
+      {/* ===== ERROR OVERLAY ===== */}
+      {hasError && (
+        <div className="absolute inset-0 z-[60] bg-black/90 flex flex-col items-center justify-center text-center p-6">
+          <div className="w-16 h-16 rounded-full bg-red-500/20 text-red-500 flex items-center justify-center mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+          </div>
+          <h3 className="text-xl font-bold text-white mb-2">Video Tidak Tersedia</h3>
+          <p className="text-text-muted text-sm max-w-md">
+            Video ini mungkin telah dihapus, bersifat private, atau dibatasi wilayah. Silakan ganti server di bawah.
+          </p>
+        </div>
+      )}
+
+      {/* ===== LOADING OVERLAY ===== */}
+      {!hasError && isBuffering && serverType === 'youtube' && loaded && (
+        <div className="absolute inset-0 z-[50] flex items-center justify-center pointer-events-none">
+          <div className="w-12 h-12 border-4 border-brand border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      )}
+
+      {/* ===== ENDSCREEN OVERLAY ===== */}
+      {isEnded && (
+        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 bg-black/85 backdrop-blur-sm">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              if (playerRef.current) {
+                playerRef.current.seekTo(0, true);
+                playerRef.current.playVideo();
+              }
+            }}
+            className="flex items-center gap-2 rounded-full bg-white/10 px-5 py-2.5 text-sm text-white transition hover:bg-white/20"
+          >
+            <RotateCcw size={16} />
+            Putar Ulang
+          </button>
+
+          {onNextEpisode && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onNextEpisode();
+              }}
+              className="flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black transition hover:bg-white/90"
+            >
+              <SkipForward size={16} />
+              Episode Selanjutnya
+            </button>
+          )}
+        </div>
+      )}
+      
       {serverType === 'dailymotion' && (
         <iframe 
           src={`https://geo.dailymotion.com/player.html?video=${videoId}`}
@@ -521,19 +645,30 @@ export default function VideoPlayer({
         />
       )}
 
+      {/* ===== HIDDEN VIDEO PARSER ===== */}
+      {serverType === 'youtube' && vttUrl && (
+        <video 
+          src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=" 
+          className="hidden" 
+          crossOrigin="anonymous"
+          preload="auto"
+        >
+          <track key={vttUrl} ref={trackRef} src={vttUrl} kind="subtitles" default />
+        </video>
+      )}
+
       {/* ===== SUBTITLE DISPLAY ===== */}
-      {serverType === 'youtube' && showSubtitles && currentSubtitle && (
+      {serverType === 'youtube' && showSubtitles && (
         <div className="absolute bottom-20 md:bottom-24 left-0 right-0 flex justify-center pointer-events-none px-4 md:px-8 z-10">
           <div 
-            className="bg-black/70 backdrop-blur-sm text-white rounded-lg px-4 py-2 text-center leading-relaxed max-w-[85%]"
+            ref={subtitleContainerRef}
+            className="bg-black/70 backdrop-blur-sm text-white rounded-lg px-4 py-2 text-center leading-relaxed max-w-[85%] vtt-container empty:hidden"
             style={{ 
               fontSize: `${subSize}px`,
               textShadow: '0 1px 4px rgba(0,0,0,0.9)',
               lineHeight: 1.5,
             }}
-          >
-            {currentSubtitle}
-          </div>
+          />
         </div>
       )}
 
@@ -550,7 +685,7 @@ export default function VideoPlayer({
       {/* ===== CENTER PLAY OVERLAY (YouTube only) ===== */}
       {serverType === 'youtube' && (
         <div 
-          className="absolute inset-0 z-0 cursor-pointer" 
+          className="absolute inset-0 z-10 cursor-pointer" 
           onClick={(e) => {
             e.stopPropagation();
             togglePlay();
@@ -602,12 +737,12 @@ export default function VideoPlayer({
             <div 
               ref={seekBarRef}
               className="group/seek relative h-8 flex items-center cursor-pointer touch-none"
-              onClick={handleSeekBarClick}
+              onPointerDown={handlePointerDown}
+              onPointerMove={handlePointerMove}
+              onPointerUp={handlePointerUp}
+              onPointerCancel={handlePointerUp}
               onMouseMove={handleSeekBarHover}
               onMouseLeave={() => setHoverTime(null)}
-              onTouchStart={handleSeekBarTouch}
-              onTouchMove={handleSeekBarTouch}
-              onTouchEnd={handleSeekBarTouch}
             >
               {/* Track background */}
               <div className="absolute left-0 right-0 h-[4px] md:h-[3px] group-hover/seek:h-[5px] transition-all bg-white/20 rounded-full overflow-hidden">
@@ -676,7 +811,7 @@ export default function VideoPlayer({
 
                 {/* Time */}
                 <span className="text-[11px] md:text-xs font-mono text-white/70 ml-1">
-                  {formatTime(currentTime)} <span className="text-white/40">/</span> {formatTime(duration)}
+                  {formatTime(displayTime)} <span className="text-white/40">/</span> {formatTime(duration)}
                 </span>
               </div>
 
