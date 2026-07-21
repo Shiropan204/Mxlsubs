@@ -10,7 +10,7 @@ const base = import.meta.env.BASE_URL;
 export const ikorabuAnmai: Episode[] = [
   {
     id: 'ikorabu-anmai-W_ll5_m4Q8c',
-    title: '【お姫様になりました】in ディズニー ファンタジースプリングスホテル',
+    title: '【We Became Princesses】at Disney Fantasy Springs Hotel',
     date: '2024-07-21',
     type: 'Ikorabu Anmai',
     series: 'ikorabu-anmai',
