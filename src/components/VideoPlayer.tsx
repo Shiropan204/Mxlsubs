@@ -70,6 +70,7 @@ export default function VideoPlayer({
   const [isBuffering, setIsBuffering] = useState(true);
   const seekBarRef = useRef<HTMLDivElement>(null);
   const isMobileRef = useRef(false);
+  const ytWrapperRef = useRef<HTMLDivElement>(null);
 
   // Detect mobile once
   useEffect(() => {
@@ -120,6 +121,7 @@ export default function VideoPlayer({
     if (serverType !== 'youtube' || !loaded) return;
 
     let checkYTInterval: number | null = null;
+    let fallbackTimeout: number | null = null;
 
     const startPlayerWhenReady = () => {
       if (window.YT && window.YT.Player) {
@@ -143,9 +145,20 @@ export default function VideoPlayer({
         checkYTInterval = window.setInterval(() => {
           if (window.YT && window.YT.Player) {
             if (checkYTInterval) clearInterval(checkYTInterval);
+            if (fallbackTimeout) clearTimeout(fallbackTimeout);
             initPlayer();
           }
         }, 100);
+
+        // Timeout if YouTube API fails to load (e.g. adblocker)
+        fallbackTimeout = window.setTimeout(() => {
+          if (checkYTInterval) clearInterval(checkYTInterval);
+          if (!window.YT || !window.YT.Player) {
+            console.error('YouTube API failed to load (possibly blocked by adblocker).');
+            setHasError(true);
+            setIsBuffering(false);
+          }
+        }, 10000);
       }
     };
 
@@ -153,6 +166,7 @@ export default function VideoPlayer({
 
     return () => {
       if (checkYTInterval) clearInterval(checkYTInterval);
+      if (fallbackTimeout) clearTimeout(fallbackTimeout);
       if (playerRef.current) {
         try {
           playerRef.current.destroy();
@@ -171,8 +185,17 @@ export default function VideoPlayer({
       playerRef.current = null;
     }
 
-    const targetEl = document.getElementById(`youtube-player-${videoId}`);
-    if (!targetEl) return;
+    let targetEl = document.getElementById(`youtube-player-${videoId}`);
+    if (!targetEl) {
+      targetEl = document.createElement('div');
+      targetEl.id = `youtube-player-${videoId}`;
+      targetEl.className = 'w-full h-full';
+      if (ytWrapperRef.current) {
+        ytWrapperRef.current.appendChild(targetEl);
+      } else {
+        return; // Container not yet in DOM
+      }
+    }
 
     try {
       playerRef.current = new window.YT.Player(targetEl, {
@@ -618,8 +641,7 @@ export default function VideoPlayer({
     >
       {/* ===== VIDEO IFRAME / YT PLAYER ===== */}
       {serverType === 'youtube' && (
-        <div className="absolute inset-0 z-0 pointer-events-none">
-          <div key={videoId} id={`youtube-player-${videoId}`} className="w-full h-full" />
+        <div className="absolute inset-0 z-0 pointer-events-none" ref={ytWrapperRef}>
         </div>
       )}
       {serverType === 'drive' && (
