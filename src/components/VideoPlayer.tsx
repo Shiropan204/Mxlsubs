@@ -119,114 +119,161 @@ export default function VideoPlayer({
   useEffect(() => {
     if (serverType !== 'youtube' || !loaded) return;
 
-    if (!window.YT) {
-      const tag = document.createElement('script');
-      tag.src = 'https://www.youtube.com/iframe_api';
-      const firstScriptTag = document.getElementsByTagName('script')[0];
-      firstScriptTag?.parentNode?.insertBefore(tag, firstScriptTag);
+    let checkYTInterval: number | null = null;
 
-      const prevCallback = window.onYouTubeIframeAPIReady;
-      window.onYouTubeIframeAPIReady = () => {
-        if (prevCallback) prevCallback();
+    const startPlayerWhenReady = () => {
+      if (window.YT && window.YT.Player) {
         initPlayer();
-      };
-    } else if (window.YT.Player) {
-      initPlayer();
-    } else {
-      const prevCallback = window.onYouTubeIframeAPIReady;
-      window.onYouTubeIframeAPIReady = () => {
-        if (prevCallback) prevCallback();
-        initPlayer();
-      };
-    }
+      } else {
+        if (!document.getElementById('youtube-iframe-api-script')) {
+          const tag = document.createElement('script');
+          tag.id = 'youtube-iframe-api-script';
+          tag.src = 'https://www.youtube.com/iframe_api';
+          const firstScriptTag = document.getElementsByTagName('script')[0];
+          firstScriptTag?.parentNode?.insertBefore(tag, firstScriptTag);
+        }
+
+        const prevCallback = window.onYouTubeIframeAPIReady;
+        window.onYouTubeIframeAPIReady = () => {
+          if (prevCallback) prevCallback();
+          initPlayer();
+        };
+
+        // Fallback interval if API script was already loaded
+        checkYTInterval = window.setInterval(() => {
+          if (window.YT && window.YT.Player) {
+            if (checkYTInterval) clearInterval(checkYTInterval);
+            initPlayer();
+          }
+        }, 100);
+      }
+    };
+
+    startPlayerWhenReady();
 
     return () => {
+      if (checkYTInterval) clearInterval(checkYTInterval);
       if (playerRef.current) {
-        playerRef.current.destroy();
+        try {
+          playerRef.current.destroy();
+        } catch (e) {}
+        playerRef.current = null;
       }
       window.clearTimeout(hideTimerRef.current);
     };
   }, [videoId, serverType, loaded]);
 
   const initPlayer = () => {
-    playerRef.current = new window.YT.Player(`youtube-player-${videoId}`, {
-      videoId,
-      playerVars: {
-        controls: 0,
-        disablekb: 1,
-        enablejsapi: 1,
-        rel: 0,
-        modestbranding: 1,
-        playsinline: 1,
-        start: Math.floor(initialTime),
-        cc_load_policy: 0,
-        iv_load_policy: 3,
-      },
-      events: {
-        onReady: (event: any) => {
-          setDuration(event.target.getDuration());
-          setVolume(event.target.getVolume());
-          setIsMuted(event.target.isMuted());
-          if (initialTime > 0) {
-            event.target.seekTo(initialTime, true);
-          }
-          try {
-            event.target.unloadModule('captions');
-            event.target.unloadModule('cc');
-          } catch (e) {
-            console.error('Could not unload captions module', e);
-          }
-        },
-        onStateChange: (event: any) => {
-          const state = event.data;
-          const playing = state === window.YT.PlayerState.PLAYING;
-          setIsPlaying(playing);
-          setIsEnded(state === window.YT.PlayerState.ENDED);
-          
-          if (state === window.YT.PlayerState.BUFFERING) {
-            setIsBuffering(true);
-          } else if (state === window.YT.PlayerState.PLAYING || state === window.YT.PlayerState.PAUSED) {
-            setIsBuffering(false);
-            setLoaded(true);
-          }
+    if (playerRef.current) {
+      try {
+        playerRef.current.destroy();
+      } catch (e) {}
+      playerRef.current = null;
+    }
 
-          if (playing) {
-            setShowTapHint(false);
+    const targetEl = document.getElementById(`youtube-player-${videoId}`);
+    if (!targetEl) return;
+
+    try {
+      playerRef.current = new window.YT.Player(targetEl, {
+        videoId,
+        playerVars: {
+          autoplay: 1,
+          controls: 0,
+          disablekb: 1,
+          enablejsapi: 1,
+          rel: 0,
+          modestbranding: 1,
+          playsinline: 1,
+          start: Math.floor(initialTime),
+          cc_load_policy: 0,
+          iv_load_policy: 3,
+          origin: window.location.origin,
+        },
+        events: {
+          onReady: (event: any) => {
+            const dur = event.target.getDuration();
+            if (dur && dur > 0) setDuration(dur);
+            setVolume(event.target.getVolume());
+            setIsMuted(event.target.isMuted());
+            if (initialTime > 0) {
+              event.target.seekTo(initialTime, true);
+            }
             try {
               event.target.unloadModule('captions');
               event.target.unloadModule('cc');
             } catch (e) {}
+
+            setIsBuffering(false);
+            try {
+              event.target.playVideo();
+            } catch (e) {}
+          },
+          onStateChange: (event: any) => {
+            const state = event.data;
+            const playing = state === window.YT.PlayerState.PLAYING;
+            setIsPlaying(playing);
+            setIsEnded(state === window.YT.PlayerState.ENDED);
+            
+            const dur = event.target.getDuration();
+            if (dur && dur > 0) setDuration(dur);
+
+            if (state === window.YT.PlayerState.BUFFERING) {
+              setIsBuffering(true);
+            } else {
+              // PLAYING, PAUSED, CUED, UNSTARTED, ENDED
+              setIsBuffering(false);
+              setLoaded(true);
+            }
+
+            if (playing) {
+              setShowTapHint(false);
+              try {
+                event.target.unloadModule('captions');
+                event.target.unloadModule('cc');
+              } catch (e) {}
+            }
+          },
+          onError: (event: any) => {
+            console.error('YouTube Player Error:', event.data);
+            setHasError(true);
+            setIsBuffering(false);
           }
-        },
-        onError: (event: any) => {
-          console.error('YouTube Player Error:', event.data);
-          setHasError(true);
-          setIsBuffering(false);
         }
-      }
-    });
+      });
+    } catch (err) {
+      console.error('Error creating YT player:', err);
+      setHasError(true);
+      setIsBuffering(false);
+    }
   };
 
   useEffect(() => {
     let interval: number;
-    if (isPlaying) {
-      interval = window.setInterval(() => {
-        if (playerRef.current && playerRef.current.getCurrentTime) {
-          const time = playerRef.current.getCurrentTime();
-          
-          if (!isDraggingRef.current) {
+    interval = window.setInterval(() => {
+      if (playerRef.current && typeof playerRef.current.getCurrentTime === 'function') {
+        try {
+          const time = playerRef.current.getCurrentTime() || 0;
+          const dur = playerRef.current.getDuration() || 0;
+
+          if (dur > 0 && dur !== duration) {
+            setDuration(dur);
+          }
+
+          if (isPlaying && !isDraggingRef.current) {
             setCurrentTime(time);
           }
-          
-          if (onProgress) onProgress(time, duration);
 
-          // Buffered
-          try {
-            const frac = playerRef.current.getVideoLoadedFraction();
-            setBuffered(frac * duration);
-          } catch {}
+          if (isPlaying && onProgress) {
+            onProgress(time, dur || duration);
+          }
 
-          if (showSubtitles && trackRef.current && trackRef.current.track && trackRef.current.track.cues) {
+          if (typeof playerRef.current.getVideoLoadedFraction === 'function') {
+            const frac = playerRef.current.getVideoLoadedFraction() || 0;
+            setBuffered(frac * (dur || duration));
+          }
+
+          if (isPlaying && showSubtitles && trackRef.current && trackRef.current.track && trackRef.current.track.cues) {
             const cues = Array.from(trackRef.current.track.cues) as VTTCue[];
             const adjustedTime = time - subtitleDelay;
             const activeCues = cues.filter(c => c.startTime <= adjustedTime && c.endTime >= adjustedTime);
@@ -242,9 +289,10 @@ export default function VideoPlayer({
           } else if (subtitleContainerRef.current) {
             subtitleContainerRef.current.innerHTML = '';
           }
-        }
-      }, 100);
-    }
+        } catch (e) {}
+      }
+    }, 100);
+
     return () => window.clearInterval(interval);
   }, [isPlaying, showSubtitles, subtitleDelay, duration, onProgress]);
 
@@ -571,7 +619,7 @@ export default function VideoPlayer({
       {/* ===== VIDEO IFRAME / YT PLAYER ===== */}
       {serverType === 'youtube' && (
         <div className="absolute inset-0 z-0 pointer-events-none">
-          <div id={`youtube-player-${videoId}`} className="w-full h-full" />
+          <div key={videoId} id={`youtube-player-${videoId}`} className="w-full h-full" />
         </div>
       )}
       {serverType === 'drive' && (
